@@ -35,6 +35,5 @@
             android:textAlignment="center"
             android:textColor="@color/hintcolor" />
     </android.support.design.widget.NavigationView>
-
     <!--app:headerLayout="@layout/nav_header_dash_board"-->
 </android.support.v4.widget.DrawerLayout>
