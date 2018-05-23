@@ -19,4 +19,5 @@
     <color name="dashboard_text_color">#a1ffffff</color>
     <color name="msg_divider_color">#4d5660</color>
     <color name="progress_dialog_text">#4d5266</color>
+    <color name="colorRed">#ff0004</color>
 </resources>

@@ -3,10 +3,10 @@ package com.hvantage2.money4driveeee.fragment;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,20 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.JsonObject;
+import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.ProjectDetailsActivity;
 import com.hvantage2.money4driveeee.adapter.ProjectHistoryAdapter;
+import com.hvantage2.money4driveeee.customview.CustomTextView;
 import com.hvantage2.money4driveeee.model.ProjectModel;
-import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.FragmentIntraction;
 import com.hvantage2.money4driveeee.util.Functions;
+import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.RecyclerItemClickListener;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +45,6 @@ import retrofit2.Response;
 
 public class PendingFragment extends Fragment {
     private static final String TAG = "PendingFragment";
-    private View rootview;
     Context context;
     ProgressDialog dialog;
     CustomTextView tvEmpty;
@@ -53,7 +52,9 @@ public class PendingFragment extends Fragment {
     List<ProjectModel> projectModelList;
     ProjectHistoryAdapter historyAdapter;
     FragmentIntraction intraction;
-    private ShimmerFrameLayout container1;
+    private View rootview;
+    private ProgressHUD progressHD;
+    //private ShimmerFrameLayout container1;
 
 
     @Nullable
@@ -76,7 +77,7 @@ public class PendingFragment extends Fragment {
         context = getActivity();
         recyclerView = (RecyclerView) rootview.findViewById(R.id.recycler_view);
         tvEmpty = (CustomTextView) rootview.findViewById(R.id.tvEmpty);
-        container1 = (ShimmerFrameLayout)rootview. findViewById(R.id.shimmer_view_container);
+        //container1 = (ShimmerFrameLayout)rootview. findViewById(R.id.shimmer_view_container);
     }
 
     @Override
@@ -85,7 +86,7 @@ public class PendingFragment extends Fragment {
 
     }
 
-    private void startAnimation() {
+   /* private void startAnimation() {
         container1.setVisibility(View.VISIBLE);
         container1.startShimmerAnimation();
     }
@@ -100,7 +101,7 @@ public class PendingFragment extends Fragment {
             }
         }, 2000);
 
-    }
+    }*/
 
     private void setAdapter() {
         projectModelList = new ArrayList<ProjectModel>();
@@ -112,10 +113,10 @@ public class PendingFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 ProjectModel messageModel = projectModelList.get(position);
-                Log.e(TAG, "onItemClick: project detail >> "+messageModel );
+                Log.e(TAG, "onItemClick: project detail >> " + messageModel);
                 AppPreference.setSelectedProjectId(context, messageModel.getProject_id());
-                AppPreference.setSelectedProjectType(getActivity(),AppConstants.PROJECT_TYPE.PENDING);
-                Intent intent =new Intent(context,ProjectDetailsActivity.class);
+                AppPreference.setSelectedProjectType(getActivity(), AppConstants.PROJECT_TYPE.PENDING);
+                Intent intent = new Intent(context, ProjectDetailsActivity.class);
                 intent.putExtra("messageModal", messageModel);
                 context.startActivity(intent);
             }
@@ -137,12 +138,42 @@ public class PendingFragment extends Fragment {
         }
     }
 
+    private void showProgressDialog() {
+        progressHD = ProgressHUD.show(context, "Processing...", true, false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // TODO Auto-generated method stub
+            }
+        });
+    }
+
+    private void hideProgressDialog() {
+        progressHD.dismiss();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof FragmentIntraction) {
+            intraction = (FragmentIntraction) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        intraction = null;
+    }
+
     public class getAllPendingTask extends AsyncTask<Void, String, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            startAnimation();
-            //showProgressDialog();
+//            startAnimation();
+            showProgressDialog();
         }
 
         @Override
@@ -207,12 +238,11 @@ public class PendingFragment extends Fragment {
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
-            //hideProgressDialog();
-            stopAnimation();
-            String status=values[0];
-            String msg=values[1];
-            if(status.equalsIgnoreCase("400"))
-            {
+            hideProgressDialog();
+//            stopAnimation();
+            String status = values[0];
+            String msg = values[1];
+            if (status.equalsIgnoreCase("400")) {
             }
             if (historyAdapter != null) {
                 if (historyAdapter.getItemCount() == 0)
@@ -239,36 +269,6 @@ public class PendingFragment extends Fragment {
             }
         }*/
     }
-
-    private void hideProgressDialog() {
-        if (dialog != null && dialog.isShowing())
-            dialog.dismiss();
-    }
-
-    private void showProgressDialog() {
-        dialog = new ProgressDialog(context);
-        dialog.setMessage("Please wait...");
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof FragmentIntraction) {
-            intraction = (FragmentIntraction) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        intraction = null;
-    }
-
 
 
 }

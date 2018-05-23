@@ -3,6 +3,7 @@ package com.hvantage2.money4driveeee.fragment;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,9 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.activity.ProjectDetailsActivity;
+import com.hvantage2.money4driveeee.activity.SingleActivityDetail;
 import com.hvantage2.money4driveeee.adapter.ProjectHistoryAdapter;
 import com.hvantage2.money4driveeee.model.ProjectModel;
 import com.hvantage2.money4driveeee.R;
@@ -29,6 +30,7 @@ import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.FragmentIntraction;
 import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.AppPreference;
+import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.RecyclerItemClickListener;
 import com.hvantage2.money4driveeee.customview.CustomTextView;
 
@@ -59,7 +61,8 @@ public class HistoryCompletedFragment extends Fragment {
     List<ProjectModel> projectModelList;
     ProjectHistoryAdapter historyAdapter;
     FragmentIntraction intraction;
-    private ShimmerFrameLayout container1;
+    private ProgressHUD progressHD;
+    //private ShimmerFrameLayout container1;
 
     @Nullable
     @Override
@@ -76,7 +79,7 @@ public class HistoryCompletedFragment extends Fragment {
         return rootview;
     }
 
-    private void startAnimation() {
+   /* private void startAnimation() {
         container1.startShimmerAnimation();
         container1.setVisibility(View.VISIBLE);
     }
@@ -91,7 +94,7 @@ public class HistoryCompletedFragment extends Fragment {
             }
         }, 2000);
 
-    }
+    }*/
 
 
     @Override
@@ -114,7 +117,7 @@ public class HistoryCompletedFragment extends Fragment {
         context = getActivity();
         recyclerView = (RecyclerView) rootview.findViewById(R.id.recycler_view);
         tvEmpty = (CustomTextView) rootview.findViewById(R.id.tvEmpty);
-        container1 = (ShimmerFrameLayout)rootview. findViewById(R.id.shimmer_view_container);
+        //container1 = (ShimmerFrameLayout)rootview. findViewById(R.id.shimmer_view_container);
 
     }
 
@@ -156,8 +159,8 @@ public class HistoryCompletedFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            showProgressDialog();
-            startAnimation();
+            showProgressDialog();
+            //startAnimation();
         }
 
         @Override
@@ -223,9 +226,9 @@ public class HistoryCompletedFragment extends Fragment {
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
-//            hideProgressDialog();
+            hideProgressDialog();
             String status=values[0];
-            stopAnimation();
+            //stopAnimation();
             String msg=values[1];
             if(status.equalsIgnoreCase("400"))
             {
@@ -254,17 +257,17 @@ public class HistoryCompletedFragment extends Fragment {
         }*/
     }
 
-    private void hideProgressDialog() {
-        if (dialog != null && dialog.isShowing())
-            dialog.dismiss();
+    private void showProgressDialog() {
+        progressHD = ProgressHUD.show(context, "Processing...", true, false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
-    private void showProgressDialog() {
-        dialog = new ProgressDialog(context);
-        dialog.setMessage("Please wait...");
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+    private void hideProgressDialog() {
+        progressHD.dismiss();
     }
 
 
