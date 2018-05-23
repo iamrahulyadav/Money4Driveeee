@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:openDrawer="start">
 
     <include
         layout="@layout/app_bar_dash_board"
@@ -19,23 +19,22 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:itemTextAppearance="@style/NavDrawerTextStyle"
         android:fitsSystemWindows="true"
         app:itemIconTint="@color/colorAccent"
-    app:menu="@menu/activity_dash_board_drawer" >
+        app:itemTextAppearance="@style/NavDrawerTextStyle"
+        app:menu="@menu/activity_dash_board_drawer">
+
         <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="bottom"
             android:padding="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="App version 1.0 (04/03/2018)"
-            android:textColor="@color/hintcolor"
-            android:layout_marginLeft="@dimen/_20sdp"
-            style="@style/TextAppearance.AppCompat.Small"/>
+            android:text="@string/app_version"
+            android:textAlignment="center"
+            android:textColor="@color/hintcolor" />
     </android.support.design.widget.NavigationView>
-
-
 
     <!--app:headerLayout="@layout/nav_header_dash_board"-->
 </android.support.v4.widget.DrawerLayout>
