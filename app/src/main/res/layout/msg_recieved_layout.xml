@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_5sdp">
+
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:id="@+id/rr1"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <View
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray">
+
+        </View>
+
+    <com.hvantage2.money4driveeee.customview.CustomTextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/chat_date_background"
+        android:text="17/04/2018"
+        android:textColor="@color/defaultcolor"
+        android:paddingLeft="@dimen/_7sdp"
+        android:paddingRight="@dimen/_7sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:paddingBottom="@dimen/_3sdp"
+        android:layout_centerHorizontal="true"
+        style="@style/TextAppearance.AppCompat.Small"
+        />
+
+
+    </RelativeLayout>
+
+
+
+
+    <android.support.v7.widget.CardView
+        android:layout_below="@id/rr1"
+        android:id="@+id/card_image"
+        android:layout_width="@dimen/_36sdp"
+        android:layout_height="@dimen/_36sdp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:elevation="0dp"
+        app:cardCornerRadius="@dimen/_18sdp"
+        app:cardElevation="0dp">
+
+        <TextView
+            android:id="@+id/tvNameTag"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/placeholder_bg"
+            android:gravity="center"
+            android:text="A"
+            android:textColor="@color/colorPrimary" />
+
+        <ImageView
+            android:id="@+id/image_message_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_below="@id/rr1"
+        android:id="@+id/tvSender"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_toRightOf="@id/card_image"
+        android:text="Raj Kumar" />
+
+    <TextView
+        android:id="@+id/tvMsgText"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSender"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="@dimen/_100sdp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@id/card_image"
+        android:background="@drawable/chat_box_recieved"
+        android:paddingBottom="@dimen/_5sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:text="hi man, how are you?"
+        android:textColor="#ffffff" />
+
+    <TextView
+        android:id="@+id/tvMsgTime"
+        style="@style/TextAppearance.AppCompat.Notification.Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMsgText"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/card_image"
+        android:text="11:40"
+        android:textColor="@color/hintcolor"/>
+</RelativeLayout>

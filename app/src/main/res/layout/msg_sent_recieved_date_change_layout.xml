@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.hvantage2.money4driveeee.customview.CustomTextView
+        android:id="@+id/tvDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:text="17/04/2018"
+        android:textColor="@color/colorPrimary"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:visibility="visible"/>
+</RelativeLayout>

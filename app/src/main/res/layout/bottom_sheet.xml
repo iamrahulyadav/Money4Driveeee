@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    android:background="#fff"
+    android:clickable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <LinearLayout
+      android:layout_margin="@dimen/_10sdp"
+        android:id="@+id/ll2"
+        android:layout_below="@id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/write_message_text">
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:gravity="start"
+            android:text="To : "
+            android:background="@null"
+            android:maxLines="4"
+            android:imeOptions="actionDone"
+            android:lineSpacingExtra="3sp"
+            android:textAlignment="textStart"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/colorPrimary"/>
+        <Spinner
+            android:id="@+id/spinner"
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:spinnerMode="dialog"
+            android:layout_height="wrap_content"></Spinner>
+    </LinearLayout>
+    <LinearLayout
+        android:background="#f2f2f2"
+        android:layout_below="@id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:padding="@dimen/_10sdp">
+
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.85"
+            android:padding="@dimen/_5sdp"
+            android:background="@drawable/write_message_text"
+            android:gravity="start"
+            android:hint="Enter message"
+            android:maxLines="4"
+            android:imeOptions="actionDone"
+            android:lineSpacingExtra="3sp"
+            android:textColor="@color/hintcolor"
+            android:textAlignment="textStart"
+            style="@style/TextAppearance.AppCompat.Subhead"/>
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="0dp"
+            android:layout_weight=".15"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:layout_alignParentEnd="true"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:text="Send"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_alignParentRight="true" />
+    </LinearLayout>
+</RelativeLayout>

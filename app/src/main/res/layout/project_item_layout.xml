@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_post"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:elevation="0dp"
+    app:cardElevation="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_5sdp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+   >
+
+
+    <RelativeLayout
+        android:layout_margin="@dimen/_5sdp"
+        android:id="@+id/tab_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/noti_image"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/_3sdp"
+            android:src="@drawable/projectdefault" />
+
+        <LinearLayout
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:id="@+id/text_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/noti_image"
+            android:orientation="vertical">
+
+            <com.hvantage2.money4driveeee.customview.CustomTextView
+                android:id="@+id/projecttittle"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etNameCMA"
+                android:inputType="text"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:text="Project Title Here"
+                android:textColor="@color/colorPrimary" />
+
+            <View
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#3eb4b4b4"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="1"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_weight="0.8"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/ll1"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/etNameCMA"
+                            android:inputType="text|textMultiLine"
+                            android:text="City"
+                            style="@style/TextAppearance.AppCompat.Notification.Time.Media"
+                            android:textColor="@color/hintcolor"
+                            app:edittextfont="Lato-Regular.ttf"
+                            />
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+
+                            style="@style/Base.TextAppearance.AppCompat.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/etNameCMA"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="2"
+                            android:text=" - "
+                            android:textColor="@color/hintcolor"
+
+                            />
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                            android:id="@+id/city"
+                            style="@style/TextAppearance.AppCompat.Notification.Time.Media"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/etNameCMA"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="2"
+                            android:text="Indore"
+                            android:textColor="@color/hintcolor"
+
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_below="@id/ll1"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                            style="@style/TextAppearance.AppCompat.Notification.Time.Media"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/etNameCMA"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="2"
+                            android:text="Date"
+                            android:textColor="@color/hintcolor"
+
+                            />
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+
+                            style="@style/TextAppearance.AppCompat.Notification.Time.Media"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/etNameCMA"
+                            android:inputType="text|textMultiLine"
+                            android:text=" - "
+                            android:textColor="@color/hintcolor"
+
+
+                            />
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                            android:id="@+id/date"
+                            style="@style/TextAppearance.AppCompat.Notification.Time.Media"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/etNameCMA"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="2"
+                            android:text="02/08/2018"
+                            android:textColor="@color/hintcolor"
+                            />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_keyboard_arrow_right_green_24dp"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>
+

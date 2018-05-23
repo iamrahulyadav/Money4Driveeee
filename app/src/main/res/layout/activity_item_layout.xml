@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/list_item">
+
+    <RelativeLayout
+        android:layout_centerVertical="true"
+        android:id="@+id/badge"
+        android:layout_width="@dimen/_20sdp"
+        android:elevation="@dimen/_3sdp"
+        android:background="@drawable/solid_circle_2"
+        android:layout_margin="@dimen/_5sdp"
+        android:layout_height="@dimen/_20sdp">
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvCounter"
+            style="@style/Base.TextAppearance.AppCompat.Small"
+            android:text="0"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_vertical"
+            android:textAlignment="center"
+            android:textColor="@color/hintcolor"/>
+    </RelativeLayout>
+
+    <com.hvantage2.money4driveeee.customview.CustomTextView
+        android:layout_toRightOf="@id/badge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:id="@+id/tvTitle"
+        android:layout_centerVertical="true"
+        android:text="adfas"
+        android:textColor="@color/hintcolor"
+        android:layout_gravity="center_vertical"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
+        />
+
+    <ImageView
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageViewDone"
+        android:src="@drawable/ic_done_green_24dp"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>

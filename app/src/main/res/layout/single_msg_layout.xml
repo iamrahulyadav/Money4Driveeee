@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_post"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:clickable="true"
+    android:elevation="0dp"
+    android:foreground="@drawable/custom_ripple_bg"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/background"
+    app:cardElevation="0dp">
+
+    <RelativeLayout
+        android:id="@+id/rr1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/news_pic"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:alpha="5"
+            android:src="@drawable/nav_menu_message"
+            />
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            android:id="@+id/name"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/news_pic"
+            android:maxLines="1"
+            android:text="Jamess Hopess"
+            android:textColor="@color/white" />
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            android:id="@+id/message"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_toRightOf="@id/news_pic"
+            android:maxLines="1"
+            android:text="Hi..how r u ?"
+            android:textColor="@color/hintcolor" />
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            android:id="@+id/date"
+            style="@style/TextAppearance.AppCompat.Notification.Time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/_5sdp"
+            android:text="07/03/2018"
+            android:textColor="@color/hintcolor" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/message"
+        android:layout_gravity="bottom"
+        android:background="@color/msg_divider_color" />
+</android.support.v7.widget.CardView>

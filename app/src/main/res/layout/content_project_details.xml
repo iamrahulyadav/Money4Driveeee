@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linear1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:background="@drawable/square_border"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <com.hvantage2.money4driveeee.customview.CustomTextView
+                    android:id="@+id/tvtittle"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Project Title"
+                    android:textColor="@color/green"
+                    />
+
+                <com.hvantage2.money4driveeee.customview.CustomTextView
+                    android:id="@+id/tvProjectTittle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvtittle"
+                    android:text="NA"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/hintcolor"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear1"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:background="@drawable/square_border"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <com.hvantage2.money4driveeee.customview.CustomTextView
+                    android:id="@+id/tvtittle1"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Project Description"
+                    android:textColor="@color/green"
+                    />
+
+                <com.hvantage2.money4driveeee.customview.CustomTextView
+                    android:id="@+id/tvProjectDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvtittle"
+                    android:text="NA"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/hintcolor"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/creationlinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear2"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:id="@+id/linear3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/square_border"
+                    android:orientation="vertical"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:padding="@dimen/_10sdp">
+
+                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                        android:id="@+id/tvtittle3"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Creation Date"
+                        android:textColor="@color/green"
+                        />
+
+                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                        android:id="@+id/tvCreationDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvtittle"
+                        android:text="NA"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:textColor="@color/hintcolor"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:background="@drawable/square_border"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp">
+
+                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                        android:id="@+id/tvtittle5"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="Allotted Date"
+                        android:textColor="@color/green"
+                        />
+
+                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                        android:id="@+id/tvAllocationDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvtittle"
+                        android:text="NA"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:textColor="@color/hintcolor"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/allocationLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/creationlinear"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/square_border"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <com.hvantage2.money4driveeee.customview.CustomTextView
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Allotted Media"
+                    android:textColor="@color/green" />
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:id="@+id/recyclerAllocation"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

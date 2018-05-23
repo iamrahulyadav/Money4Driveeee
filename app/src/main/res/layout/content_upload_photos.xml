@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_upload_photos">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/footerimg"
+        android:layout_height="wrap_content"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1">
+            <com.hvantage2.money4driveeee.customview.CustomButton
+                android:layout_centerVertical="true"
+                android:id="@+id/takepicture"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/green_plan_border"
+                android:paddingLeft="@dimen/_10sdp"
+                android:drawableLeft="@drawable/ic_camera_alt_white_24dp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:text="Add Pictures"
+                android:textColor="@color/green"
+                 />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1">
+            <com.hvantage2.money4driveeee.customview.CustomButton
+                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
+                android:id="@+id/btnSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_35sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_20sdp"
+                android:background="@drawable/green_border_rounded"
+                android:text="@string/submit"
+                android:layout_centerHorizontal="true"
+                android:visibility="visible"
+                android:textColor="@color/white"
+                 />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_post"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:elevation="0dp"
+    android:background="@color/white"
+    app:cardElevation="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_5sdp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/_10sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/_10sdp"
+            android:src="@drawable/no_image_placeholder" />
+
+        <LinearLayout
+            android:layout_marginRight="@dimen/_20sdp"
+            android:id="@+id/text_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_toRightOf="@+id/image"
+            android:orientation="vertical">
+
+            <com.hvantage2.money4driveeee.customview.CustomTextView
+                android:id="@+id/tvDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_1sdp"
+                android:text="2 dec 2018 | 17:00 PM"
+                style="@style/TextAppearance.AppCompat.Notification.Time"
+                 />
+
+            <com.hvantage2.money4driveeee.customview.CustomTextView
+                android:id="@+id/tvRemark"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_1sdp"
+                android:text="In-Shop Branding"
+                android:singleLine="true"
+                android:maxLines="1"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.hvantage2.money4driveeee.customview.CustomTextView
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:id="@+id/dimentation1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_1sdp"
+                    android:text="Dimension-"
+                    android:textColor="@color/colorAccent" />
+
+                <com.hvantage2.money4driveeee.customview.CustomTextView
+                    android:id="@+id/tvDimen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_1sdp"
+                    android:text="NA (Feet)"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_edit"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_edit_green_24dp"/>
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete_green_24dp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>
+</android.support.v7.widget.CardView>

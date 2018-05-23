@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/layout_radio_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_120sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+       >
+
+    <LinearLayout
+        android:id="@+id/llEnglish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imvG_english"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@drawable/english" />
+
+            <com.hvantage2.money4driveeee.customview.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="@dimen/_10sdp"
+               app:textAllCaps="true"
+                android:textColor="@color/white"
+                app:edittextfont="Montserrat-Regular.ttf"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:textAllCaps="true"
+                android:text="English"
+
+
+              />
+    </LinearLayout>
+    <LinearLayout
+android:visibility="gone"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imvG_buyer"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:src="@drawable/hindi" />
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:textAllCaps="true"
+            android:textColor="@color/white"
+            app:edittextfont="Montserrat-Regular.ttf"
+            android:paddingLeft="@dimen/_20sdp"
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:textAllCaps="true"
+            android:text="Hindi"
+
+           />
+    </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:background="@drawable/footerimg"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+       >
+        <com.hvantage2.money4driveeee.customview.CustomButton
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:visibility="gone"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/tvNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/footerimg"
+            android:gravity="center"
+            android:text="Next"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:edittextfont="Montserrat-Regular.ttf" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+
+

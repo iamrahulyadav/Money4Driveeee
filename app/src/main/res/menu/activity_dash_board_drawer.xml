@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <group android:id="@+id/group1">
+        <item
+            android:id="@+id/myHome"
+            android:icon="@drawable/nav_menu_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/myProfile"
+            android:icon="@drawable/nav_menu_profile"
+            android:title="My Profile" />
+        <item
+            android:id="@+id/projectHistory"
+            android:icon="@drawable/nav_menu_history"
+            android:title="Project History"></item>
+
+        <item
+            android:id="@+id/message"
+            android:icon="@drawable/nav_menu_message"
+            android:title="Messages"></item>
+
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/nav_menu_logout"
+            android:title="Logout"></item>
+        </group>
+        <group android:id="@+id/group2">
+                <item
+                    android:id="@+id/test1"
+                    android:title=""></item>
+        </group>
+
+</menu>
+<!--
+    <?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group android:id="@+id/menu_home">
+    <item
+        android:id="@+id/myHome"
+        android:icon="@drawable/nav_menu_home"
+        android:title="@string/myHome" />
+</group>
+
+<group android:id="@+id/menu_top">
+    <item
+        android:id="@+id/myProfile"
+        android:icon="@drawable/nav_menu_profile"
+        android:title="@string/myprofile" />
+</group>
+
+<group android:id="@+id/menu_top2">
+
+    <item
+        android:id="@+id/projectHistory"
+        android:icon="@drawable/nav_menu_history"
+        android:title="@string/projectHistory"></item>
+</group>
+<group android:id="@+id/menu_top3">
+
+    <item
+        android:id="@+id/message"
+        android:icon="@drawable/nav_menu_message"
+        android:title="@string/Message"></item>
+</group>
+<group android:id="@+id/menu_top4">
+
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/nav_menu_logout"
+        android:title="@string/Logout"></item>
+</group>
+<group android:id="@+id/menu_top5">
+    <item
+        android:title=""
+        android:id="@+id/logout1">
+    </item>
+</group>
+
+</menu>-->
+
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <group android:id="@+id/menu_home">
+            <item
+                android:id="@+id/myHome"
+                android:icon="@drawable/ic_home_24dp"
+                android:title="@string/myHome" />
+        </group>
+
+        <group android:id="@+id/menu_top">
+            <item
+                android:id="@+id/myProfile"
+                android:icon="@drawable/profile"
+                android:title="@string/myprofile" />
+        </group>
+
+        <group android:id="@+id/menu_top2">
+
+            <item
+                android:id="@+id/projectHistory"
+                android:icon="@drawable/orderhistory"
+                android:title="@string/projectHistory"></item>
+        </group>
+        <group android:id="@+id/menu_top3">
+
+            <item
+                android:id="@+id/message"
+                android:icon="@drawable/message"
+                android:title="@string/Message"></item>
+        </group>
+        <group android:id="@+id/menu_top4">
+
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/logout"
+                android:title="@string/Logout"></item>
+        </group>
+        <group android:id="@+id/menu_top5">
+
+            <item
+                android:title=""
+                android:id="@+id/logout1">
+                </item>
+        </group>
+
+    </menu>
+
+    -->

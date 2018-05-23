@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/background"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.hvantage2.money4driveeee.activity.shop.AddShopActivity"
+    tools:showIn="@layout/activity_add_shop"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/footerimg"
+    android:layout_height="wrap_content"></LinearLayout>
+<ScrollView
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="horizontal"
+    android:overScrollMode="never"
+    >
+    <LinearLayout
+        android:id="@+id/linearmain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:orientation="vertical">
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/shopid"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etShopID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Shop Id"
+            android:background="@null"
+            android:inputType="textCapSentences"
+            android:singleLine="true"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf"
+            android:imeOptions="actionNext"/>
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+        </View>
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/shop_name"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etShopName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Shop Name"
+            android:background="@null"
+            android:inputType="textCapSentences"
+            android:imeOptions="actionNext"
+
+            android:singleLine="true"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+
+        </View>
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            android:layout_marginTop="@dimen/_8sdp"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/contact_name"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etContName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Contact Person Name"
+            android:background="@null"
+            android:inputType="textCapSentences|textPersonName"
+
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+
+        </View>
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/contact_no"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:id="@+id/etContNo"
+            android:editable="false"
+            android:enabled="false"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="Enter Contact Person No."
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+
+        </View>
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="State"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter State"
+            android:background="@null"
+            android:singleLine="true"
+            android:inputType="textCapSentences"
+            android:imeOptions="actionNext"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+
+        </View>
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/City"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter City"
+            android:background="@null"
+            android:inputType="textCapSentences"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+
+        </View>
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/address"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:maxLines="2"
+            android:background="@null"
+            android:singleLine="true"
+            android:hint="Enter Address"
+            android:imeOptions="actionDone"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+        </View>
+<!--
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="Branding Types"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etBType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Branding Type"
+            android:inputType="textMultiLine"
+            android:focusableInTouchMode="false"
+            android:background="@null"
+            android:singleLine="false"
+            android:imeOptions="actionDone"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+        </View>
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="Branding Options"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etBOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Branding Options"
+            android:inputType="textMultiLine"
+            android:focusableInTouchMode="false"
+            android:background="@null"
+            android:singleLine="false"
+            android:imeOptions="actionDone"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+        </View>-->
+
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="Start Date"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Start Date"
+            android:inputType="textMultiLine"
+            android:focusableInTouchMode="false"
+            android:background="@null"
+            android:enabled="false"
+            android:editable="false"
+            android:singleLine="false"
+            android:imeOptions="actionDone"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+        </View>
+
+        <com.hvantage2.money4driveeee.customview.CustomTextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="End Date"
+            android:textColor="@color/white" />
+        <com.hvantage2.money4driveeee.customview.CustomEditText
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/etEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select End Date"
+            android:inputType="textMultiLine"
+            android:focusableInTouchMode="false"
+            android:background="@null"
+            android:singleLine="false"
+            android:enabled="false"
+            android:editable="false"
+            android:imeOptions="actionDone"
+            android:textColor="@color/hintcolor"
+            android:textColorHint="@color/hintcolor"
+            app:edittextfont="Lato-Light.ttf"
+            app:edittextfontHint="Lato-Light.ttf" />
+        <View
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor">
+        </View>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/linearmain"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <com.hvantage2.money4driveeee.customview.CustomButton
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:background="@drawable/green_plan_border"
+                android:gravity="center"
+                android:padding="@dimen/_1sdp"
+                android:text="@string/Cancel"
+                android:textColor="@color/green"
+                 />
+
+            <com.hvantage2.money4driveeee.customview.CustomButton
+                android:id="@+id/btnConfirm"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:background="@drawable/green_border_rounded"
+                android:gravity="center"
+                android:padding="@dimen/_1sdp"
+                android:text="Add"
+                android:textColor="@color/white"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
+</RelativeLayout>

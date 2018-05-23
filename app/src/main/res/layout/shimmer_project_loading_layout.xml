@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:padding="@dimen/_10sdp"
+    android:background="@drawable/shimmer_background">
+
+    <View
+        android:id="@+id/thumbnail"
+        android:layout_width="@dimen/placeholder_image"
+        android:layout_height="@dimen/placeholder_image"
+        android:layout_marginRight="@dimen/activity_padding"
+        android:background="@color/placeholder_bg" />
+
+    <View
+        android:id="@+id/name"
+        android:layout_width="150dp"
+        android:layout_height="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@id/thumbnail"
+        android:background="@color/placeholder_bg" />
+
+    <View
+        android:id="@+id/subname"
+        android:layout_width="100dp"
+        android:layout_height="@dimen/placeholder_text_height"
+        android:layout_below="@id/name"
+        android:layout_toRightOf="@id/thumbnail"
+        android:background="@color/placeholder_bg" />
+   <!-- <View
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="100dp"
+        android:layout_height="@dimen/placeholder_text_height"
+        android:layout_below="@id/subname"
+        android:layout_toRightOf="@id/thumbnail"
+        android:background="@color/placeholder_bg" />
+    <View
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:background="@color/placeholder_bg"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />-->
+
+
+</RelativeLayout>

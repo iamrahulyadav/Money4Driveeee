@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#41465b</color>
+    <color name="colorPrimaryDark">#41465b</color>
+    <color name="colorAccent">#48bb54</color>
+    <color name="white">#cfffffff</color>
+    <color name="background">#34394f</color>
+    <color name="defaultcolor">#96616781</color>
+    <color name="defaultcolortrans">#4d616781</color>
+    <color name="flotting_color">#E10052</color>
+    <color name="green">#48bb54</color>
+    <color name="gray">#e6e5ec</color>
+    <color name="flotting_transparent">#cf181429</color>
+    <color name="graylight">#c1c1c1</color>
+    <color name="hintcolor">#a4a7ac</color>
+    <color name="disableButton">#3d3d3d</color>
+    <color name="dividerColor">#5f6770</color>
+    <color name="placeholder_bg">#dddddd</color>
+    <color name="dashboard_text_color">#a1ffffff</color>
+    <color name="msg_divider_color">#4d5660</color>
+    <color name="progress_dialog_text">#4d5266</color>
+</resources>

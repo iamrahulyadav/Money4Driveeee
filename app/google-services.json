@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "896961689659",
+    "firebase_url": "https://money4drive-12589.firebaseio.com",
+    "project_id": "money4drive-12589",
+    "storage_bucket": "money4drive-12589.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896961689659:android:094270ac6dfcef84",
+        "android_client_info": {
+          "package_name": "com.hvantage2.money4driveeee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896961689659-bqoc43qpaqb13olddl5f4uh6n9rk2va0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hvantage2.money4driveeee",
+            "certificate_hash": "279d40bba3039d978b4984dee1e32ce63a480ad1"
+          }
+        },
+        {
+          "client_id": "896961689659-sq5vcvrk7rd36ttdak080sdp8jvet4ab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9nLRKe_Ilz9z7EYrOYUxmZwDrP115RV0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896961689659-sq5vcvrk7rd36ttdak080sdp8jvet4ab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
