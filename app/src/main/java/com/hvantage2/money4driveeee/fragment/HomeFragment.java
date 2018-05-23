@@ -195,7 +195,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.callmanager:
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 Log.e(TAG, "onClick: manager_contact_no >> " + AppPreference.getManagerContactNo(getActivity()));
-                 if (!AppPreference.getManagerContactNo(getActivity()).equalsIgnoreCase("")) {
+                if (!AppPreference.getManagerContactNo(getActivity()).equalsIgnoreCase("")) {
                     intent.setData(Uri.parse("tel:" + AppPreference.getManagerContactNo(getActivity())));
                     startActivity(intent);
                 } else {
@@ -338,68 +338,68 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-        public class FloatingButton {
-            FrameLayout bckgroundDimmer;
-            FloatingActionButton button1, button2;
+    public class FloatingButton {
+        FrameLayout bckgroundDimmer;
+        FloatingActionButton button1, button2;
 
-            public void showFloatingButton(final View activity, final Context mContext) {
+        public void showFloatingButton(final View activity, final Context mContext) {
 
-                floatingActionMenu = (FloatingActionMenu) activity.findViewById(R.id.material_design_android_floating_action_menu);
-                button1 = (FloatingActionButton) activity.findViewById(R.id.material_design_floating_action_menu_item1);
-                button2 = (FloatingActionButton) activity.findViewById(R.id.material_design_floating_action_menu_item2);
-                createCustomAnimation();
+            floatingActionMenu = (FloatingActionMenu) activity.findViewById(R.id.material_design_android_floating_action_menu);
+            button1 = (FloatingActionButton) activity.findViewById(R.id.material_design_floating_action_menu_item1);
+            button2 = (FloatingActionButton) activity.findViewById(R.id.material_design_floating_action_menu_item2);
+            createCustomAnimation();
 
-                button1.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Fragment fragment = new ProjectHistoryFragment();
-                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-                        fragmentTransaction.replace(R.id.main_frame, fragment, fragment.getTag());
-                        fragmentTransaction.commitAllowingStateLoss();
-                        fragmentTransaction.addToBackStack(null);
-                        floatingActionMenu.close(true);
-                    }
-                });
-                button2.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Fragment fragment = new MyProfileFragment();
-                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-                        fragmentTransaction.replace(R.id.main_frame, fragment, fragment.getTag());
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commitAllowingStateLoss();
-                        floatingActionMenu.close(true);
-                    }
-                });
+            button1.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Fragment fragment = new ProjectHistoryFragment();
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                    fragmentTransaction.replace(R.id.main_frame, fragment, fragment.getTag());
+                    fragmentTransaction.commitAllowingStateLoss();
+                    fragmentTransaction.addToBackStack(null);
+                    floatingActionMenu.close(true);
+                }
+            });
+            button2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Fragment fragment = new MyProfileFragment();
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                    fragmentTransaction.replace(R.id.main_frame, fragment, fragment.getTag());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commitAllowingStateLoss();
+                    floatingActionMenu.close(true);
+                }
+            });
 
 
-            }
-
-            public void setFloatingButtonControls(View activity) {
-                bckgroundDimmer = (FrameLayout) activity.findViewById(R.id.background_dimmer);
-                floatingActionMenu = (FloatingActionMenu) activity.findViewById(R.id.material_design_android_floating_action_menu);
-                floatingActionMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
-                    @Override
-                    public void onMenuToggle(boolean opened) {
-                        if (opened) {
-                            bckgroundDimmer.setVisibility(View.VISIBLE);
-                        } else {
-                            bckgroundDimmer.setVisibility(View.GONE);
-                        }
-                    }
-                });
-                bckgroundDimmer.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (floatingActionMenu.isOpened()) {
-                            floatingActionMenu.close(true);
-                            bckgroundDimmer.setVisibility(View.GONE);
-                            //menu opened
-                        }
-                    }
-                });
-            }
         }
+
+        public void setFloatingButtonControls(View activity) {
+            bckgroundDimmer = (FrameLayout) activity.findViewById(R.id.background_dimmer);
+            floatingActionMenu = (FloatingActionMenu) activity.findViewById(R.id.material_design_android_floating_action_menu);
+            floatingActionMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+                @Override
+                public void onMenuToggle(boolean opened) {
+                    if (opened) {
+                        bckgroundDimmer.setVisibility(View.VISIBLE);
+                    } else {
+                        bckgroundDimmer.setVisibility(View.GONE);
+                    }
+                }
+            });
+            bckgroundDimmer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (floatingActionMenu.isOpened()) {
+                        floatingActionMenu.close(true);
+                        bckgroundDimmer.setVisibility(View.GONE);
+                        //menu opened
+                    }
+                }
+            });
+        }
+    }
 
 
 }
