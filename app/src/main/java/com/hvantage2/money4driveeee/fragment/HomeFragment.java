@@ -20,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,12 +34,14 @@ import android.widget.ScrollView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.gson.JsonArray;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.MessageAdapter;
 import com.hvantage2.money4driveeee.customview.CustomButton;
 import com.hvantage2.money4driveeee.customview.CustomTextView;
+import com.hvantage2.money4driveeee.database.DBHelper;
+import com.hvantage2.money4driveeee.model.DashboardModel;
 import com.hvantage2.money4driveeee.model.MessageModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -47,6 +50,9 @@ import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.FragmentIntraction;
 import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +78,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private CustomButton btnMessage;
     private FloatingActionMenu floatingActionMenu;
 
+    private DBHelper db;
+    private SwipeRefreshLayout refreshLayout;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,22 +92,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             else
                 intraction.actionbarsetTitle("Dashboard");
         }
+        db = new DBHelper(context);
         init();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new MyReciever(), new IntentFilter("get_update"));
-        getDashboard();
         setFloatingButton();
         setMessageRecycler();
+        Log.e(TAG, "onCreateView: db.getDashboard() >> " + db.getDashboard());
+        if (db.getDashboard() != null) {
+            DashboardModel data = db.getDashboard();
+            setData(data);
+        } else {
+            getDashboardFromServer();
+        }
         return rootView;
     }
 
-    private void getDashboard() {
-        if (Functions.isConnectingToInternet(context))
-            new getAllProjects().execute();
-        else {
+    private void getDashboardFromServer() {
+        if (Functions.isConnectingToInternet(context)) {
+            Log.e(TAG, "getDashboardFromServer: db.deleteDashboard(); >> " + db.deleteDashboard());
+            new ServerTask().execute();
+        } else {
             Snackbar.make(getActivity().findViewById(android.R.id.content), "No internet connection", Snackbar.LENGTH_INDEFINITE).setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    getDashboard();
+                    getDashboardFromServer();
                 }
             }).show();
         }
@@ -121,12 +138,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void setFloatingButton() {
         new FloatingButton().showFloatingButton(rootView, context);
         new FloatingButton().setFloatingButtonControls(rootView);
-
-
     }
 
     private void init() {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refreshLayout);
         scroll = (ScrollView) rootView.findViewById(R.id.scrollView);
         totalProjCount = (CustomTextView) rootView.findViewById(R.id.totalProjCount);
         newProjCount = (CustomTextView) rootView.findViewById(R.id.newProjCount);
@@ -141,6 +157,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         ((RelativeLayout) rootView.findViewById(R.id.competedProjects)).setOnClickListener(this);
         ((RelativeLayout) rootView.findViewById(R.id.newAssignedProjects)).setOnClickListener(this);
         ((RelativeLayout) rootView.findViewById(R.id.pendingProjects)).setOnClickListener(this);
+
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDashboardFromServer();
+            }
+        });
     }
 
     private void showProgressDialog() {
@@ -269,17 +293,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void setData(DashboardModel data) {
+        totalProjCount.setText("" + data.getTotalProject());
+        newProjCount.setText("" + data.getNewaggignProject());
+        completeProjCount.setText("" + data.getCompleteProject());
+        pendingProjectCount.setText("" + data.getPendingProject());
+    }
+
     class MyReciever extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            getDashboard();
+            getDashboardFromServer();
         }
     }
 
-    public class getAllProjects extends AsyncTask<Void, String, Void> {
+    public class ServerTask extends AsyncTask<Void, String, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            refreshLayout.setRefreshing(false);
             showProgressDialog();
         }
 
@@ -289,26 +321,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.USERDASHBOARD);
             jsonObject.addProperty("user_id", AppPreference.getUserId(context));
             jsonObject.addProperty(AppConstants.KEYS.LOGIN_TYPE_ID, AppPreference.getUserTypeId(context));
-            Log.e(TAG, "Request DASHBOARD >> " + jsonObject.toString());
+            Log.e(TAG, "ServerTask: Request >> " + jsonObject.toString());
 
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
             Call<JsonObject> call = apiService.user_dashboard(jsonObject);
             call.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    Log.e(TAG, "Response DASHBOARD >> " + response.body().toString());
-                    JsonObject jsonObject = response.body();
-                    if (jsonObject.get("status").getAsString().equals("200")) {
-                        JsonArray jsonArray = jsonObject.getAsJsonArray("result");
-                        JsonObject result = jsonArray.get(0).getAsJsonObject();
-                        totalProjCount.setText(result.get("total_project").getAsString());
-                        newProjCount.setText(result.get("newaggign_project").getAsString());
-                        completeProjCount.setText(result.get("complete_project").getAsString());
-                        pendingProjectCount.setText(result.get("pending_project").getAsString());
-                        publishProgress("200", "");
-                    } else {
-                        String msg = jsonObject.getAsJsonArray("result").get(0).getAsJsonObject().get("msg").getAsString();
-                        publishProgress("400", msg);
+                    Log.e(TAG, "ServerTask: Response >> " + response.body().toString());
+                    String res = response.body().toString();
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(res);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            Gson gson = new Gson();
+                            DashboardModel data = gson.fromJson(jsonObject.getJSONArray("result").getJSONObject(0).toString(), DashboardModel.class);
+                            setData(data);
+                            //inserting into local db
+                            db.saveDashboard(data);
+                            publishProgress("200", "");
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
 
@@ -331,7 +368,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_INDEFINITE).setAction("RETRY", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        getDashboard();
+                        getDashboardFromServer();
                     }
                 }).show();
             }

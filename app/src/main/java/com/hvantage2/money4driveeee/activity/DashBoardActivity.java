@@ -1,7 +1,6 @@
 package com.hvantage2.money4driveeee.activity;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,11 +27,11 @@ import android.view.MenuItem;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.fragment.HomeFragment;
 import com.hvantage2.money4driveeee.fragment.MessageFragment;
 import com.hvantage2.money4driveeee.fragment.MyProfileFragment;
 import com.hvantage2.money4driveeee.fragment.ProjectHistoryFragment;
-import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
@@ -50,7 +49,6 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
     Toolbar toolbar;
     Toolbar toolbar1;
     private String fcm_token = "";
-    private ProgressDialog dialog;
     private ProgressHUD progressHD;
 
 
@@ -84,8 +82,8 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
         fcm_token = FirebaseInstanceId.getInstance().getToken();
         Log.e(TAG, "onCreate: fcm_token >> " + fcm_token);
         new UpdateFCMTask().execute();
-        if(getIntent().hasExtra("logged_in"))
-            Snackbar.make(findViewById(android.R.id.content),"Welcome "+AppPreference.getUserName(DashBoardActivity.this),Snackbar.LENGTH_LONG).show();
+        if (getIntent().hasExtra("logged_in"))
+            Snackbar.make(findViewById(android.R.id.content), "Welcome " + AppPreference.getUserName(DashBoardActivity.this), Snackbar.LENGTH_LONG).show();
     }
 
     private void clearPreferenceData() {
@@ -233,6 +231,11 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
             progressHD.dismiss();
     }
 
+    @Override
+    public void actionbarsetTitle(String title) {
+        toolbar.setTitle(title);
+    }
+
     class logoutUser extends AsyncTask<Void, String, Void> {
 
         @Override
@@ -280,7 +283,7 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {
                 Intent intent = new Intent(DashBoardActivity.this, LoginActivity.class);
-                intent.putExtra("logged_out","yes");
+                intent.putExtra("logged_out", "yes");
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 AppPreference.clearPreference(getApplicationContext());
                 startActivity(intent);
@@ -290,11 +293,6 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
                 Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).show();
             }
         }
-    }
-
-    @Override
-    public void actionbarsetTitle(String title) {
-        toolbar.setTitle(title);
     }
 
     class UpdateFCMTask extends AsyncTask<Void, Void, Void> {

@@ -130,4 +130,9 @@ public class AppConstants {
         public static final String COMPLETED = "completed";
         public static final String PENDING = "pending";
     }
+
+    public class PROJECT_TYPE_IDS {
+        public static final String PENDING_ID = "1";
+        public static final String COMPLETED_ID = "2";
+    }
 }

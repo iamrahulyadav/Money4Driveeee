@@ -38,9 +38,9 @@ public class ProjectHistoryAdapter  extends  RecyclerView.Adapter<ProjectHistory
     @Override
     public void onBindViewHolder(ProjectHistoryAdapter.ViewHolder holder, int position) {
         final ProjectModel projectModel = modalList.get(position);
-        holder.projecttittle.setText(projectModel.getProjectTittle());
-        holder.city.setText(projectModel.getProjectCity());
-        holder.date.setText(projectModel.getProjectDate());
+        holder.projecttittle.setText(projectModel.getProjectTitle());
+        holder.city.setText(projectModel.getCity());
+        holder.date.setText(projectModel.getCreatedDate());
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

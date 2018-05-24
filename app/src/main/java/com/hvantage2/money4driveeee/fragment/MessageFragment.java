@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.ChatActivity;
@@ -93,9 +94,9 @@ public class MessageFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra("project_title", list.get(position).getProjectTittle());
-                intent.putExtra("project_subtitle", list.get(position).getProject_desc());
-                intent.putExtra("project_id", list.get(position).getProject_id());
+                intent.putExtra("project_title", list.get(position).getProjectTitle());
+                intent.putExtra("project_subtitle", list.get(position).getProjectDesc());
+                intent.putExtra("project_id", list.get(position).getProjectId());
                 startActivity(intent);
             }
 
@@ -230,9 +231,11 @@ public class MessageFragment extends Fragment {
                             JSONArray jsonArray = jsonObject.getJSONArray("result");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                ProjectModel model = new ProjectModel();
+                                ProjectModel model = new Gson().fromJson(jsonObject1.toString(), ProjectModel.class);
+
+                                /*ProjectModel model = new ProjectModel();
                                 model.setProject_id(jsonObject1.getString("project_id"));
-                                model.setProjectTittle(jsonObject1.getString("project_title"));
+                                model.setProjectTittle(jsonObject1.getString("project_title"));*/
 
                                 String survey_user_name = jsonObject1.getString("survey_user_name");
                                 String execution_user_name = jsonObject1.getString("execution_user_name");
@@ -250,7 +253,7 @@ public class MessageFragment extends Fragment {
 
                                 String groupnames = TextUtils.join(", ", group_list);
                                 Log.e(TAG, "onResponse: " + groupnames);
-                                model.setProject_desc(groupnames);
+                                model.setProjectDesc(groupnames);
                                 list.add(model);
                             }
 

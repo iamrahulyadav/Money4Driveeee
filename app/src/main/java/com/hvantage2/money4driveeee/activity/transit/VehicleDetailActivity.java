@@ -20,13 +20,13 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
+import com.hvantage2.money4driveeee.activity.DashBoardActivity;
+import com.hvantage2.money4driveeee.customview.CustomButton;
+import com.hvantage2.money4driveeee.customview.CustomEditText;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
-import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import org.json.JSONArray;
@@ -41,10 +41,10 @@ public class VehicleDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "TransitDetailActivity";
     private CustomButton btnConfirm;
-    private CustomEditText  etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etDriverCity, etState;
+    private CustomEditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etDriverCity, etState;
     private ProgressDialog dialog;
     private CustomButton btnCancel;
-    private String media_option_id="0";
+    private String media_option_id = "0";
     private ProgressHUD progressHD;
 
 
@@ -103,6 +103,47 @@ public class VehicleDetailActivity extends AppCompatActivity {
     private void hideSoftKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void showProgressDialog() {
+        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // TODO Auto-generated method stub
+            }
+        });
+    }
+
+    private void hideProgressDialog() {
+        if (progressHD != null && progressHD.isShowing())
+            progressHD.dismiss();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.product_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.action_home:
+                Intent intent = new Intent(this, DashBoardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     public class getTransitDetail extends AsyncTask<Void, String, Void> {
@@ -185,19 +226,6 @@ public class VehicleDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void showProgressDialog() {
-        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-    private void hideProgressDialog() {
-        if (progressHD != null && progressHD.isShowing())
-            progressHD.dismiss();
-    }
-
     public class updateTransitTask extends AsyncTask<Void, String, Void> {
 
         @Override
@@ -264,39 +292,12 @@ public class VehicleDetailActivity extends AppCompatActivity {
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {
                 Intent intent = new Intent(VehicleDetailActivity.this, PerformTransitActivity.class);
-                intent.putExtra("media_option_id",media_option_id);
+                intent.putExtra("media_option_id", media_option_id);
                 startActivity(intent);
                 finish();
             } else if (status.equalsIgnoreCase("400")) {
                 Toast.makeText(VehicleDetailActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.product_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            case R.id.action_home:
-                Intent intent = new Intent(this, DashBoardActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 }

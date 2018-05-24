@@ -32,9 +32,9 @@ public class SelectProjectAdapter extends  RecyclerView.Adapter<SelectProjectAda
     @Override
     public void onBindViewHolder(SelectProjectAdapter.ViewHolder holder, int position) {
      ProjectModel ProjectModel = modalList.get(position);
-     holder.tvTag.setText(ProjectModel.getProjectTittle().charAt(0)+"");
-     holder.tvProjectTitle.setText(ProjectModel.getProjectTittle());
-     holder.tvProjectSubtitle.setText(ProjectModel.getProject_desc());
+     holder.tvTag.setText(ProjectModel.getProjectTitle().charAt(0)+"");
+     holder.tvProjectTitle.setText(ProjectModel.getProjectTitle());
+     holder.tvProjectSubtitle.setText(ProjectModel.getProjectDesc());
      holder.tvProjectSubtitle.setSelected(true);
 
     }

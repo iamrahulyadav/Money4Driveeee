@@ -4,354 +4,359 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <RelativeLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/_6sdp"
-        android:paddingRight="@dimen/_6sdp">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/ll1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <RelativeLayout
-                android:id="@+id/totalProjects"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/_3sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ripple_dashboard"
-                android:paddingBottom="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingRight="@dimen/_5sdp"
-                android:paddingTop="@dimen/_10sdp">
-
-                <ImageView
-                    android:id="@+id/imgProject"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:elevation="@dimen/_10sdp"
-                    android:src="@drawable/totalprojects" />
-
-                <com.hvantage2.money4driveeee.customview.CustomTextView
-                    android:id="@+id/totalProjCount"
-
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:background="@drawable/solid_circle"
-                    android:elevation="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:padding="@dimen/_2sdp"
-                    android:text="0"
-                    android:textColor="@color/white" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/imgProject"
-                    android:layout_marginTop="@dimen/_10sdp">
-
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
-                        style="@style/Base.TextAppearance.AppCompat.Subhead"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
-                        android:maxLines="2"
-                        android:text="@string/totalprojecttxt"
-                        android:textColor="@color/dashboard_text_color" />
-
-                </RelativeLayout>
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/competedProjects"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_3sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ripple_dashboard"
-                android:paddingBottom="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingRight="@dimen/_5sdp"
-                android:paddingTop="@dimen/_10sdp">
-
-                <ImageView
-                    android:id="@+id/img2"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:src="@drawable/completedproject" />
-
-                <com.hvantage2.money4driveeee.customview.CustomTextView
-                    android:id="@+id/completeProjCount"
-
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:background="@drawable/solid_circle"
-                    android:elevation="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:padding="@dimen/_2sdp"
-                    android:text="0"
-                    android:textColor="@color/white" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/img2"
-                    android:layout_marginTop="@dimen/_10sdp">
-
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
-                        style="@style/Base.TextAppearance.AppCompat.Subhead"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
-                        android:text="@string/compProj"
-                        android:textColor="@color/dashboard_text_color" />
-                </RelativeLayout>
-
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll1"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:weightSum="2">
-
-            <RelativeLayout
-                android:id="@+id/newAssignedProjects"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/_3sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ripple_dashboard"
-                android:paddingBottom="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingRight="@dimen/_5sdp"
-                android:paddingTop="@dimen/_10sdp">
-
-                <ImageView
-                    android:id="@+id/img3"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:src="@drawable/newassignproject" />
-
-                <com.hvantage2.money4driveeee.customview.CustomTextView
-                    android:id="@+id/newProjCount"
-
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:background="@drawable/solid_circle"
-                    android:elevation="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:padding="@dimen/_2sdp"
-                    android:text="0"
-                    android:textColor="@color/white" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/img3"
-                    android:layout_marginTop="@dimen/_10sdp">
-
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
-                        style="@style/Base.TextAppearance.AppCompat.Subhead"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
-                        android:text="@string/newAssign"
-                        android:textColor="@color/dashboard_text_color" />
-
-                </RelativeLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/pendingProjects"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_3sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ripple_dashboard"
-                android:paddingBottom="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingRight="@dimen/_5sdp"
-                android:paddingTop="@dimen/_10sdp">
-
-                <ImageView
-                    android:id="@+id/img4"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:src="@drawable/pendingproject" />
-
-                <com.hvantage2.money4driveeee.customview.CustomTextView
-                    android:id="@+id/pendingProjectCount"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:background="@drawable/solid_circle"
-                    android:elevation="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:padding="@dimen/_2sdp"
-                    android:text="0"
-                    android:textColor="@color/white" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/img4"
-                    android:layout_marginTop="@dimen/_10sdp">
-
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
-                        style="@style/Base.TextAppearance.AppCompat.Subhead"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
-                        android:text="@string/pending"
-                        android:textColor="@color/dashboard_text_color" />
-                </RelativeLayout>
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/ll2"
-            android:layout_marginBottom="?android:attr/actionBarSize"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_6sdp"
+            android:paddingRight="@dimen/_6sdp">
 
             <LinearLayout
+                android:id="@+id/ll1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/totalProjects"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
                     android:background="@drawable/ripple_dashboard"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:paddingTop="@dimen/_10sdp">
 
-                    <!--  <ImageView
-                          android:layout_width="@dimen/_40sdp"
-                          android:layout_height="@dimen/_40sdp"
-                          android:layout_gravity="center"
-                          android:padding="@dimen/_5sdp"
-                          android:src="@drawable/recentmsg" />-->
+                    <ImageView
+                        android:id="@+id/imgProject"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:elevation="@dimen/_10sdp"
+                        android:src="@drawable/totalprojects" />
 
-                    <com.hvantage2.money4driveeee.customview.CustomButton
+                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                        android:id="@+id/totalProjCount"
+
                         style="@style/Base.TextAppearance.AppCompat.Subhead"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:drawableLeft="@drawable/recentmsg"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:text="@string/recentmsg"
-                        android:textAllCaps="false"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:background="@drawable/solid_circle"
+                        android:elevation="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_2sdp"
+                        android:text="0"
                         android:textColor="@color/white" />
-                </LinearLayout>
 
-                <android.support.v4.widget.NestedScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
-                </android.support.v4.widget.NestedScrollView>
+                        android:layout_below="@id/imgProject"
+                        android:layout_marginTop="@dimen/_10sdp">
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
+                            android:maxLines="2"
+                            android:text="@string/totalprojecttxt"
+                            android:textColor="@color/dashboard_text_color" />
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/competedProjects"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ripple_dashboard"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:paddingTop="@dimen/_10sdp">
+
+                    <ImageView
+                        android:id="@+id/img2"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@drawable/completedproject" />
+
+                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                        android:id="@+id/completeProjCount"
+
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:background="@drawable/solid_circle"
+                        android:elevation="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_2sdp"
+                        android:text="0"
+                        android:textColor="@color/white" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img2"
+                        android:layout_marginTop="@dimen/_10sdp">
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
+                            android:text="@string/compProj"
+                            android:textColor="@color/dashboard_text_color" />
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
 
 
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/_7sdp"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <RelativeLayout
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/ll2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_below="@id/ll1"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:weightSum="2">
 
-                <com.hvantage2.money4driveeee.customview.CustomButton
-                    android:id="@+id/callmanager"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:background="@drawable/green_border_rounded"
-                    android:drawableLeft="@drawable/ic_call_white_drawable"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:maxLines="1"
-                    android:paddingLeft="@dimen/_5sdp"
-                    android:paddingRight="@dimen/_10sdp"
-                    android:singleLine="true"
-                    android:text="@string/callManager"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <com.hvantage2.money4driveeee.customview.CustomButton
-                    android:id="@+id/btnMessage"
-                    style="@style/Base.TextAppearance.AppCompat.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:background="@drawable/green_plan_border"
-                    android:drawableLeft="@drawable/ic_mail_outline_white_drawable"
-                    android:drawablePadding="@dimen/_5sdp"
+                <RelativeLayout
+                    android:id="@+id/newAssignedProjects"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ripple_dashboard"
+                    android:paddingBottom="@dimen/_10sdp"
                     android:paddingLeft="@dimen/_10sdp"
-                    android:paddingRight="@dimen/_15sdp"
-                    android:text="Messages"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
+                    android:paddingRight="@dimen/_5sdp"
+                    android:paddingTop="@dimen/_10sdp">
 
-            </RelativeLayout>
-        </LinearLayout>
-    </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/img3"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:src="@drawable/newassignproject" />
+
+                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                        android:id="@+id/newProjCount"
+
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:background="@drawable/solid_circle"
+                        android:elevation="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_2sdp"
+                        android:text="0"
+                        android:textColor="@color/white" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img3"
+                        android:layout_marginTop="@dimen/_10sdp">
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
+                            android:text="@string/newAssign"
+                            android:textColor="@color/dashboard_text_color" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/pendingProjects"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ripple_dashboard"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:paddingTop="@dimen/_10sdp">
+
+                    <ImageView
+                        android:id="@+id/img4"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@drawable/pendingproject" />
+
+                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                        android:id="@+id/pendingProjectCount"
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:background="@drawable/solid_circle"
+                        android:elevation="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_2sdp"
+                        android:text="0"
+                        android:textColor="@color/white" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img4"
+                        android:layout_marginTop="@dimen/_10sdp">
+
+                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
+                            android:text="@string/pending"
+                            android:textColor="@color/dashboard_text_color" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/ll2"
+                android:layout_marginBottom="?android:attr/actionBarSize"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_dashboard"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <!--  <ImageView
+                              android:layout_width="@dimen/_40sdp"
+                              android:layout_height="@dimen/_40sdp"
+                              android:layout_gravity="center"
+                              android:padding="@dimen/_5sdp"
+                              android:src="@drawable/recentmsg" />-->
+
+                        <com.hvantage2.money4driveeee.customview.CustomButton
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:drawableLeft="@drawable/recentmsg"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:text="@string/recentmsg"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <android.support.v4.widget.NestedScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+                    </android.support.v4.widget.NestedScrollView>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/_7sdp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.hvantage2.money4driveeee.customview.CustomButton
+                        android:id="@+id/callmanager"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:background="@drawable/green_border_rounded"
+                        android:drawableLeft="@drawable/ic_call_white_drawable"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:maxLines="1"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:text="@string/callManager"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.hvantage2.money4driveeee.customview.CustomButton
+                        android:id="@+id/btnMessage"
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/green_plan_border"
+                        android:drawableLeft="@drawable/ic_mail_outline_white_drawable"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_15sdp"
+                        android:text="Messages"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <include layout="@layout/layout_floating_button" />
 
     <!--<include layout="@layout/floating_button" />-->
-
 </RelativeLayout>

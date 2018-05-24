@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,13 +20,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-import com.hvantage2.money4driveeee.activity.hoardings.AddHoardingActivity;
-import com.hvantage2.money4driveeee.activity.hoardings.SelectHoardingActivity;
 import com.hvantage2.money4driveeee.adapter.SourceAdapter;
 import com.hvantage2.money4driveeee.customview.CustomTextView;
 import com.hvantage2.money4driveeee.model.SourceModel;
-import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
@@ -50,15 +49,17 @@ import retrofit2.Response;
 public class SelectShopActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "SelectShopActivity";
     ArrayList<SourceModel> list;
+    String end_date = "";
     private RecyclerView recycler_view;
     private SourceAdapter adapter;
     private ProgressDialog dialog;
     private String media_option_id = "";
     private CustomTextView tvEmpty;
-    private int total_quantity=0,added_quantity=0;
-    private String start_date="";String end_date="";
+    private int total_quantity = 0, added_quantity = 0;
+    private String start_date = "";
     private FloatingActionButton fab;
     private ProgressHUD progressHD;
+    private SwipeRefreshLayout refreshLayout;
 
 
     @Override
@@ -167,6 +168,14 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
     private void init() {
         list = new ArrayList<SourceModel>();
         tvEmpty = (CustomTextView) findViewById(R.id.tvEmpty);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onResume();
+            }
+        });
     }
 
     @Override
@@ -194,11 +203,26 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
     }
 
+    private void showProgressDialog() {
+        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // TODO Auto-generated method stub
+            }
+        });
+    }
+
+    private void hideProgressDialog() {
+        if (progressHD != null && progressHD.isShowing())
+            progressHD.dismiss();
+    }
+
     public class GetShopList extends AsyncTask<Void, String, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            refreshLayout.setRefreshing(false);
             showProgressDialog();
             tvEmpty.setVisibility(View.GONE);
             list.clear();
@@ -235,22 +259,22 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
                             JSONArray jsonArray1 = jsonObject1.getJSONArray("other_info");
                             for (int i = 0; i < jsonArray1.length(); i++) {
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
-                                total_quantity=jsonObject11.getInt("total_quantity");
-                                added_quantity=jsonObject11.getInt("added_quantity");
-                                start_date=jsonObject11.getString("start_date");
-                                end_date=jsonObject11.getString("end_date");
+                                total_quantity = jsonObject11.getInt("total_quantity");
+                                added_quantity = jsonObject11.getInt("added_quantity");
+                                start_date = jsonObject11.getString("start_date");
+                                end_date = jsonObject11.getString("end_date");
                             }
                             adapter.notifyDataSetChanged();
                             publishProgress("200", "");
-                        } else if (jsonObject1.getString("status").equalsIgnoreCase("400")){
+                        } else if (jsonObject1.getString("status").equalsIgnoreCase("400")) {
                             String msg = jsonObject1.getJSONArray("result").getJSONObject(0).getString("msg");
                             JSONArray jsonArray1 = jsonObject1.getJSONArray("other_info");
                             for (int i = 0; i < jsonArray1.length(); i++) {
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
-                                total_quantity=jsonObject11.getInt("total_quantity");
-                                added_quantity=jsonObject11.getInt("added_quantity");
-                                start_date=jsonObject11.getString("start_date");
-                                end_date=jsonObject11.getString("end_date");
+                                total_quantity = jsonObject11.getInt("total_quantity");
+                                added_quantity = jsonObject11.getInt("added_quantity");
+                                start_date = jsonObject11.getString("start_date");
+                                end_date = jsonObject11.getString("end_date");
                             }
                             publishProgress("400", msg);
                         }
@@ -286,19 +310,5 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
                 Toast.makeText(SelectShopActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void showProgressDialog() {
-        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-
-    private void hideProgressDialog() {
-        if (progressHD != null && progressHD.isShowing())
-            progressHD.dismiss();
     }
 }

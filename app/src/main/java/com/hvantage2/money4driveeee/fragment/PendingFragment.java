@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,11 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.ProjectDetailsActivity;
 import com.hvantage2.money4driveeee.adapter.ProjectHistoryAdapter;
 import com.hvantage2.money4driveeee.customview.CustomTextView;
+import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.ProjectModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -49,27 +52,33 @@ public class PendingFragment extends Fragment {
     ProgressDialog dialog;
     CustomTextView tvEmpty;
     RecyclerView recyclerView;
-    List<ProjectModel> projectModelList;
-    ProjectHistoryAdapter historyAdapter;
+    List<ProjectModel> list;
+    ProjectHistoryAdapter adapter;
     FragmentIntraction intraction;
     private View rootview;
     private ProgressHUD progressHD;
-    //private ShimmerFrameLayout container1;
+    private DBHelper db;
+    private SwipeRefreshLayout refreshLayout;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootview = inflater.inflate(R.layout.fragment_complete, container, false);
-        init(rootview);
         context = getActivity();
         if (intraction != null) {
             intraction.actionbarsetTitle("Pending Projects");
         }
+        db = new DBHelper(context);
+        list = new ArrayList<ProjectModel>();
+        init(rootview);
+        if (db.getProjects(AppConstants.PROJECT_TYPE_IDS.PENDING_ID) != null) {
+            list = db.getProjects(AppConstants.PROJECT_TYPE_IDS.PENDING_ID);
+            Log.e(TAG, "onCreateView: list >> " + list);
 
+        } else
+            getProjectsFromServer();
         setAdapter();
-        getAllPending();
-
         return rootview;
     }
 
@@ -77,47 +86,34 @@ public class PendingFragment extends Fragment {
         context = getActivity();
         recyclerView = (RecyclerView) rootview.findViewById(R.id.recycler_view);
         tvEmpty = (CustomTextView) rootview.findViewById(R.id.tvEmpty);
-        //container1 = (ShimmerFrameLayout)rootview. findViewById(R.id.shimmer_view_container);
+        refreshLayout = (SwipeRefreshLayout) rootview.findViewById(R.id.refreshLayout);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getProjectsFromServer();
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
     }
-
-   /* private void startAnimation() {
-        container1.setVisibility(View.VISIBLE);
-        container1.startShimmerAnimation();
-    }
-
-
-    private void stopAnimation() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                container1.stopShimmerAnimation();
-                container1.setVisibility(View.GONE);
-            }
-        }, 2000);
-
-    }*/
 
     private void setAdapter() {
-        projectModelList = new ArrayList<ProjectModel>();
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(manager);
-        historyAdapter = new ProjectHistoryAdapter(context, projectModelList);
-        recyclerView.setAdapter(historyAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        adapter = new ProjectHistoryAdapter(context, list);
+        recyclerView.setAdapter(adapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ProjectModel messageModel = projectModelList.get(position);
-                Log.e(TAG, "onItemClick: project detail >> " + messageModel);
-                AppPreference.setSelectedProjectId(context, messageModel.getProject_id());
+                ProjectModel data = list.get(position);
+                Log.e(TAG, "onItemClick: project detail >> " + data);
+                AppPreference.setSelectedProjectId(context, data.getProjectId());
                 AppPreference.setSelectedProjectType(getActivity(), AppConstants.PROJECT_TYPE.PENDING);
                 Intent intent = new Intent(context, ProjectDetailsActivity.class);
-                intent.putExtra("messageModal", messageModel);
+                intent.putExtra("project_id", data.getProjectId());
                 context.startActivity(intent);
             }
 
@@ -127,12 +123,14 @@ public class PendingFragment extends Fragment {
             }
         }));
 
+
     }
 
-    private void getAllPending() {
+    private void getProjectsFromServer() {
         if (Functions.isConnectingToInternet(getActivity())) {
+            Log.e(TAG, "getProjectsFromServer: deleteProjects() >> " + db.deleteProjects(AppConstants.PROJECT_TYPE_IDS.PENDING_ID));
             tvEmpty.setVisibility(View.GONE);
-            new getAllPendingTask().execute();
+            new ServerTask().execute();
         } else {
             Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_LONG).show();
         }
@@ -168,11 +166,11 @@ public class PendingFragment extends Fragment {
         intraction = null;
     }
 
-    public class getAllPendingTask extends AsyncTask<Void, String, Void> {
+    public class ServerTask extends AsyncTask<Void, String, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            startAnimation();
+            refreshLayout.setRefreshing(false);
             showProgressDialog();
         }
 
@@ -182,7 +180,7 @@ public class PendingFragment extends Fragment {
             jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.PENDINGPROJECTS);
             jsonObject.addProperty("user_id", AppPreference.getUserId(context)); //8
             jsonObject.addProperty(AppConstants.KEYS.LOGIN_TYPE_ID, AppPreference.getUserTypeId(context));
-            Log.e(TAG, "Request GET ALL PENDING >> " + jsonObject.toString());
+            Log.e(TAG, "ServerTask: Request >> " + jsonObject.toString());
 
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
             Call<JsonObject> call = apiService.project_api(jsonObject);
@@ -190,35 +188,28 @@ public class PendingFragment extends Fragment {
                 @SuppressLint("LongLogTag")
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    Log.e(TAG, "Response GET ALL PENDING >> " + response.body().toString());
+                    Log.e(TAG, "ServerTask: Response >> " + response.body().toString());
                     String resp = response.body().toString();
                     try {
                         JSONObject jsonObject = new JSONObject(resp);
-                        projectModelList.clear();
+                        list.clear();
                         if (jsonObject.getString("status").equalsIgnoreCase("200")) {
                             JSONArray jsonArray = jsonObject.getJSONArray("result");
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                ProjectModel projectModel = new ProjectModel();
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                projectModel.setProject_id(object.getString("project_id"));
-                                projectModel.setProjectTittle(object.getString("project_title"));
-                                projectModel.setProjectCity(object.getString("city"));
-                                projectModel.setProjectDate(object.getString("created_date"));
-                                projectModel.setProject_desc(object.getString("project_desc"));
-                                projectModelList.add(projectModel);
+                                Gson gson = new Gson();
+                                ProjectModel data = gson.fromJson(jsonArray.getJSONObject(i).toString(), ProjectModel.class);
+                                list.add(data);
+                                // insert into database
+                                db.saveProject(data, AppConstants.PROJECT_TYPE_IDS.PENDING_ID);
                             }
                             publishProgress("200", "");
 
                         } else if (jsonObject.getString("status").equalsIgnoreCase("400")) {
                             String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
-                            projectModelList.clear();
                             publishProgress("400", msg);
                         }
-                        historyAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        projectModelList.clear();
-                        historyAdapter.notifyDataSetChanged();
                         publishProgress("400", getActivity().getResources().getString(R.string.api_error_msg));
                     }
                 }
@@ -227,8 +218,7 @@ public class PendingFragment extends Fragment {
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                     Log.e(TAG, "error :- " + Log.getStackTraceString(t));
-                    projectModelList.clear();
-                    historyAdapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                     publishProgress("400", getActivity().getResources().getString(R.string.api_error_msg));
                 }
             });
@@ -239,37 +229,17 @@ public class PendingFragment extends Fragment {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             hideProgressDialog();
-//            stopAnimation();
+            adapter.notifyDataSetChanged();
             String status = values[0];
             String msg = values[1];
             if (status.equalsIgnoreCase("400")) {
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
             }
-            if (historyAdapter != null) {
-                if (historyAdapter.getItemCount() == 0)
-                    tvEmpty.setVisibility(View.VISIBLE);
-                else
-                    tvEmpty.setVisibility(View.GONE);
-            }
+            if (adapter.getItemCount() == 0)
+                tvEmpty.setVisibility(View.VISIBLE);
+            else
+                tvEmpty.setVisibility(View.GONE);
         }
-
-
-
-        /*private void publishProgress(int status, String msg) {
-            hideProgressDialog();
-            if (status == 200) {
-
-            } else if (status == 400) {
-                //Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-            }
-            if (historyAdapter != null) {
-                if (historyAdapter.getItemCount() == 0)
-                    tvNoOrders.setVisibility(View.VISIBLE);
-                else
-                    tvNoOrders.setVisibility(View.GONE);
-            }
-        }*/
     }
-
-
 }
 

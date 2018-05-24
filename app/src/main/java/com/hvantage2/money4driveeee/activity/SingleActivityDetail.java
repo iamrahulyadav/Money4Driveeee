@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -460,7 +459,7 @@ public class SingleActivityDetail extends AppCompatActivity {
         dialog1 = new Dialog(SingleActivityDetail.this, R.style.image_preview_dialog);
         dialog1.setContentView(R.layout.image_preview_layout);
         Window window = dialog1.getWindow();
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         dialog1.setCancelable(true);
         dialog1.setCanceledOnTouchOutside(true);
 
@@ -468,7 +467,7 @@ public class SingleActivityDetail extends AppCompatActivity {
         TouchImageView imgPreview = (TouchImageView) dialog1.findViewById(R.id.imgPreview);
         CustomTextView tvDimen = (CustomTextView) dialog1.findViewById(R.id.tvDimen);
         CustomTextView tvRemark = (CustomTextView) dialog1.findViewById(R.id.tvRemark);
-
+        imgPreview.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         if (!modal.getImage_url().equalsIgnoreCase(""))
             Picasso.with(SingleActivityDetail.this)
@@ -516,7 +515,6 @@ public class SingleActivityDetail extends AppCompatActivity {
                 jsonObject.addProperty("image", base64image);
                 jsonObject.addProperty("remark", tempRemark);
                 jsonObject.addProperty("dimension", tempDimen);
-
             } else if (action.equalsIgnoreCase("print")) {
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.PROJECTPRINTIMAGEUPLOAD);
                 jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this));
@@ -569,6 +567,7 @@ public class SingleActivityDetail extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(resp);
                         if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+
                             JSONArray jsonArray = jsonObject.getJSONArray("result");
                             JSONArray jsonArray1 = jsonArray.getJSONArray(0);
                             JSONObject jsonObject1 = jsonArray1.getJSONObject(0);
@@ -605,8 +604,8 @@ public class SingleActivityDetail extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
-            adapter.notifyDataSetChanged();
             hideProgressDialog();
+            adapter.notifyDataSetChanged();
             String status = values[0];
             String msg = values[1];
             Toast.makeText(SingleActivityDetail.this, msg, Toast.LENGTH_SHORT).show();

@@ -3,106 +3,11 @@ package com.hvantage2.money4driveeee.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Hvantage2 on 2018-02-19.
- */
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 
 public class ProjectModel implements Parcelable {
-    String projectTittle,projectCity,projectDate,project_id,Project_desc;
-
-    public ProjectModel() {
-
-    }
-
-
-    @Override
-    public String toString() {
-        return "ProjectModel{" +
-               /* "name='" + name + '\'' +
-                ", message='" + message + '\'' +
-                ", date='" + date + '\'' +*/
-                "projectTittle='" + projectTittle + '\'' +
-                ", projectCity='" + projectCity + '\'' +
-                ", projectDate='" + projectDate + '\'' +
-                ", project_id='" + project_id + '\'' +
-                ", Project_desc='" + Project_desc + '\'' +
-                '}';
-    }
-
-  /*  public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }*/
-
-    public String getProjectTittle() {
-        return projectTittle;
-    }
-
-    public void setProjectTittle(String projectTittle) {
-        this.projectTittle = projectTittle;
-    }
-
-    public String getProjectCity() {
-        return projectCity;
-    }
-
-    public void setProjectCity(String projectCity) {
-        this.projectCity = projectCity;
-    }
-
-    public String getProjectDate() {
-        return projectDate;
-    }
-
-    public void setProjectDate(String projectDate) {
-        this.projectDate = projectDate;
-    }
-
-    public String getProject_id() {
-        return project_id;
-    }
-
-    public void setProject_id(String project_id) {
-        this.project_id = project_id;
-    }
-
-    public String getProject_desc() {
-        return Project_desc;
-    }
-
-    public void setProject_desc(String project_desc) {
-        Project_desc = project_desc;
-    }
-
-    public ProjectModel(Parcel in) {
-      /*  name = in.readString();
-        message = in.readString();
-        date = in.readString();*/
-        projectTittle = in.readString();
-        projectCity = in.readString();
-        projectDate = in.readString();
-        project_id = in.readString();
-        Project_desc = in.readString();
-    }
 
     public static final Creator<ProjectModel> CREATOR = new Creator<ProjectModel>() {
         @Override
@@ -115,21 +20,95 @@ public class ProjectModel implements Parcelable {
             return new ProjectModel[size];
         }
     };
+    @SerializedName("project_id")
+    @Expose
+    private String projectId;
+    @SerializedName("project_title")
+    @Expose
+    private String projectTitle;
+    @SerializedName("city")
+    @Expose
+    private String city;
+    @SerializedName("created_date")
+    @Expose
+    private String createdDate;
+    @SerializedName("project_desc")
+    @Expose
+    private String projectDesc;
+
+    public ProjectModel(Parcel in) {
+        projectId = in.readString();
+        projectTitle = in.readString();
+        city = in.readString();
+        createdDate = in.readString();
+        projectDesc = in.readString();
+    }
+
+    public ProjectModel() {
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(projectId);
+        dest.writeString(projectTitle);
+        dest.writeString(city);
+        dest.writeString(createdDate);
+        dest.writeString(projectDesc);
+    }
 
     @Override
     public int describeContents() {
         return 0;
     }
 
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getProjectTitle() {
+        return projectTitle;
+    }
+
+    public void setProjectTitle(String projectTitle) {
+        this.projectTitle = projectTitle;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getProjectDesc() {
+        return projectDesc;
+    }
+
+    public void setProjectDesc(String projectDesc) {
+        this.projectDesc = projectDesc;
+    }
+
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-      /*  parcel.writeString(name);
-        parcel.writeString(message);
-        parcel.writeString(date);*/
-        parcel.writeString(projectTittle);
-        parcel.writeString(projectCity);
-        parcel.writeString(projectDate);
-        parcel.writeString(project_id);
-        parcel.writeString(Project_desc);
+    public String toString() {
+        return "ProjectModel{" +
+                "projectId='" + projectId + '\'' +
+                ", projectTitle='" + projectTitle + '\'' +
+                ", city='" + city + '\'' +
+                ", createdDate='" + createdDate + '\'' +
+                ", projectDesc='" + projectDesc + '\'' +
+                '}';
     }
 }

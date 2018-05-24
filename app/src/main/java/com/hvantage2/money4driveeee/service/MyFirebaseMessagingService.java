@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.ProjectDetailsActivity;
 import com.hvantage2.money4driveeee.model.MessageData;
-import com.hvantage2.money4driveeee.model.ProjectModel;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 
@@ -61,10 +60,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             AppPreference.setSelectedProjectId(MyFirebaseMessagingService.this, project_id);
             AppPreference.setSelectedProjectType(MyFirebaseMessagingService.this, AppConstants.PROJECT_TYPE.PENDING);
 
-            ProjectModel modal = new ProjectModel();
-            modal.setProject_id(project_id);
             Intent intent = new Intent(this, ProjectDetailsActivity.class);
-            intent.putExtra("messageModal", modal);
+            intent.putExtra("project_id", project_id);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);

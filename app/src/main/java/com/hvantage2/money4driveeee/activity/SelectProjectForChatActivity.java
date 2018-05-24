@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.SelectProjectAdapter;
@@ -81,10 +82,10 @@ public class SelectProjectForChatActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(SelectProjectForChatActivity.this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent= new Intent(SelectProjectForChatActivity.this, ChatActivity.class);
-                intent.putExtra("project_title",list.get(position).getProjectTittle());
-                intent.putExtra("project_subtitle",list.get(position).getProject_desc());
-                intent.putExtra("project_id",list.get(position).getProject_id());
+                Intent intent = new Intent(SelectProjectForChatActivity.this, ChatActivity.class);
+                intent.putExtra("project_title", list.get(position).getProjectTitle());
+                intent.putExtra("project_subtitle", list.get(position).getProjectDesc());
+                intent.putExtra("project_id", list.get(position).getProjectId());
                 startActivity(intent);
                 finish();
             }
@@ -148,9 +149,10 @@ public class SelectProjectForChatActivity extends AppCompatActivity {
                             JSONArray jsonArray = jsonObject.getJSONArray("result");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                ProjectModel model = new ProjectModel();
-                                model.setProject_id(jsonObject1.getString("project_id"));
-                                model.setProjectTittle(jsonObject1.getString("project_title"));
+
+                                ProjectModel model = new Gson().fromJson(jsonObject1.toString(), ProjectModel.class);
+                              /*  model.setProject_id(jsonObject1.getString("project_id"));
+                                model.setProjectTittle(jsonObject1.getString("project_title"));*/
 
                                 String survey_user_name = jsonObject1.getString("survey_user_name");
                                 String execution_user_name = jsonObject1.getString("execution_user_name");
@@ -167,12 +169,12 @@ public class SelectProjectForChatActivity extends AppCompatActivity {
                                     group_list.add(sales_user_name);
 
                                 String groupnames = TextUtils.join(", ", group_list);
-                                Log.e(TAG, "onResponse: "+ groupnames);
-                                model.setProject_desc(groupnames);
+                                Log.e(TAG, "onResponse: " + groupnames);
+                                model.setProjectDesc(groupnames);
                                 list.add(model);
                             }
 
-                            publishProgress("200","");
+                            publishProgress("200", "");
 
                         } else if (jsonObject.getString("status").equalsIgnoreCase("400")) {
                             list.clear();

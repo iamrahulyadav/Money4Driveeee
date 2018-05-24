@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,6 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-import com.hvantage2.money4driveeee.activity.hoardings.AddHoardingActivity;
 import com.hvantage2.money4driveeee.adapter.SourceAdapter;
 import com.hvantage2.money4driveeee.customview.CustomTextView;
 import com.hvantage2.money4driveeee.model.SourceModel;
@@ -60,6 +60,7 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
     private int total_quantity = 0, added_quantity = 0;
     private String start_date = "", end_date = "";
     private ProgressHUD progressHD;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +183,15 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
         list = new ArrayList<SourceModel>();
         tvEmpty = (CustomTextView) findViewById(R.id.tvEmpty);
         setTransitListRecyclerView();
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (media_option_id != null && !media_option_id.equalsIgnoreCase(""))
+                    new getTransitList().execute(media_option_id);
+            }
+        });
     }
 
     @Override
@@ -214,6 +224,7 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            refreshLayout.setRefreshing(false);
             showProgressDialog();
             tvEmpty.setVisibility(View.GONE);
         }
