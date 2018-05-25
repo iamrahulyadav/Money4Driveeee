@@ -33,7 +33,7 @@
                 android:paddingLeft="@dimen/_10sdp"
                app:textAllCaps="true"
                 android:textColor="@color/white"
-                app:edittextfont="Montserrat-Regular.ttf"
+
                 style="@style/Base.TextAppearance.AppCompat.Title"
                 android:textAllCaps="true"
                 android:text="English"
@@ -60,7 +60,7 @@ android:visibility="gone"
             android:layout_gravity="center"
             app:textAllCaps="true"
             android:textColor="@color/white"
-            app:edittextfont="Montserrat-Regular.ttf"
+
             android:paddingLeft="@dimen/_20sdp"
             style="@style/Base.TextAppearance.AppCompat.Title"
             android:textAllCaps="true"
@@ -90,7 +90,7 @@ android:visibility="gone"
             android:text="Next"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            app:edittextfont="Montserrat-Regular.ttf" />
+             />
 
     </LinearLayout>
 

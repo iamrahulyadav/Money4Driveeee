@@ -7,6 +7,7 @@
     android:background="@color/background"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.transit.AddTransitActivity"
     tools:showIn="@layout/activity_add_transit">
@@ -20,12 +21,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/footerimg"></LinearLayout>
+            android:background="@drawable/footerimg" />
 
         <ScrollView
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:overScrollMode="never"
             android:scrollbars="none">
 
             <LinearLayout
@@ -36,13 +38,12 @@
                 android:layout_marginRight="@dimen/_10sdp"
                 android:orientation="vertical">
 
-
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:padding="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:padding="@dimen/_4sdp"
                     android:text="Vehicle No."
                     android:textColor="@color/white" />
 
@@ -56,27 +57,22 @@
                     android:enabled="false"
                     android:hint="Enter Vehicle No."
                     android:inputType="text"
-                    android:padding="@dimen/_5sdp"
+                    android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+                    android:textColorHint="@color/hintcolor" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/dividerColor">
-
-                </View>
+                    android:background="@color/dividerColor" />
 
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:padding="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:padding="@dimen/_4sdp"
                     android:text="Vehicle"
                     android:textColor="@color/white" />
 
@@ -87,29 +83,23 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:hint="Enter Vehicle Name"
-
                     android:inputType="textCapSentences"
-                    android:padding="@dimen/_5sdp"
+                    android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+                    android:textColorHint="@color/hintcolor" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/dividerColor">
-
-                </View>
+                    android:background="@color/dividerColor" />
 
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:padding="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:padding="@dimen/_4sdp"
                     android:text="Driver Name"
                     android:textColor="@color/white" />
 
@@ -121,153 +111,163 @@
                     android:background="@null"
                     android:hint="Enter Driver Name"
                     android:inputType="textCapSentences|textAutoCorrect|textPersonName"
-                    android:padding="@dimen/_5sdp"
-
+                    android:padding="@dimen/_4sdp"
                     android:singleLine="true"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/dividerColor">
-
-                </View>
-
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Driver Contact No."
-                    android:textColor="@color/white" />
-
-                <EditText
-                    android:id="@+id/etDriverContact"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-
-                    android:hint="Enter Contact No."
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:padding="@dimen/_5sdp"
-                    android:singleLine="true"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/dividerColor">
-
-                </View>
-
-
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="State"
-                    android:textColor="@color/white" />
-
-
-                <android.support.v7.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/atvStates"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Select State"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    />
-
-                <EditText
-                    android:id="@+id/etState"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="Enter State"
-                    android:inputType="textCapSentences"
-                    android:maxLines="2"
-                    android:padding="@dimen/_5sdp"
-
-                    android:singleLine="true"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/dividerColor">
-
-                </View>
-
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="City"
-
-                    android:textColor="@color/white" />
-
-                <android.support.v7.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/atvCities"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Select City"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor" />
 
-                <EditText
-                    android:id="@+id/etDriverCity"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="Enter City"
-                    android:inputType="textCapSentences"
-                    android:padding="@dimen/_5sdp"
-
-                    android:singleLine="true"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
-
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/dividerColor">
-
-                </View>
+                    android:background="@color/dividerColor" />
 
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Address"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Driver Contact No."
+                    android:textColor="@color/white" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etDriverContact"
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_80sdp"
+                        android:background="@null"
+                        android:hint="Enter Contact No."
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:padding="@dimen/_4sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/hintcolor"
+                        android:textColorHint="@color/hintcolor" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvRequestOtp"
+                            style="@style/Base.TextAppearance.AppCompat.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:clickable="true"
+                            android:padding="@dimen/_4sdp"
+                            android:text="Send OTP"
+                            android:textColor="@color/colorAccent" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:text="State"
+                            android:textColor="@color/white" />
+
+
+                        <android.support.v7.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/atvStates"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="Enter State"
+                            android:padding="@dimen/_4sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/hintcolor"
+                            android:textColorHint="@color/hintcolor" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:text="City"
+                            android:textColor="@color/white" />
+
+                        <android.support.v7.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/atvCities"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="Enter State"
+                            android:padding="@dimen/_4sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/hintcolor"
+                            android:textColorHint="@color/hintcolor" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Address/Stand/Stop"
                     android:textColor="@color/white" />
 
                 <EditText
@@ -276,164 +276,248 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-
-                    android:hint="Enter Address"
+                    android:hint="Enter Address or Stand or Stop"
                     android:inputType="textCapSentences"
                     android:maxLines="2"
-                    android:padding="@dimen/_5sdp"
-
+                    android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+                    android:textColorHint="@color/hintcolor" />
 
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/dividerColor">
-
-                </View>
+                    android:background="@color/dividerColor" />
 
 
-                <!--<TextView
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_marginTop="@dimen/_8sdp"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Branding Type"
-                    android:textColor="@color/white" />
-                <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
-                    android:id="@+id/etTransit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Select Branding Type"
-                    android:inputType="textMultiLine"
-                    android:focusableInTouchMode="false"
-                    android:background="@null"
-                    android:singleLine="false"
-                    android:imeOptions="actionDone"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
-                <View
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/dividerColor">
-                </View>
+                    android:weightSum="2">
 
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Branding Options"
-                    android:textColor="@color/white" />
-                <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
-                    android:id="@+id/etBOptions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Select Branding Options"
-                    android:inputType="textMultiLine"
-                    android:focusableInTouchMode="false"
-                    android:background="@null"
-                    android:singleLine="false"
-                    android:imeOptions="actionDone"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
-                <View
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/dividerColor">
-                </View>-->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Start Date"
-                    android:textColor="@color/white" />
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:text="Start Date"
+                            android:textColor="@color/white" />
 
-                <EditText
-                    android:id="@+id/etStartDate"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:editable="false"
-                    android:enabled="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="Select Start Date"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine"
-                    android:padding="@dimen/_5sdp"
-                    android:singleLine="false"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+                        <EditText
+                            android:id="@+id/etStartDate"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="Select Start Date"
+                            android:imeOptions="actionDone"
+                            android:inputType="textMultiLine"
+                            android:padding="@dimen/_4sdp"
+                            android:singleLine="false"
+                            android:textColor="@color/hintcolor"
+                            android:textColorHint="@color/hintcolor"
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/dividerColor"></View>
+                            />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:text="End Date"
+                            android:textColor="@color/white" />
+
+                        <EditText
+                            android:id="@+id/etEndDate"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="Select End Date"
+                            android:imeOptions="actionDone"
+                            android:inputType="textMultiLine"
+                            android:padding="@dimen/_4sdp"
+                            android:singleLine="false"
+                            android:textColor="@color/hintcolor"
+                            android:textColorHint="@color/hintcolor"
+
+                            />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="End Date"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Select Gift"
                     android:textColor="@color/white" />
 
-                <EditText
-                    android:id="@+id/etEndDate"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:editable="false"
-                    android:enabled="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="Select End Date"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine"
-                    android:padding="@dimen/_5sdp"
-                    android:singleLine="false"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etSelectGift"
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="Select Gift"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:padding="@dimen/_4sdp"
+                        android:singleLine="false"
+                        android:textColor="@color/hintcolor"
+                        android:textColorHint="@color/hintcolor" />
+
+                    <Spinner
+                        android:id="@+id/spinnerGift"
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:editable="false"
+                        android:enabled="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="Select Start Date"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:padding="@dimen/_4sdp"
+                        android:singleLine="false"
+                        android:textColor="@color/hintcolor"
+                        android:textColorHint="@color/hintcolor"
+                        android:visibility="gone" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/dividerColor"></View>
+                    android:background="@color/dividerColor" />
+
+                <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Upload Documents (Max. 2)"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/_64sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp">
+
+                        <ImageView
+                            android:id="@+id/imgDoc1"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:background="@drawable/doc_thumb_border"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icon_doc_thumb" />
+
+                        <TextView
+                            android:id="@+id/tvImgDoc1Remark"
+                            style="@style/TextAppearance.AppCompat.Notification.Time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imgDoc1"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/hintcolor" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/_64sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_15sdp">
+
+                        <ImageView
+                            android:id="@+id/imgDoc2"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:background="@drawable/doc_thumb_border"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icon_doc_thumb" />
+
+                        <TextView
+                            android:id="@+id/tvImgDoc2Remark"
+                            style="@style/TextAppearance.AppCompat.Notification.Time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imgDoc2"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/hintcolor" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_below="@+id/linearmain"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -460,11 +544,8 @@
                         android:padding="@dimen/_1sdp"
                         android:text="Add"
                         android:textColor="@color/white" />
-
                 </LinearLayout>
-
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
-
 </android.support.constraint.ConstraintLayout>

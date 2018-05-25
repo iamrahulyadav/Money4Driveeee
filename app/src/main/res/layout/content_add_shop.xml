@@ -50,8 +50,8 @@
             android:singleLine="true"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf"
+
+
             android:imeOptions="actionNext"/>
         <View
             android:layout_marginTop="@dimen/_8sdp"
@@ -82,8 +82,8 @@
             android:singleLine="true"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
         <View
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -114,8 +114,8 @@
             android:singleLine="true"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
         <View
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -149,8 +149,8 @@
             android:singleLine="true"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
         <View
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -180,8 +180,8 @@
             android:imeOptions="actionNext"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
         <View
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -211,8 +211,8 @@
             android:imeOptions="actionNext"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
         <View
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -243,8 +243,8 @@
             android:imeOptions="actionDone"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
 
         <View
             android:layout_marginTop="@dimen/_8sdp"
@@ -275,8 +275,8 @@
             android:imeOptions="actionDone"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
         <View
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -306,8 +306,8 @@
             android:imeOptions="actionDone"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
         <View
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -340,8 +340,8 @@
             android:imeOptions="actionDone"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
         <View
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -373,8 +373,8 @@
             android:imeOptions="actionDone"
             android:textColor="@color/hintcolor"
             android:textColorHint="@color/hintcolor"
-            app:edittextfont="Lato-Light.ttf"
-            app:edittextfontHint="Lato-Light.ttf" />
+
+             />
         <View
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"

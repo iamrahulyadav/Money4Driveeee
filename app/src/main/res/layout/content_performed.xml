@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/shopnm"
                 android:textColor="@color/green"
-                app:edittextfont="Lato-Regular.ttf" />
+                 />
 
                 <ImageView
                     android:id="@+id/imagViewEdit"
@@ -61,7 +61,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="NA"
                 android:textColor="@color/hintcolor"
-                app:edittextfont="Lato-Regular.ttf" />
+                 />
         </LinearLayout>
 
         <LinearLayout
@@ -78,7 +78,7 @@
                 style="@style/Base.TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:edittextfont="Lato-Regular.ttf"
+
                 android:text="@string/activities"
                 android:textColor="@color/green" />
 

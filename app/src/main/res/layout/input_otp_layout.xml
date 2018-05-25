@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/_20sdp">
+
+
+    <LinearLayout
+        android:id="@+id/llTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/etNo1"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="match_parent"
+            android:background="@color/otpgray"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimary" />
+
+
+        <EditText
+            android:id="@+id/etNo2"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:background="@color/otpgray"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimary" />
+
+
+        <EditText
+            android:id="@+id/etNo3"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:background="@color/otpgray"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimary" />
+
+
+        <EditText
+            android:id="@+id/etNo4"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:background="@color/otpgray"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimary" />
+
+
+    </LinearLayout>
+</RelativeLayout>

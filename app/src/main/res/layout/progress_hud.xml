@@ -37,7 +37,7 @@
             android:textColor="@color/progress_dialog_text"
             />
 
-        <!--app:edittextfont="Lato-Regular.ttf"-->
+        <!---->
 
 
 </RelativeLayout>

@@ -49,7 +49,7 @@
                     android:inputType="textCapSentences|textAutoCorrect|textPersonName"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Regular.ttf"
+
                     app:edittextfontHint="Lato-Regular.ttf" />
                 <View
                     android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                     
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Regular.ttf"
+
                     app:edittextfontHint="Lato-Regular.ttf" />
                 <View
                     android:layout_marginTop="@dimen/_5sdp"
@@ -120,7 +120,7 @@
                     
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Regular.ttf"
+
                     app:edittextfontHint="Lato-Regular.ttf" />
                 <View
                     android:layout_width="match_parent"
@@ -152,7 +152,7 @@
                     android:background="@null"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Regular.ttf"
+
                     app:edittextfontHint="Lato-Regular.ttf" />
                 <View
                     android:layout_width="match_parent"

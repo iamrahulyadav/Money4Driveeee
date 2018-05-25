@@ -56,8 +56,8 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+
+                     />
 
                 <View
                     android:layout_marginTop="@dimen/_8sdp"
@@ -88,8 +88,8 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+
+                     />
 
                 <View
                     android:layout_marginTop="@dimen/_8sdp"
@@ -121,8 +121,8 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+
+                     />
                 <View
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
@@ -152,8 +152,8 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+
+                     />
 
                 <View
                     android:layout_marginTop="@dimen/_8sdp"
@@ -185,8 +185,8 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+
+                     />
 
                 <View
                     android:layout_marginTop="@dimen/_8sdp"
@@ -218,8 +218,8 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+
+                     />
 
                 <View
                     android:layout_marginTop="@dimen/_8sdp"
@@ -250,8 +250,8 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+
+                     />
 
 
                 <View
@@ -282,8 +282,8 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    app:edittextfont="Lato-Light.ttf"
-                    app:edittextfontHint="Lato-Light.ttf" />
+
+                     />
 
 
                 <View

@@ -10,6 +10,7 @@
     <color name="flotting_color">#E10052</color>
     <color name="green">#48bb54</color>
     <color name="gray">#e6e5ec</color>
+    <color name="otpgray">#f1f1f1</color>
     <color name="flotting_transparent">#cf181429</color>
     <color name="graylight">#c1c1c1</color>
     <color name="hintcolor">#a4a7ac</color>
