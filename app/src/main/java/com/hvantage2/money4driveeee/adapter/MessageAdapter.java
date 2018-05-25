@@ -5,11 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hvantage2.money4driveeee.model.MessageModel;
 import com.hvantage2.money4driveeee.model.MessageModel;
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 
 
 import java.util.List;
@@ -46,13 +47,13 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
     }
 
      public class ViewHolder extends RecyclerView.ViewHolder{
-        CustomTextView tvName,tvMsg,tvDate;
+        TextView tvName,tvMsg,tvDate;
 
          public ViewHolder(View itemView) {
              super(itemView);
-             tvName = (CustomTextView)itemView.findViewById(R.id.name);
-             tvMsg = (CustomTextView)itemView.findViewById(R.id.message);
-             tvDate = (CustomTextView)itemView.findViewById(R.id.date);
+             tvName = (TextView)itemView.findViewById(R.id.name);
+             tvMsg = (TextView)itemView.findViewById(R.id.message);
+             tvDate = (TextView)itemView.findViewById(R.id.date);
          }
      }
 }

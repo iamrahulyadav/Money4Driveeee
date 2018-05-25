@@ -30,7 +30,7 @@
         android:layout_marginRight="@dimen/_10sdp"
         android:orientation="vertical">
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
             android:padding="@dimen/_5sdp"
             android:text="@string/shopid"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etShopID"
@@ -60,7 +60,7 @@
             android:background="@color/dividerColor">
         </View>
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -68,7 +68,7 @@
             android:padding="@dimen/_5sdp"
             android:text="@string/shop_name"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etShopName"
@@ -92,7 +92,7 @@
 
         </View>
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             android:layout_marginTop="@dimen/_8sdp"
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
@@ -100,7 +100,7 @@
             android:padding="@dimen/_5sdp"
             android:text="@string/contact_name"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etContName"
@@ -124,7 +124,7 @@
 
         </View>
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
 
@@ -133,7 +133,7 @@
             android:padding="@dimen/_5sdp"
             android:text="@string/contact_no"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:layout_width="match_parent"
@@ -159,7 +159,7 @@
 
         </View>
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -167,7 +167,7 @@
             android:padding="@dimen/_5sdp"
             android:text="State"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etState"
@@ -190,7 +190,7 @@
 
         </View>
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -198,7 +198,7 @@
             android:padding="@dimen/_5sdp"
             android:text="@string/City"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etCity"
@@ -221,7 +221,7 @@
 
         </View>
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -229,7 +229,7 @@
             android:padding="@dimen/_5sdp"
             android:text="@string/address"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etAddress"
@@ -253,7 +253,7 @@
             android:background="@color/dividerColor">
         </View>
 <!--
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -261,7 +261,7 @@
             android:padding="@dimen/_5sdp"
             android:text="Branding Types"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etBType"
@@ -284,7 +284,7 @@
             android:background="@color/dividerColor">
         </View>
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -292,7 +292,7 @@
             android:padding="@dimen/_5sdp"
             android:text="Branding Options"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etBOptions"
@@ -316,7 +316,7 @@
         </View>-->
 
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -324,7 +324,7 @@
             android:padding="@dimen/_5sdp"
             android:text="Start Date"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etStartDate"
@@ -349,7 +349,7 @@
             android:background="@color/dividerColor">
         </View>
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_width="match_parent"
@@ -357,7 +357,7 @@
             android:padding="@dimen/_5sdp"
             android:text="End Date"
             android:textColor="@color/white" />
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             style="@style/TextAppearance.AppCompat.Subhead"
             android:padding="@dimen/_5sdp"
             android:id="@+id/etEndDate"
@@ -392,7 +392,7 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <com.hvantage2.money4driveeee.customview.CustomButton
+            <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_35sdp"
@@ -405,7 +405,7 @@
                 android:textColor="@color/green"
                  />
 
-            <com.hvantage2.money4driveeee.customview.CustomButton
+            <Button
                 android:id="@+id/btnConfirm"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_35sdp"

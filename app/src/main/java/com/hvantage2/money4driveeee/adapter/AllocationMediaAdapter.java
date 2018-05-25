@@ -6,10 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hvantage2.money4driveeee.model.MediaModel;
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 
 import java.util.List;
 
@@ -44,13 +45,13 @@ public class AllocationMediaAdapter extends RecyclerView.Adapter<AllocationMedia
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        CustomTextView tvTitle, tvCounter;
+        TextView tvTitle, tvCounter;
         RelativeLayout list_item;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvTitle = (CustomTextView) itemView.findViewById(R.id.tvTitle);
-            tvCounter = (CustomTextView) itemView.findViewById(R.id.tvCounter);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+            tvCounter = (TextView) itemView.findViewById(R.id.tvCounter);
             list_item = (RelativeLayout) itemView.findViewById(R.id.list_item);
         }
     }

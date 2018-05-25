@@ -13,12 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.EditPhotoActivity;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.ImageUploadModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -142,16 +143,16 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        CustomTextView tvRemark, tvDimen, tvDateTime;
+        TextView tvRemark, tvDimen, tvDateTime;
         CircleImageView image;
         ImageView edit, delete;
         LinearLayout ll_edit;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvRemark = (CustomTextView) itemView.findViewById(R.id.tvRemark);
-            tvDimen = (CustomTextView) itemView.findViewById(R.id.tvDimen);
-            tvDateTime = (CustomTextView) itemView.findViewById(R.id.tvDateTime);
+            tvRemark = (TextView) itemView.findViewById(R.id.tvRemark);
+            tvDimen = (TextView) itemView.findViewById(R.id.tvDimen);
+            tvDateTime = (TextView) itemView.findViewById(R.id.tvDateTime);
             image = (CircleImageView) itemView.findViewById(R.id.image);
             edit = (ImageView) itemView.findViewById(R.id.edit);
             delete = (ImageView) itemView.findViewById(R.id.delete);

@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -27,7 +28,7 @@ import com.hvantage2.money4driveeee.activity.shop.SelectShopMediaTypeActivity;
 import com.hvantage2.money4driveeee.activity.transit.SelectTransitMediaTypeActivity;
 import com.hvantage2.money4driveeee.activity.wallpainting.SelectWallPaintTypeActivity;
 import com.hvantage2.money4driveeee.adapter.AllocationMediaAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.MediaModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -49,7 +50,7 @@ import retrofit2.Response;
 
 public class ProjectDetailsActivity extends AppCompatActivity {
     private static final String TAG = "ProjectDetailsActivity";
-    CustomTextView tvProjectTittle, tvProjectDesc, tvCreationDate, tvAllocationDate;
+    TextView tvProjectTittle, tvProjectDesc, tvCreationDate, tvAllocationDate;
     RecyclerView recyclerView;
     ArrayList<MediaModel> allocationMediaList;
     AllocationMediaAdapter mediaAdapter;
@@ -122,10 +123,10 @@ public class ProjectDetailsActivity extends AppCompatActivity {
 
     private void init() {
         allocationMediaList = new ArrayList<MediaModel>();
-        tvProjectTittle = (CustomTextView) findViewById(R.id.tvProjectTittle);
-        tvProjectDesc = (CustomTextView) findViewById(R.id.tvProjectDesc);
-        tvCreationDate = (CustomTextView) findViewById(R.id.tvCreationDate);
-        tvAllocationDate = (CustomTextView) findViewById(R.id.tvAllocationDate);
+        tvProjectTittle = (TextView) findViewById(R.id.tvProjectTittle);
+        tvProjectDesc = (TextView) findViewById(R.id.tvProjectDesc);
+        tvCreationDate = (TextView) findViewById(R.id.tvCreationDate);
+        tvAllocationDate = (TextView) findViewById(R.id.tvAllocationDate);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerAllocation);
     }
 

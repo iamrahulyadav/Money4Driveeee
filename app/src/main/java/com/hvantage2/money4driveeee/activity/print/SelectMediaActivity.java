@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -22,7 +23,7 @@ import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.SourceAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.SourceModel;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
@@ -46,7 +47,7 @@ public class SelectMediaActivity extends AppCompatActivity implements View.OnCli
     private SourceAdapter adapter;
     private ProgressDialog dialog;
     private String media_option_id = "";
-    private CustomTextView tvEmpty;
+    private TextView tvEmpty;
     private int total_quantity=0,added_quantity=0;
     private String start_date="";String end_date="";
     private String media_option_name="";
@@ -114,7 +115,7 @@ public class SelectMediaActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void init() {
-        tvEmpty = (CustomTextView) findViewById(R.id.tvEmpty);
+        tvEmpty = (TextView) findViewById(R.id.tvEmpty);
     }
 
     @Override

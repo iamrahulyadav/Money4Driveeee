@@ -34,7 +34,7 @@
                 android:layout_marginRight="@dimen/_10sdp"
                 android:orientation="vertical">
 
-              <!--  <com.hvantage2.money4driveeee.customview.CustomTextView
+              <!--  <TextView
                     android:layout_marginTop="@dimen/_8sdp"
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Transit"
                     android:textColor="@color/white" />
-                <com.hvantage2.money4driveeee.customview.CustomEditText
+                <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/etTransit"
@@ -67,7 +67,7 @@
 
                 </View>-->
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     android:layout_marginTop="@dimen/_8sdp"
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Driver Name"
                     android:textColor="@color/white" />
-                <com.hvantage2.money4driveeee.customview.CustomEditText
+                <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/etDriverName"
@@ -99,7 +99,7 @@
 
                 </View>
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Driver Contact No."
                     android:textColor="@color/white" />
-                <com.hvantage2.money4driveeee.customview.CustomEditText
+                <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/etDriverContact"
@@ -131,7 +131,7 @@
 
                 </View>
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Vehicle"
                     android:textColor="@color/white" />
-                <com.hvantage2.money4driveeee.customview.CustomEditText
+                <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/etVehicle"
@@ -163,7 +163,7 @@
 
                 </View>
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
@@ -171,7 +171,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Vehicle No."
                     android:textColor="@color/white" />
-                <com.hvantage2.money4driveeee.customview.CustomEditText
+                <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/etRegNo"
@@ -196,7 +196,7 @@
 
                 </View>
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
@@ -204,7 +204,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="State"
                     android:textColor="@color/white" />
-                <com.hvantage2.money4driveeee.customview.CustomEditText
+                <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/etState"
@@ -229,7 +229,7 @@
 
                 </View>
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
@@ -237,7 +237,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="City"
                     android:textColor="@color/white" />
-                <com.hvantage2.money4driveeee.customview.CustomEditText
+                <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/etDriverCity"
@@ -262,7 +262,7 @@
 
                 </View>
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
@@ -270,7 +270,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Address"
                     android:textColor="@color/white" />
-                <com.hvantage2.money4driveeee.customview.CustomEditText
+                <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
                     android:id="@+id/etDriverAddress"
@@ -304,7 +304,7 @@
                     android:orientation="horizontal"
                     android:weightSum="1">
 
-                    <com.hvantage2.money4driveeee.customview.CustomButton
+                    <Button
                         android:id="@+id/btnCancel"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_35sdp"
@@ -317,7 +317,7 @@
                         android:textColor="@color/green"
                          />
 
-                    <com.hvantage2.money4driveeee.customview.CustomButton
+                    <Button
                         android:id="@+id/btnConfirm"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_35sdp"

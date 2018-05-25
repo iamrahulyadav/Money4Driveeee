@@ -5,9 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.ProjectModel;
 
 import java.util.List;
@@ -45,13 +46,13 @@ public class SelectProjectAdapter extends  RecyclerView.Adapter<SelectProjectAda
     }
 
      public class ViewHolder extends RecyclerView.ViewHolder{
-        CustomTextView tvTag,tvProjectTitle,tvProjectSubtitle;
+        TextView tvTag,tvProjectTitle,tvProjectSubtitle;
 
          public ViewHolder(View itemView) {
              super(itemView);
-             tvTag = (CustomTextView)itemView.findViewById(R.id.tvTag);
-             tvProjectTitle = (CustomTextView)itemView.findViewById(R.id.tvProjectTitle);
-             tvProjectSubtitle = (CustomTextView)itemView.findViewById(R.id.tvProjectSubtitle);
+             tvTag = (TextView)itemView.findViewById(R.id.tvTag);
+             tvProjectTitle = (TextView)itemView.findViewById(R.id.tvProjectTitle);
+             tvProjectSubtitle = (TextView)itemView.findViewById(R.id.tvProjectSubtitle);
          }
      }
 }

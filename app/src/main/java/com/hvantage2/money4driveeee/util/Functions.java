@@ -6,6 +6,8 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.widget.EditText;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -84,6 +86,22 @@ public class Functions {
                 }
         }
         return false;
+    }
+
+    public static String loadJSONFromAsset(Context context, String assetName) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open(assetName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 
 }

@@ -20,7 +20,7 @@
         android:orientation="horizontal"
         android:background="@drawable/write_message_text">
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:padding="@dimen/_5sdp"
@@ -49,7 +49,7 @@
         android:weightSum="1"
         android:padding="@dimen/_10sdp">
 
-        <com.hvantage2.money4driveeee.customview.CustomEditText
+        <EditText
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="0.85"
@@ -64,7 +64,7 @@
             android:textAlignment="textStart"
             style="@style/TextAppearance.AppCompat.Subhead"/>
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="0dp"
             android:layout_weight=".15"

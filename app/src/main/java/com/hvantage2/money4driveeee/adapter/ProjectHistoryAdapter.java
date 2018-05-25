@@ -5,10 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hvantage2.money4driveeee.model.ProjectModel;
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 
 
 import java.util.List;
@@ -62,16 +63,16 @@ public class ProjectHistoryAdapter  extends  RecyclerView.Adapter<ProjectHistory
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        CustomTextView projecttittle,city,date;
+        TextView projecttittle,city,date;
         View view;
 
         public ViewHolder(View itemView) {
             super(itemView);
             view=itemView;
 
-            projecttittle = (CustomTextView)itemView.findViewById(R.id.projecttittle);
-            city = (CustomTextView)itemView.findViewById(R.id.city);
-            date = (CustomTextView)itemView.findViewById(R.id.date);
+            projecttittle = (TextView)itemView.findViewById(R.id.projecttittle);
+            city = (TextView)itemView.findViewById(R.id.city);
+            date = (TextView)itemView.findViewById(R.id.date);
         }
     }
 }

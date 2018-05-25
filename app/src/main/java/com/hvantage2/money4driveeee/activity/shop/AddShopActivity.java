@@ -20,6 +20,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -32,8 +34,8 @@ import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
+
+
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import org.json.JSONArray;
@@ -49,8 +51,8 @@ import retrofit2.Response;
 public class AddShopActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "AddShopActivity";
-    private CustomButton btnCancel, btnConfirm;
-    private CustomEditText etShopID, etShopName, etContName, etContNo, etState, etCity, etAddress,  etStartDate, etEndDate;
+    private Button btnCancel, btnConfirm;
+    private EditText etShopID, etShopName, etContName, etContNo, etState, etCity, etAddress,  etStartDate, etEndDate;
     private ArrayList<ShopActivity> bTypeList;
     private ProgressDialog dialog;
     private String allBTypeIds = "", allBOptionIds = "";
@@ -86,19 +88,19 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void init() {
-        etShopID = (CustomEditText) findViewById(R.id.etShopID);
-        etShopName = (CustomEditText) findViewById(R.id.etShopName);
-        etContName = (CustomEditText) findViewById(R.id.etContName);
-        etContNo = (CustomEditText) findViewById(R.id.etContNo);
-        etState = (CustomEditText) findViewById(R.id.etState);
-        etCity = (CustomEditText) findViewById(R.id.etCity);
-        etAddress = (CustomEditText) findViewById(R.id.etAddress);
-        /*etBType = (CustomEditText) findViewById(R.id.etBType);
-        etBOptions = (CustomEditText) findViewById(R.id.etBOptions);*/
-        etStartDate = (CustomEditText) findViewById(R.id.etStartDate);
-        etEndDate = (CustomEditText) findViewById(R.id.etEndDate);
-        btnConfirm = (CustomButton) findViewById(R.id.btnConfirm);
-        btnCancel = (CustomButton) findViewById(R.id.btnCancel);
+        etShopID = (EditText) findViewById(R.id.etShopID);
+        etShopName = (EditText) findViewById(R.id.etShopName);
+        etContName = (EditText) findViewById(R.id.etContName);
+        etContNo = (EditText) findViewById(R.id.etContNo);
+        etState = (EditText) findViewById(R.id.etState);
+        etCity = (EditText) findViewById(R.id.etCity);
+        etAddress = (EditText) findViewById(R.id.etAddress);
+        /*etBType = (EditText) findViewById(R.id.etBType);
+        etBOptions = (EditText) findViewById(R.id.etBOptions);*/
+        etStartDate = (EditText) findViewById(R.id.etStartDate);
+        etEndDate = (EditText) findViewById(R.id.etEndDate);
+        btnConfirm = (Button) findViewById(R.id.btnConfirm);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
 
         btnCancel.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
@@ -231,7 +233,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         builder.setMessage("Shop Contact No.");
         builder.setCancelable(false);
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_contact_no, (ViewGroup) findViewById(android.R.id.content), false);
-        final CustomEditText input = (CustomEditText) viewInflated.findViewById(R.id.input);
+        final EditText input = (EditText) viewInflated.findViewById(R.id.input);
         builder.setView(viewInflated);
 
         builder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {

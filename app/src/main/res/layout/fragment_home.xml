@@ -44,7 +44,7 @@
                         android:elevation="@dimen/_10sdp"
                         android:src="@drawable/totalprojects" />
 
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:id="@+id/totalProjCount"
 
                         style="@style/Base.TextAppearance.AppCompat.Subhead"
@@ -66,7 +66,7 @@
                         android:layout_below="@id/imgProject"
                         android:layout_marginTop="@dimen/_10sdp">
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:src="@drawable/completedproject" />
 
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:id="@+id/completeProjCount"
 
                         style="@style/Base.TextAppearance.AppCompat.Subhead"
@@ -120,7 +120,7 @@
                         android:layout_below="@id/img2"
                         android:layout_marginTop="@dimen/_10sdp">
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                         android:layout_marginTop="@dimen/_3sdp"
                         android:src="@drawable/newassignproject" />
 
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:id="@+id/newProjCount"
 
                         style="@style/Base.TextAppearance.AppCompat.Subhead"
@@ -184,7 +184,7 @@
                         android:layout_below="@id/img3"
                         android:layout_marginTop="@dimen/_10sdp">
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -213,7 +213,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:src="@drawable/pendingproject" />
 
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:id="@+id/pendingProjectCount"
                         style="@style/Base.TextAppearance.AppCompat.Subhead"
                         android:layout_width="@dimen/_30sdp"
@@ -234,7 +234,7 @@
                         android:layout_below="@id/img4"
                         android:layout_marginTop="@dimen/_10sdp">
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -273,7 +273,7 @@
                               android:padding="@dimen/_5sdp"
                               android:src="@drawable/recentmsg" />-->
 
-                        <com.hvantage2.money4driveeee.customview.CustomButton
+                        <Button
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -314,7 +314,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.hvantage2.money4driveeee.customview.CustomButton
+                    <Button
                         android:id="@+id/callmanager"
                         style="@style/TextAppearance.AppCompat.Small"
                         android:layout_width="match_parent"
@@ -337,7 +337,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.hvantage2.money4driveeee.customview.CustomButton
+                    <Button
                         android:id="@+id/btnMessage"
                         style="@style/Base.TextAppearance.AppCompat.Small"
                         android:layout_width="match_parent"

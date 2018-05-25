@@ -13,13 +13,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.SelectProjectAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.ProjectModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -43,7 +44,7 @@ public class SelectProjectForChatActivity extends AppCompatActivity {
 
     private static final String TAG = "SelectProjectFChat";
     private RecyclerView recyclerView;
-    private CustomTextView tvEmpty;
+    private TextView tvEmpty;
     private ArrayList<ProjectModel> list;
     private SelectProjectAdapter adapter;
     private ProgressHUD progressHD;
@@ -62,7 +63,7 @@ public class SelectProjectForChatActivity extends AppCompatActivity {
 
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        tvEmpty = (CustomTextView) findViewById(R.id.tvEmpty);
+        tvEmpty = (TextView) findViewById(R.id.tvEmpty);
     }
 
 

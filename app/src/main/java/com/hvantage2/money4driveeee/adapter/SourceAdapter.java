@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.hvantage2.money4driveeee.model.SourceModel;
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 
 import java.util.ArrayList;
 
@@ -44,11 +46,11 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        CustomTextView tvTitle;
+        TextView tvTitle;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvTitle = (CustomTextView) itemView.findViewById(R.id.tvTitle);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
         }
     }
 }

@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -22,7 +23,7 @@ import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.SourceAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.SourceModel;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
@@ -44,7 +45,7 @@ public class SelectEMediaActivity extends AppCompatActivity {
     ArrayList<SourceModel> list;
     private SourceAdapter adapter;
     private String media_option_id = "";
-    private CustomTextView tvEmpty;
+    private TextView tvEmpty;
     private ProgressHUD progressHD;
     private RecyclerView recycler_view_reg_no;
     private String media_option_name;
@@ -121,7 +122,7 @@ public class SelectEMediaActivity extends AppCompatActivity {
 
     private void init() {
         list = new ArrayList<SourceModel>();
-        tvEmpty = (CustomTextView) findViewById(R.id.tvEmpty);
+        tvEmpty = (TextView) findViewById(R.id.tvEmpty);
         setTransitListRecyclerView();
     }
 

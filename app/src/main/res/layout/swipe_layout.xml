@@ -16,7 +16,7 @@ android:background="@color/background"
 
 
        />
-    <com.hvantage2.money4driveeee.customview.CustomTextView
+    <TextView
         android:id="@+id/advertise"
         style="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@ android:background="@color/background"
         android:textColor="@color/white"
         app:edittextfont="Lato-Regular.ttf" />
 
-    <com.hvantage2.money4driveeee.customview.CustomTextView
+    <TextView
         android:id="@+id/centertxt"
         style="@style/Base.TextAppearance.AppCompat.Small"
         android:layout_width="match_parent"

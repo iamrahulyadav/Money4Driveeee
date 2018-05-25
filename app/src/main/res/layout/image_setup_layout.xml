@@ -60,7 +60,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_below="@+id/signup_image"
                     android:orientation="vertical">
-                    <com.hvantage2.money4driveeee.customview.CustomButton
+                    <Button
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_30sdp"
                         android:id="@+id/btnAddMore"
@@ -79,7 +79,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_below="@+id/btnAddMore"
                         android:orientation="vertical">
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
@@ -92,7 +92,7 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
-                            <com.hvantage2.money4driveeee.customview.CustomEditText
+                            <EditText
                                 android:layout_marginLeft="@dimen/_5sdp"
                                 android:layout_width="@dimen/_80sdp"
                                 android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                                 android:textColor="@color/hintcolor"
                                 android:hint="Height"/>
 
-                            <com.hvantage2.money4driveeee.customview.CustomTextView
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="@dimen/_8sdp"
@@ -123,7 +123,7 @@
                                 android:textColor="@color/hintcolor"
                                 android:hint="x"/>
 
-                            <com.hvantage2.money4driveeee.customview.CustomEditText
+                            <EditText
                                 android:layout_width="@dimen/_80sdp"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/_5sdp"
@@ -146,7 +146,7 @@
                              android:layout_width="match_parent"
                              android:layout_height="1dp"
                              android:background="@color/dividerColor" />-->
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
 
                             android:text="@string/remark"/>
-                        <com.hvantage2.money4driveeee.customview.CustomEditText
+                        <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
@@ -176,7 +176,7 @@
                             android:background="@color/dividerColor" />
                     </LinearLayout>
 
-                    <com.hvantage2.money4driveeee.customview.CustomButton
+                    <Button
                         android:elevation="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_width="wrap_content"
@@ -263,7 +263,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_below="@+id/signup_image"
                 android:orientation="vertical">
-                <com.hvantage2.money4driveeee.customview.CustomButton
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_30sdp"
                     android:id="@+id/btnAddMore"
@@ -282,7 +282,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_below="@+id/btnAddMore"
                     android:orientation="vertical">
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
@@ -295,7 +295,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <com.hvantage2.money4driveeee.customview.CustomEditText
+                        <EditText
                             android:layout_marginLeft="@dimen/_5sdp"
                             android:layout_width="@dimen/_80sdp"
                             android:layout_height="wrap_content"
@@ -312,7 +312,7 @@
                             android:textColor="@color/hintcolor"
                             android:hint="Height"/>
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="@dimen/_8sdp"
@@ -326,7 +326,7 @@
                             android:textColor="@color/hintcolor"
                             android:hint="x"/>
 
-                        <com.hvantage2.money4driveeee.customview.CustomEditText
+                        <EditText
                             android:layout_width="@dimen/_80sdp"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
@@ -349,7 +349,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/dividerColor" />&ndash;&gt;
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -359,7 +359,7 @@
                         style="@style/Base.TextAppearance.AppCompat.Subhead"
 
                         android:text="@string/remark"/>
-                    <com.hvantage2.money4driveeee.customview.CustomEditText
+                    <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
@@ -379,7 +379,7 @@
                         android:background="@color/dividerColor" />
                 </LinearLayout>
 
-                <com.hvantage2.money4driveeee.customview.CustomButton
+                <Button
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_35sdp"

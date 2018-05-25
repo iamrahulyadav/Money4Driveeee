@@ -16,13 +16,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.MediaAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.MediaModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
@@ -47,7 +48,7 @@ public class SelectTransitMediaTypeActivity extends AppCompatActivity implements
 
     private static final String TAG = "SelectTransitMedia";
     private ArrayList<MediaModel> list;
-    private CustomTextView tvEmpty;
+    private TextView tvEmpty;
     private RecyclerView recycler_view;
     private MediaAdapter adapter;
     private ProgressHUD progressHD;
@@ -87,7 +88,7 @@ public class SelectTransitMediaTypeActivity extends AppCompatActivity implements
 
     private void init() {
         list = new ArrayList<MediaModel>();
-        tvEmpty = (CustomTextView) findViewById(R.id.tvEmpty);
+        tvEmpty = (TextView) findViewById(R.id.tvEmpty);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);

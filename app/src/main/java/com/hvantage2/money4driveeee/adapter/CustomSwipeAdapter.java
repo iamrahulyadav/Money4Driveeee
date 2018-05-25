@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 
 /**
  * Created by Hvantage2 on 2018-02-17.
@@ -39,7 +40,7 @@ import com.hvantage2.money4driveeee.customview.CustomTextView;
         layoutInflater=(LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View item_view=layoutInflater.inflate(R.layout.swipe_layout,container,false);
         ImageView imageView=(ImageView) item_view.findViewById(R.id.image_count);
-        CustomTextView textView =(CustomTextView) item_view.findViewById(R.id.advertise);
+        TextView textView =(TextView) item_view.findViewById(R.id.advertise);
 
         switch (position) {
             case 0:

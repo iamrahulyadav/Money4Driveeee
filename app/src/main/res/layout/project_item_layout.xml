@@ -38,7 +38,7 @@
             android:layout_toRightOf="@+id/noti_image"
             android:orientation="vertical">
 
-            <com.hvantage2.money4driveeee.customview.CustomTextView
+            <TextView
                 android:id="@+id/projecttittle"
                 style="@style/Base.TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
@@ -84,7 +84,7 @@
                             app:edittextfont="Lato-Regular.ttf"
                             />
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
 
                             style="@style/Base.TextAppearance.AppCompat.Small"
                             android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
 
                             />
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             android:id="@+id/city"
                             style="@style/TextAppearance.AppCompat.Notification.Time.Media"
                             android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             style="@style/TextAppearance.AppCompat.Notification.Time.Media"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
 
                             />
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
 
                             style="@style/TextAppearance.AppCompat.Notification.Time.Media"
                             android:layout_width="wrap_content"
@@ -143,7 +143,7 @@
 
                             />
 
-                        <com.hvantage2.money4driveeee.customview.CustomTextView
+                        <TextView
                             android:id="@+id/date"
                             style="@style/TextAppearance.AppCompat.Notification.Time.Media"
                             android:layout_width="wrap_content"

@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -25,8 +27,8 @@ import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
+
+
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
@@ -42,8 +44,8 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
 
     private static final String TAG = "AddHoardingActivity";
     String  hoardingName, contName, contNo, state, city, address, startDate, endDate;
-    private CustomButton btnCancel, btnConfirm;
-    private CustomEditText etHoardingName, etContName, etContNo, etState, etCity, etAddress, etStartDate, etEndDate;
+    private Button btnCancel, btnConfirm;
+    private EditText etHoardingName, etContName, etContNo, etState, etCity, etAddress, etStartDate, etEndDate;
     private String start_date = "", end_date = "";
     private String media_option_id = "";
     private ProgressHUD progressHD;
@@ -72,16 +74,16 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void init() {
-        etHoardingName = (CustomEditText) findViewById(R.id.etHoardingName);
-        etContName = (CustomEditText) findViewById(R.id.etContName);
-        etContNo = (CustomEditText) findViewById(R.id.etContNo);
-        etState = (CustomEditText) findViewById(R.id.etState);
-        etCity = (CustomEditText) findViewById(R.id.etCity);
-        etAddress = (CustomEditText) findViewById(R.id.etAddress);
-        etStartDate = (CustomEditText) findViewById(R.id.etStartDate);
-        etEndDate = (CustomEditText) findViewById(R.id.etEndDate);
-        btnConfirm = (CustomButton) findViewById(R.id.btnConfirm);
-        btnCancel = (CustomButton) findViewById(R.id.btnCancel);
+        etHoardingName = (EditText) findViewById(R.id.etHoardingName);
+        etContName = (EditText) findViewById(R.id.etContName);
+        etContNo = (EditText) findViewById(R.id.etContNo);
+        etState = (EditText) findViewById(R.id.etState);
+        etCity = (EditText) findViewById(R.id.etCity);
+        etAddress = (EditText) findViewById(R.id.etAddress);
+        etStartDate = (EditText) findViewById(R.id.etStartDate);
+        etEndDate = (EditText) findViewById(R.id.etEndDate);
+        btnConfirm = (Button) findViewById(R.id.btnConfirm);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
 
         btnCancel.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);

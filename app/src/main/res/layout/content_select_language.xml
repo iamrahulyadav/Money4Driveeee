@@ -26,7 +26,7 @@
                 android:layout_height="@dimen/_40sdp"
                 android:src="@drawable/english" />
 
-            <com.hvantage2.money4driveeee.customview.CustomTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -54,7 +54,7 @@ android:visibility="gone"
             android:layout_height="@dimen/_40sdp"
             android:src="@drawable/hindi" />
 
-        <com.hvantage2.money4driveeee.customview.CustomTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -78,7 +78,7 @@ android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
        >
-        <com.hvantage2.money4driveeee.customview.CustomButton
+        <Button
             style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:visibility="gone"
             android:padding="@dimen/_5sdp"

@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -24,7 +25,7 @@ import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.activity.SingleActivityDetail;
 import com.hvantage2.money4driveeee.activity.UploadPhotosActivity;
 import com.hvantage2.money4driveeee.adapter.ActivityAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -51,7 +52,7 @@ public class PerformTransitActivity extends AppCompatActivity implements View.On
     private ActivityAdapter adapter;
     private ImageView imagViewEdit;
     private String TAG = "PerformTransitActivity";
-    private CustomTextView tvVehicle;
+    private TextView tvVehicle;
     private String media_option_id = "0";
     private ProgressHUD progressHD;
 
@@ -128,8 +129,8 @@ public class PerformTransitActivity extends AppCompatActivity implements View.On
 
     private void init() {
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        ((CustomTextView) findViewById(R.id.tvTitle)).setText("Vehicle");
-        tvVehicle = (CustomTextView) findViewById(R.id.tvProjectTittle);
+        ((TextView) findViewById(R.id.tvTitle)).setText("Vehicle");
+        tvVehicle = (TextView) findViewById(R.id.tvProjectTittle);
         if (AppPreference.getSelectedProjectType(this).equalsIgnoreCase(AppConstants.PROJECT_TYPE.PENDING)) {
             imagViewEdit = (ImageView) findViewById(R.id.imagViewEdit);
             imagViewEdit.setVisibility(View.VISIBLE);

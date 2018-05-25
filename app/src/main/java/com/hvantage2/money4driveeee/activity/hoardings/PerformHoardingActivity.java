@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -26,7 +27,7 @@ import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.activity.SingleActivityDetail;
 import com.hvantage2.money4driveeee.activity.UploadPhotosActivity;
 import com.hvantage2.money4driveeee.adapter.ActivityAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
@@ -46,7 +47,7 @@ import retrofit2.Response;
 public class PerformHoardingActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PerformHoardingMediaA";
     ArrayList<ShopActivity> activityList;
-    private CustomTextView tvProjectTittle;
+    private TextView tvProjectTittle;
     private RecyclerView recycler_view;
     private ActivityAdapter adapter;
     private ImageView imagViewEdit;
@@ -126,8 +127,8 @@ public class PerformHoardingActivity extends AppCompatActivity implements View.O
 
     private void init() {
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        tvProjectTittle = (CustomTextView) findViewById(R.id.tvProjectTittle);
-        ((CustomTextView) findViewById(R.id.tvTitle)).setText("Hoarding");
+        tvProjectTittle = (TextView) findViewById(R.id.tvProjectTittle);
+        ((TextView) findViewById(R.id.tvTitle)).setText("Hoarding");
         if (AppPreference.getSelectedProjectType(this).equalsIgnoreCase(AppConstants.PROJECT_TYPE.PENDING)) {
             imagViewEdit = (ImageView) findViewById(R.id.imagViewEdit);
             imagViewEdit.setVisibility(View.VISIBLE);

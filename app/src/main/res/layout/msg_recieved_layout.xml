@@ -22,7 +22,7 @@
 
         </View>
 
-    <com.hvantage2.money4driveeee.customview.CustomTextView
+    <TextView
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -15,14 +15,16 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
+
+
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
@@ -40,10 +42,10 @@ import retrofit2.Response;
 public class VehicleDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "TransitDetailActivity";
-    private CustomButton btnConfirm;
-    private CustomEditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etDriverCity, etState;
+    private Button btnConfirm;
+    private EditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etDriverCity, etState;
     private ProgressDialog dialog;
-    private CustomButton btnCancel;
+    private Button btnCancel;
     private String media_option_id = "0";
     private ProgressHUD progressHD;
 
@@ -66,16 +68,16 @@ public class VehicleDetailActivity extends AppCompatActivity {
 
     private void init() {
 
-        etDriverName = (CustomEditText) findViewById(R.id.etDriverName);
-        etDriverContact = (CustomEditText) findViewById(R.id.etDriverContact);
-        etVehicle = (CustomEditText) findViewById(R.id.etVehicle);
-        etRegNo = (CustomEditText) findViewById(R.id.etRegNo);
-        etDriverAddress = (CustomEditText) findViewById(R.id.etDriverAddress);
-        etDriverCity = (CustomEditText) findViewById(R.id.etDriverCity);
-        etState = (CustomEditText) findViewById(R.id.etState);
+        etDriverName = (EditText) findViewById(R.id.etDriverName);
+        etDriverContact = (EditText) findViewById(R.id.etDriverContact);
+        etVehicle = (EditText) findViewById(R.id.etVehicle);
+        etRegNo = (EditText) findViewById(R.id.etRegNo);
+        etDriverAddress = (EditText) findViewById(R.id.etDriverAddress);
+        etDriverCity = (EditText) findViewById(R.id.etDriverCity);
+        etState = (EditText) findViewById(R.id.etState);
 
-        btnConfirm = (CustomButton) findViewById(R.id.btnConfirm);
-        btnCancel = (CustomButton) findViewById(R.id.btnCancel);
+        btnConfirm = (Button) findViewById(R.id.btnConfirm);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override

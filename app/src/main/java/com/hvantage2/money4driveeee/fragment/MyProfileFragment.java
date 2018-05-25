@@ -17,6 +17,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -32,8 +34,8 @@ import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.FragmentIntraction;
 import com.hvantage2.money4driveeee.util.Functions;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
+
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +49,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
     private static final String TAG = "MyProfileFragment";
     Context context;
     String userid;
-    CustomEditText etName, etEmailid, etMobile, etaddress;
+    EditText etName, etEmailid, etMobile, etaddress;
     private View rootView;
     private ProgressDialog dialog;
     FragmentIntraction intraction;
@@ -100,11 +102,11 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
     }
 
     private void init(View rootView) {
-        etName = (CustomEditText) rootView.findViewById(R.id.etname);
-        etEmailid = (CustomEditText) rootView.findViewById(R.id.etemail);
-        etMobile = (CustomEditText) rootView.findViewById(R.id.etmobileno);
-        etaddress = (CustomEditText) rootView.findViewById(R.id.etaddress);
-        ((CustomButton) rootView.findViewById(R.id.btnEdit)).setOnClickListener(this);
+        etName = (EditText) rootView.findViewById(R.id.etname);
+        etEmailid = (EditText) rootView.findViewById(R.id.etemail);
+        etMobile = (EditText) rootView.findViewById(R.id.etmobileno);
+        etaddress = (EditText) rootView.findViewById(R.id.etaddress);
+        ((Button) rootView.findViewById(R.id.btnEdit)).setOnClickListener(this);
 
         etEmailid.setOnTouchListener(new View.OnTouchListener() {
             @Override

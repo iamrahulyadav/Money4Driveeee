@@ -33,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.8">
-            <com.hvantage2.money4driveeee.customview.CustomTextView
+            <TextView
                 android:id="@+id/tvSkip"
                 style="@style/TextAppearance.AppCompat.Button"
                 android:padding="@dimen/_5sdp"
@@ -73,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.8">
-            <com.hvantage2.money4driveeee.customview.CustomTextView
+            <TextView
                 style="@style/TextAppearance.AppCompat.Button"
                 android:padding="@dimen/_5sdp"
                 android:layout_centerVertical="true"

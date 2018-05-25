@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -21,8 +23,8 @@ import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.Functions;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
+
+
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import org.json.JSONArray;
@@ -37,7 +39,7 @@ import static com.hvantage2.money4driveeee.util.Functions.errorMessage;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ForgotPasswordA";
-    CustomEditText etEmail;
+    EditText etEmail;
     private ProgressHUD progressHD;
 
     @Override
@@ -61,8 +63,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     }
 
     private void init() {
-        etEmail = (CustomEditText) findViewById(R.id.email_id);
-        ((CustomButton) findViewById(R.id.btnSubmit)).setOnClickListener(this);
+        etEmail = (EditText) findViewById(R.id.email_id);
+        ((Button) findViewById(R.id.btnSubmit)).setOnClickListener(this);
 
     }
 

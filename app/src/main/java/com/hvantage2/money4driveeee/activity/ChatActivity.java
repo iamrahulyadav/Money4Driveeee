@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.SingleMessageAdapter;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
+
 import com.hvantage2.money4driveeee.model.MessageData;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -55,7 +56,7 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<MessageData> list;
     private ProgressHUD progressHD;
     private String project_id = "";
-    private CustomEditText etNewMsg;
+    private EditText etNewMsg;
     private ImageView btnSend;
 
     @Override
@@ -80,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void init() {
-        etNewMsg = (CustomEditText) findViewById(R.id.etNewMsg);
+        etNewMsg = (EditText) findViewById(R.id.etNewMsg);
         btnSend = (ImageView) findViewById(R.id.btnSend);
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override

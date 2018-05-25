@@ -15,19 +15,19 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.model.ShopActivity;
-import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import org.json.JSONArray;
@@ -43,10 +43,10 @@ import retrofit2.Response;
 public class ShopDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "ShopDetailActivity";
-    private CustomEditText etname, etMobile, etShopID, etAddress, etCity;
     String project_id = "", shop_id = "";
     ArrayList<ShopActivity> activityList;
     ProgressDialog dialog;
+    private EditText etname, etMobile, etShopID, etAddress, etCity;
     private String shop_name = "";
     private String media_option_id = "";
     private ProgressHUD progressHD;
@@ -69,6 +69,75 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
         new getDetailTask().execute();
     }
 
+    private void showProgressDialog() {
+        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // TODO Auto-generated method stub
+            }
+        });
+    }
+
+    private void hideProgressDialog() {
+        if (progressHD != null && progressHD.isShowing())
+            progressHD.dismiss();
+    }
+
+    private void init() {
+        etname = (EditText) findViewById(R.id.etname);
+        etMobile = (EditText) findViewById(R.id.etMobile);
+        etShopID = (EditText) findViewById(R.id.etShopID);
+        etAddress = (EditText) findViewById(R.id.etAddress);
+        etCity = (EditText) findViewById(R.id.etCity);
+        ((Button) findViewById(R.id.btnConfirm)).setOnClickListener(this);
+        ((Button) findViewById(R.id.btnCancel)).setOnClickListener(this);
+
+        ((ScrollView) findViewById(R.id.container)).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideSoftKeyboard(view);
+                return false;
+            }
+        });
+    }
+
+    private void hideSoftKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.product_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_home:
+                Intent intent = new Intent(ShopDetailActivity.this, DashBoardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                break;
+            case R.id.btnCancel:
+                finish();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btnConfirm) {
+            new updateDetailTask().execute();
+        }
+    }
 
     public class getDetailTask extends AsyncTask<Void, String, Void> {
 
@@ -156,20 +225,6 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void showProgressDialog() {
-        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-
-    private void hideProgressDialog() {
-        if (progressHD != null && progressHD.isShowing())
-            progressHD.dismiss();
-    }
-
     public class updateDetailTask extends AsyncTask<Void, String, Void> {
 
         @Override
@@ -238,62 +293,6 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
             } else if (status.equalsIgnoreCase("400")) {
                 Toast.makeText(ShopDetailActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
-        }
-    }
-
-    private void init() {
-        etname = (CustomEditText) findViewById(R.id.etname);
-        etMobile = (CustomEditText) findViewById(R.id.etMobile);
-        etShopID = (CustomEditText) findViewById(R.id.etShopID);
-        etAddress = (CustomEditText) findViewById(R.id.etAddress);
-        etCity = (CustomEditText) findViewById(R.id.etCity);
-        ((CustomButton) findViewById(R.id.btnConfirm)).setOnClickListener(this);
-        ((CustomButton) findViewById(R.id.btnCancel)).setOnClickListener(this);
-
-        ((ScrollView) findViewById(R.id.container)).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                hideSoftKeyboard(view);
-                return false;
-            }
-        });
-    }
-
-    private void hideSoftKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.product_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            case R.id.action_home:
-                Intent intent = new Intent(ShopDetailActivity.this, DashBoardActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                break;
-            case R.id.btnCancel:
-                finish();
-                break;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btnConfirm) {
-            new updateDetailTask().execute();
         }
     }
 }

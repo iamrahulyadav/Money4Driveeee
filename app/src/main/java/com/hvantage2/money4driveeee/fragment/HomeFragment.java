@@ -28,9 +28,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -38,8 +40,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.MessageAdapter;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
+
 import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.DashboardModel;
 import com.hvantage2.money4driveeee.model.MessageModel;
@@ -69,13 +71,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     List<MessageModel> msgList;
     MessageAdapter messageAdapter;
     ScrollView scroll;
-    CustomTextView totalProjCount, newProjCount, completeProjCount, pendingProjectCount;
+    TextView totalProjCount, newProjCount, completeProjCount, pendingProjectCount;
     FragmentIntraction intraction;
     private View rootView;
     private ProgressDialog dialog;
     private ProgressHUD progressHD;
-    private CustomButton callmanager;
-    private CustomButton btnMessage;
+    private Button callmanager;
+    private Button btnMessage;
     private FloatingActionMenu floatingActionMenu;
 
     private DBHelper db;
@@ -144,12 +146,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refreshLayout);
         scroll = (ScrollView) rootView.findViewById(R.id.scrollView);
-        totalProjCount = (CustomTextView) rootView.findViewById(R.id.totalProjCount);
-        newProjCount = (CustomTextView) rootView.findViewById(R.id.newProjCount);
-        completeProjCount = (CustomTextView) rootView.findViewById(R.id.completeProjCount);
-        pendingProjectCount = (CustomTextView) rootView.findViewById(R.id.pendingProjectCount);
-        callmanager = (CustomButton) rootView.findViewById(R.id.callmanager);
-        btnMessage = (CustomButton) rootView.findViewById(R.id.btnMessage);
+        totalProjCount = (TextView) rootView.findViewById(R.id.totalProjCount);
+        newProjCount = (TextView) rootView.findViewById(R.id.newProjCount);
+        completeProjCount = (TextView) rootView.findViewById(R.id.completeProjCount);
+        pendingProjectCount = (TextView) rootView.findViewById(R.id.pendingProjectCount);
+        callmanager = (Button) rootView.findViewById(R.id.callmanager);
+        btnMessage = (Button) rootView.findViewById(R.id.btnMessage);
 
         callmanager.setOnClickListener(this);
         btnMessage.setOnClickListener(this);

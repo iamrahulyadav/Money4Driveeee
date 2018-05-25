@@ -27,6 +27,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -36,8 +38,8 @@ import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
+
+
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
@@ -71,8 +73,8 @@ public class EditPhotoActivity extends AppCompatActivity {
     private String new_remark = "", new_dimen = "";
     private Uri originalImageUri;
     private ImageView imageView, imgBack;
-    private CustomEditText etheight, etwidth, etremarkText;
-    private CustomButton btnSave;
+    private EditText etheight, etwidth, etremarkText;
+    private Button btnSave;
     private ScrollView container;
     private String base64image = "";
     private ImageView editImage;
@@ -140,10 +142,10 @@ public class EditPhotoActivity extends AppCompatActivity {
         editImage = (ImageView) findViewById(R.id.editImage);
         container = (ScrollView) findViewById(R.id.container);
         imgBack = (ImageView) findViewById(R.id.imgBack);
-        btnSave = (CustomButton) findViewById(R.id.btnSave);
-        etheight = (CustomEditText) findViewById(R.id.dimensionTextheight);
-        etwidth = (CustomEditText) findViewById(R.id.dimensionTextwidth);
-        etremarkText = (CustomEditText) findViewById(R.id.remarkText);
+        btnSave = (Button) findViewById(R.id.btnSave);
+        etheight = (EditText) findViewById(R.id.dimensionTextheight);
+        etwidth = (EditText) findViewById(R.id.dimensionTextwidth);
+        etremarkText = (EditText) findViewById(R.id.remarkText);
 
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override

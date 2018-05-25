@@ -27,7 +27,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/_10sdp">
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     android:id="@+id/tvtittle"
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
                     android:textColor="@color/green"
                     />
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     android:id="@+id/tvProjectTittle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/_10sdp">
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     android:id="@+id/tvtittle1"
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                     android:textColor="@color/green"
                     />
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     android:id="@+id/tvProjectDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                     android:layout_marginRight="@dimen/_5sdp"
                     android:padding="@dimen/_10sdp">
 
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:id="@+id/tvtittle3"
                         style="@style/TextAppearance.AppCompat.Subhead"
                         android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                         android:textColor="@color/green"
                         />
 
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:id="@+id/tvCreationDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                     android:orientation="vertical"
                     android:padding="@dimen/_10sdp">
 
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:id="@+id/tvtittle5"
                         style="@style/TextAppearance.AppCompat.Subhead"
                         android:layout_width="wrap_content"
@@ -143,7 +143,7 @@
                         android:textColor="@color/green"
                         />
 
-                    <com.hvantage2.money4driveeee.customview.CustomTextView
+                    <TextView
                         android:id="@+id/tvAllocationDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/_10sdp">
 
-                <com.hvantage2.money4driveeee.customview.CustomTextView
+                <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

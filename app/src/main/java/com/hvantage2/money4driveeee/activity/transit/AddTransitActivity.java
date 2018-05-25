@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,8 +21,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -31,13 +34,14 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.DialogMultipleChoiceAdapter;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
+
+
 import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
+import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import org.json.JSONArray;
@@ -53,9 +57,11 @@ import retrofit2.Response;
 
 public class AddTransitActivity extends AppCompatActivity implements View.OnClickListener {
 
-    CustomEditText etDriverName, etDriverContact, etVehicle, etRegNo, etState, etDriverCity, etDriverAddress, etStartDate, etEndDate;
-    CustomButton btnConfirm, btnCancel;
+    EditText etDriverName, etDriverContact, etVehicle, etRegNo, etState, etDriverCity, etDriverAddress, etStartDate, etEndDate;
+    Button btnConfirm, btnCancel;
     String driverName, driverContact, vehicle, regNo, state, city, address, startDate, endDate;
+    ArrayList<String> listState = new ArrayList<String>();
+    ArrayList<String> listCity = new ArrayList<String>();
     private String TAG = "AddTransitActivity";
     private ProgressDialog dialog;
     private List<ShopActivity> bOptionList;
@@ -63,12 +69,15 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     private String media_option_id = "";
     private String start_date = "", end_date = "";
     private ProgressHUD progressHD;
-
+    private AppCompatAutoCompleteTextView atvStates;
+    private Context context;
+    private AppCompatAutoCompleteTextView atvCities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_transit);
+        context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -89,25 +98,23 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         etEndDate.setText(end_date);
     }
 
-
     private void init() {
-        etDriverName = (CustomEditText) findViewById(R.id.etDriverName);
-        etDriverContact = (CustomEditText) findViewById(R.id.etDriverContact);
-        etVehicle = (CustomEditText) findViewById(R.id.etVehicle);
-        etRegNo = (CustomEditText) findViewById(R.id.etRegNo);
-        etState = (CustomEditText) findViewById(R.id.etState);
-        etDriverCity = (CustomEditText) findViewById(R.id.etDriverCity);
-        etDriverAddress = (CustomEditText) findViewById(R.id.etDriverAddress);
-        etStartDate = (CustomEditText) findViewById(R.id.etStartDate);
-        etEndDate = (CustomEditText) findViewById(R.id.etEndDate);
+        etDriverName = (EditText) findViewById(R.id.etDriverName);
+        etDriverContact = (EditText) findViewById(R.id.etDriverContact);
+        etVehicle = (EditText) findViewById(R.id.etVehicle);
+        etRegNo = (EditText) findViewById(R.id.etRegNo);
+        etState = (EditText) findViewById(R.id.etState);
+        etDriverCity = (EditText) findViewById(R.id.etDriverCity);
+        etDriverAddress = (EditText) findViewById(R.id.etDriverAddress);
+        etStartDate = (EditText) findViewById(R.id.etStartDate);
+        etEndDate = (EditText) findViewById(R.id.etEndDate);
 
-        btnConfirm = (CustomButton) findViewById(R.id.btnConfirm);
-        btnCancel = (CustomButton) findViewById(R.id.btnCancel);
+        btnConfirm = (Button) findViewById(R.id.btnConfirm);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+
 
         btnCancel.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
-       /* etStartDate.setOnClickListener(this);
-        etEndDate.setOnClickListener(this);*/
 
         ((ScrollView) findViewById(R.id.container)).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -116,36 +123,59 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 return false;
             }
         });
-    }
 
-    private void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Enter Vehicle No.");
-        builder.setCancelable(false);
-        View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_vehicle_no, (ViewGroup) findViewById(android.R.id.content), false);
-        final CustomEditText input = (CustomEditText) viewInflated.findViewById(R.id.input);
-        builder.setView(viewInflated);
-
-        builder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+        atvStates = (AppCompatAutoCompleteTextView) findViewById(R.id.atvStates);
+        atvCities = (AppCompatAutoCompleteTextView) findViewById(R.id.atvCities);
+        atvStates.setThreshold(2);
+        atvCities.setThreshold(2);
+        setStateAdapter();
+        setCityAdapter();
+        atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String vehicle_no = input.getText().toString();
-                dialog.dismiss();
-                etRegNo.setText(vehicle_no);
-                new CheckVehicleNoTask().execute(vehicle_no);
+            public void onItemClick(AdapterView<?> adapterView, View view, int p, long l) {
+                setCityAdapter();
             }
         });
-        builder.setNegativeButton("Go Back", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
+    }
 
-        builder.show();
+    private void setCityAdapter() {
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_cities.json"));
+            JSONObject cityJObj = jsonObject.getJSONObject(atvStates.getText().toString());
+            JSONArray jsonArray = cityJObj.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listCity.add(state);
+            }
+            ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listCity);
+            atvCities.setAdapter(adapterCity);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setStateAdapter() {
+
+
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
+            JSONArray jsonArray = jsonObject.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listState.add(state);
+            }
+            ArrayAdapter<String> adapterState = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listState);
+            atvStates.setAdapter(adapterState);
+            Log.e(TAG, "setAdapter: listState >> " + listState);
+        } catch (JSONException e) {
+            Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
+            e.printStackTrace();
+        }
 
 
     }
+
 
     private void showDialog1() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);

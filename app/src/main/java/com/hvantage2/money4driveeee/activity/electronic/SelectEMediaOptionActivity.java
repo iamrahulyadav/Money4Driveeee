@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -23,7 +24,7 @@ import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.MediaAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.MediaModel;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
@@ -44,7 +45,7 @@ public class SelectEMediaOptionActivity extends AppCompatActivity {
 
     private static final String TAG = "SelectEMediaOptionA";
     private ArrayList<MediaModel> list;
-    private CustomTextView tvEmpty;
+    private TextView tvEmpty;
     private RecyclerView recycler_view;
     private MediaAdapter adapter;
     private ProgressDialog dialog;
@@ -74,7 +75,7 @@ public class SelectEMediaOptionActivity extends AppCompatActivity {
 
     private void init() {
         list = new ArrayList<MediaModel>();
-        tvEmpty = (CustomTextView) findViewById(R.id.tvEmpty);
+        tvEmpty = (TextView) findViewById(R.id.tvEmpty);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
     }

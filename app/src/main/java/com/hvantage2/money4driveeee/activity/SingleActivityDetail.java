@@ -33,18 +33,21 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.UploadedImageAdapter;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
+
+
 import com.hvantage2.money4driveeee.model.ImageUploadModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -79,14 +82,14 @@ public class SingleActivityDetail extends AppCompatActivity {
     ArrayList<ImageUploadModel> list;
     private RecyclerView recycler_view;
     private UploadedImageAdapter adapter;
-    private CustomButton addmore;
+    private Button addmore;
     private Uri originalImageUri;
     private Dialog dialog1;
     private Bitmap bitmapImage1;
     private String tempDimen = "", tempRemark = "";
     private String userChoosenTask;
     private String base64image;
-    private CustomButton btnfinish;
+    private Button btnfinish;
     private String action;
     private ProgressHUD progressHD;
     private String media_option_id;
@@ -153,8 +156,8 @@ public class SingleActivityDetail extends AppCompatActivity {
     private void init() {
         list = new ArrayList<ImageUploadModel>();
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        addmore = (CustomButton) findViewById(R.id.takepicture);
-        btnfinish = (CustomButton) findViewById(R.id.btnfinish);
+        addmore = (Button) findViewById(R.id.takepicture);
+        btnfinish = (Button) findViewById(R.id.btnfinish);
         LinearLayoutManager layoutManager = new LinearLayoutManager(SingleActivityDetail.this);
         recycler_view.setLayoutManager(layoutManager);
         adapter = new UploadedImageAdapter(SingleActivityDetail.this, list, action);
@@ -256,10 +259,10 @@ public class SingleActivityDetail extends AppCompatActivity {
         ScrollView container = (ScrollView) dialog1.findViewById(R.id.container);
 
         ImageView imgBack = (ImageView) dialog1.findViewById(R.id.imgBack);
-        final CustomButton btnSave = (CustomButton) dialog1.findViewById(R.id.btnSave);
-        final CustomEditText height = (CustomEditText) dialog1.findViewById(R.id.dimensionTextheight);
-        final CustomEditText width = (CustomEditText) dialog1.findViewById(R.id.dimensionTextwidth);
-        final CustomEditText remarkText = (CustomEditText) dialog1.findViewById(R.id.remarkText);
+        final Button btnSave = (Button) dialog1.findViewById(R.id.btnSave);
+        final EditText height = (EditText) dialog1.findViewById(R.id.dimensionTextheight);
+        final EditText width = (EditText) dialog1.findViewById(R.id.dimensionTextwidth);
+        final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
 
         String croppedfilePath = Environment.getExternalStorageDirectory() + "/activity_image.jpg";
         bitmapImage1 = BitmapFactory.decodeFile(croppedfilePath);
@@ -465,8 +468,8 @@ public class SingleActivityDetail extends AppCompatActivity {
 
 
         TouchImageView imgPreview = (TouchImageView) dialog1.findViewById(R.id.imgPreview);
-        CustomTextView tvDimen = (CustomTextView) dialog1.findViewById(R.id.tvDimen);
-        CustomTextView tvRemark = (CustomTextView) dialog1.findViewById(R.id.tvRemark);
+        TextView tvDimen = (TextView) dialog1.findViewById(R.id.tvDimen);
+        TextView tvRemark = (TextView) dialog1.findViewById(R.id.tvRemark);
         imgPreview.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         if (!modal.getImage_url().equalsIgnoreCase(""))

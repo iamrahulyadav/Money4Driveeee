@@ -25,7 +25,7 @@ public class SelectLanguageActivity extends AppCompatActivity implements View.On
     }
 
     private void init() {
-//        ((CustomButton) findViewById(R.id.tvNext)).setOnClickListener(this);
+//        ((Button) findViewById(R.id.tvNext)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.llEnglish)).setOnClickListener(this);
     }
 

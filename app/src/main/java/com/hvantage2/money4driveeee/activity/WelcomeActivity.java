@@ -9,10 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.hvantage2.money4driveeee.adapter.CustomSwipeAdapter;
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,8 +31,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initCommponent() {
-        ((CustomTextView) findViewById(R.id.tvNext)).setOnClickListener(this);
-        ((CustomTextView) findViewById(R.id.tvSkip)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.tvNext)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.tvSkip)).setOnClickListener(this);
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         adapter = new CustomSwipeAdapter(this);

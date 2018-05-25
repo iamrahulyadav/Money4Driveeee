@@ -15,7 +15,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
@@ -28,8 +30,8 @@ import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.Functions;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
+
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import retrofit2.Call;
@@ -40,9 +42,9 @@ import static com.hvantage2.money4driveeee.util.Functions.errorMessage;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "FeildExeLoginA";
-    CustomEditText etEmail, etPassword;
+    EditText etEmail, etPassword;
     private ProgressDialog dialog;
-    private CustomTextView btnLogin;
+    private TextView btnLogin;
     private String fcm_token = "";
     private ProgressHUD progressHD;
 
@@ -75,11 +77,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void init() {
-        etEmail = (CustomEditText) findViewById(R.id.email);
-        etPassword = (CustomEditText) findViewById(R.id.password);
-        btnLogin = (CustomTextView) findViewById(R.id.btnLogin);
+        etEmail = (EditText) findViewById(R.id.email);
+        etPassword = (EditText) findViewById(R.id.password);
+        btnLogin = (TextView) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
-        ((CustomTextView) findViewById(R.id.btnForgotPassword)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.btnForgotPassword)).setOnClickListener(this);
     }
 
 

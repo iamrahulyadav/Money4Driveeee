@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.hvantage2.money4driveeee.customview.CustomEditText
+    <EditText
         android:layout_marginLeft="@dimen/_17sdp"
         android:layout_marginRight="@dimen/_17sdp"
         android:id="@+id/input"

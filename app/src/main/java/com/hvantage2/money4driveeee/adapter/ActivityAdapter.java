@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 
 import java.util.ArrayList;
 
@@ -54,13 +55,13 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        CustomTextView tvCounter, tvTitle;
+        TextView tvCounter, tvTitle;
         ImageView imageViewDone;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvCounter = (CustomTextView) itemView.findViewById(R.id.tvCounter);
-            tvTitle = (CustomTextView) itemView.findViewById(R.id.tvTitle);
+            tvCounter = (TextView) itemView.findViewById(R.id.tvCounter);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             imageViewDone = (ImageView) itemView.findViewById(R.id.imageViewDone);
         }
     }

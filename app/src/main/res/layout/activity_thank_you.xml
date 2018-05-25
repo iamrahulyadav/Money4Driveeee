@@ -19,7 +19,7 @@
         android:padding="@dimen/_5sdp"
         android:src="@drawable/thumb" />
 
-    <com.hvantage2.money4driveeee.customview.CustomTextView
+    <TextView
         android:id="@+id/txtThanku"
         style="@style/TextAppearance.AppCompat.Display1"
         android:layout_width="match_parent"

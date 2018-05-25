@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -22,7 +23,7 @@ import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.activity.shop.SelectShopActivity;
 import com.hvantage2.money4driveeee.adapter.SourceAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.model.SourceModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -50,7 +51,7 @@ public class SelectHoardingActivity extends AppCompatActivity implements View.On
     private static final String TAG = "SelectHoarding";
     private ArrayList<SourceModel> list;
     private SourceAdapter adapter;
-    private CustomTextView tvEmpty;
+    private TextView tvEmpty;
     private FloatingActionButton fab;
     private String media_option_id = "";
     private int total_quantity = 0, added_quantity = 0;
@@ -159,7 +160,7 @@ public class SelectHoardingActivity extends AppCompatActivity implements View.On
 
     private void init() {
         list = new ArrayList<SourceModel>();
-        tvEmpty = (CustomTextView) findViewById(R.id.tvEmpty);
+        tvEmpty = (TextView) findViewById(R.id.tvEmpty);
     }
 
     @Override

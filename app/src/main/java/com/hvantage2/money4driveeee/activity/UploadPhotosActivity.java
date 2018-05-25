@@ -36,6 +36,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -45,8 +47,8 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.UploadedImageAdapter;
-import com.hvantage2.money4driveeee.customview.CustomButton;
-import com.hvantage2.money4driveeee.customview.CustomEditText;
+
+
 import com.hvantage2.money4driveeee.model.ImageUploadModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -87,7 +89,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
     private JsonObject jsonObjectImages;
     private String tempDimen = "", tempRemark = "";
     private Uri originalImageUri;
-    private CustomButton takepicture;
+    private Button takepicture;
     private ProgressHUD progressHD;
     private String media_option_id;
     private String hoarding_name;
@@ -166,11 +168,11 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void init() {
-        ((CustomButton) findViewById(R.id.btnSubmit)).setOnClickListener(this);
-        takepicture = ((CustomButton) findViewById(R.id.takepicture));
+        ((Button) findViewById(R.id.btnSubmit)).setOnClickListener(this);
+        takepicture = ((Button) findViewById(R.id.takepicture));
         takepicture.setOnClickListener(this);
         if (AppPreference.getSelectedProjectType(UploadPhotosActivity.this).equalsIgnoreCase(AppConstants.PROJECT_TYPE.COMPLETED)) {
-            ((CustomButton) findViewById(R.id.btnSubmit)).setVisibility(View.GONE);
+            ((Button) findViewById(R.id.btnSubmit)).setVisibility(View.GONE);
             takepicture.setVisibility(View.GONE);
         }
     }
@@ -280,10 +282,10 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         ScrollView container = (ScrollView) dialog.findViewById(R.id.container);
 
         ImageView imgBack = (ImageView) dialog.findViewById(R.id.imgBack);
-        CustomButton btnSave = (CustomButton) dialog.findViewById(R.id.btnSave);
-        final CustomEditText height = (CustomEditText) dialog.findViewById(R.id.dimensionTextheight);
-        final CustomEditText width = (CustomEditText) dialog.findViewById(R.id.dimensionTextwidth);
-        final CustomEditText remarkText = (CustomEditText) dialog.findViewById(R.id.remarkText);
+        Button btnSave = (Button) dialog.findViewById(R.id.btnSave);
+        final EditText height = (EditText) dialog.findViewById(R.id.dimensionTextheight);
+        final EditText width = (EditText) dialog.findViewById(R.id.dimensionTextwidth);
+        final EditText remarkText = (EditText) dialog.findViewById(R.id.remarkText);
 
         String croppedfilePath = Environment.getExternalStorageDirectory() + "/activity_image.jpg";
         bitmapImage1 = BitmapFactory.decodeFile(croppedfilePath);

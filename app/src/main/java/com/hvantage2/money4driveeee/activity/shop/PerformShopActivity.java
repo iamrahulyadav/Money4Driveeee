@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -31,7 +32,7 @@ import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.RecyclerItemClickListener;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,7 +47,7 @@ import retrofit2.Response;
 public class PerformShopActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PerformShopActivity";
     ArrayList<ShopActivity> activityList;
-    private CustomTextView tvProjectTittle;
+    private TextView tvProjectTittle;
     private RecyclerView recycler_view;
     private ActivityAdapter adapter;
     private ImageView imagViewEdit;
@@ -128,8 +129,8 @@ public class PerformShopActivity extends AppCompatActivity implements View.OnCli
 
     private void init() {
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        ((CustomTextView) findViewById(R.id.tvTitle)).setText("Shop");
-        tvProjectTittle = (CustomTextView) findViewById(R.id.tvProjectTittle);
+        ((TextView) findViewById(R.id.tvTitle)).setText("Shop");
+        tvProjectTittle = (TextView) findViewById(R.id.tvProjectTittle);
         if (AppPreference.getSelectedProjectType(this).equalsIgnoreCase(AppConstants.PROJECT_TYPE.PENDING)) {
             imagViewEdit = (ImageView) findViewById(R.id.imagViewEdit);
             imagViewEdit.setVisibility(View.VISIBLE);

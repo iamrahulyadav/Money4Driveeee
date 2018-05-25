@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -23,7 +24,7 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.ProjectDetailsActivity;
 import com.hvantage2.money4driveeee.adapter.ProjectHistoryAdapter;
-import com.hvantage2.money4driveeee.customview.CustomTextView;
+
 import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.ProjectModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
@@ -50,7 +51,7 @@ public class Pending2Fragment extends Fragment {
     private static final String TAG = "PendingFragment";
     Context context;
     ProgressDialog dialog;
-    CustomTextView tvEmpty;
+    TextView tvEmpty;
     RecyclerView recyclerView;
     List<ProjectModel> list;
     ProjectHistoryAdapter adapter;
@@ -85,7 +86,7 @@ public class Pending2Fragment extends Fragment {
     private void init(View rootview) {
         context = getActivity();
         recyclerView = (RecyclerView) rootview.findViewById(R.id.recycler_view);
-        tvEmpty = (CustomTextView) rootview.findViewById(R.id.tvEmpty);
+        tvEmpty = (TextView) rootview.findViewById(R.id.tvEmpty);
         refreshLayout = (SwipeRefreshLayout) rootview.findViewById(R.id.refreshLayout);
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
