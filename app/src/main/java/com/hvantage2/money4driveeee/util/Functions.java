@@ -1,9 +1,16 @@
 package com.hvantage2.money4driveeee.util;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.EditText;
 
 import java.io.IOException;
@@ -37,15 +44,13 @@ public class Functions {
             }
         }
     }
-    public static final boolean isValidPhoneNumber(String mobno)
-    {
-        Boolean isValid=false;
-        if(mobno.trim().length()<10)
-        {
-            isValid =false;
+
+    public static final boolean isValidPhoneNumber(String mobno) {
+        Boolean isValid = false;
+        if (mobno.trim().length() < 10) {
+            isValid = false;
         }
-        if(mobno.trim().length()==10)
-        {
+        if (mobno.trim().length() == 10) {
             Pattern pattern;
             Matcher matcher;
             final String MOBILE_PATTERN = "^[7-9][0-9]{9}$";
@@ -53,13 +58,14 @@ public class Functions {
             matcher = pattern.matcher(mobno);
             boolean isMatch = matcher.matches();
             if (isMatch) {
-                isValid=true;
+                isValid = true;
             } else {
-                isValid=false;
+                isValid = false;
             }
         }
         return isValid;
     }
+
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -73,6 +79,7 @@ public class Functions {
         String strDate = sdf.format(c.getTime());
         return strDate;
     }
+
     public static boolean isConnectingToInternet(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -103,5 +110,28 @@ public class Functions {
         }
         return json;
     }
+
+    public static void showSettingsAlert(final Activity mContext) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        alertDialog.setTitle("GPS is settings");
+        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("Enable Location", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                mContext.startActivity(intent);
+            }
+        });
+        // on pressing cancel button
+        alertDialog.setNegativeButton("Go Back", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                mContext.finish();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
 
 }
