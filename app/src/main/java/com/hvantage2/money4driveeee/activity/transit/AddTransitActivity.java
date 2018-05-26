@@ -699,7 +699,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 if (items[item].equals("Camera")) {
                     userChoosenTask = "Camera";
                     if (result)
-                        dispatchTakePictureIntent();
+                        cameraIntent();
                 } else if (items[item].equals("Gallery")) {
                     userChoosenTask = "Gallery";
                     if (result)
@@ -732,7 +732,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (userChoosenTask.equals("Camera"))
-                        dispatchTakePictureIntent();
+                        cameraIntent();
                     else if (userChoosenTask.equals("Gallery"))
                         galleryIntent();
                 } else {
@@ -741,7 +741,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void dispatchTakePictureIntent() {
+    private void cameraIntent() {
         final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/m4d/";
         File newdir = new File(dir);
         newdir.mkdirs();
