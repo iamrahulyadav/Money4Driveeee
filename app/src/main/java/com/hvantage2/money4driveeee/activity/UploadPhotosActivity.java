@@ -40,6 +40,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -47,8 +48,6 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.UploadedImageAdapter;
-
-
 import com.hvantage2.money4driveeee.model.ImageUploadModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -283,6 +282,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
 
         ImageView imgBack = (ImageView) dialog.findViewById(R.id.imgBack);
         Button btnSave = (Button) dialog.findViewById(R.id.btnSave);
+        final TextView tvDimenUnit = (TextView) dialog.findViewById(R.id.tvDimenUnit);
         final EditText height = (EditText) dialog.findViewById(R.id.dimensionTextheight);
         final EditText width = (EditText) dialog.findViewById(R.id.dimensionTextwidth);
         final EditText remarkText = (EditText) dialog.findViewById(R.id.remarkText);

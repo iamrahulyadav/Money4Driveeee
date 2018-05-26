@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,12 +20,11 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.retrofit.ApiClient;
-import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.SourceAdapter;
-
 import com.hvantage2.money4driveeee.model.SourceModel;
+import com.hvantage2.money4driveeee.retrofit.ApiClient;
+import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
@@ -52,6 +52,7 @@ public class SelectMediaActivity extends AppCompatActivity implements View.OnCli
     private String start_date="";String end_date="";
     private String media_option_name="";
     private ProgressHUD progressHD;
+    private SwipeRefreshLayout refreshLayout;
 
 
     @Override
@@ -116,6 +117,14 @@ public class SelectMediaActivity extends AppCompatActivity implements View.OnCli
 
     private void init() {
         tvEmpty = (TextView) findViewById(R.id.tvEmpty);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onResume();
+            }
+        });
     }
 
     @Override

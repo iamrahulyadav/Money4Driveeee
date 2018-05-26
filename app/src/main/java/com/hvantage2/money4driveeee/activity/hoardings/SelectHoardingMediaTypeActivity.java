@@ -1,11 +1,13 @@
 package com.hvantage2.money4driveeee.activity.hoardings;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,14 +22,15 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.retrofit.ApiClient;
-import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.MediaAdapter;
-
+import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.MediaModel;
+import com.hvantage2.money4driveeee.retrofit.ApiClient;
+import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
+import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.RecyclerItemClickListener;
 
@@ -50,28 +53,57 @@ public class SelectHoardingMediaTypeActivity extends AppCompatActivity implement
     private MediaAdapter adapter;
     private ProgressDialog dialog;
     private ProgressHUD progressHD;
+    private DBHelper db;
+    private Context context;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_transit_media);
+        context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        db = new DBHelper(context);
         list = new ArrayList<MediaModel>();
         init();
-        setRecyclerView();
-        new GetData().execute();
+        if (db.getMediaTypes(AppPreference.getSelectedProjectId(context), AppPreference.getSelectedAlloMediaId(context)) != null) {
+            list = db.getMediaTypes(AppPreference.getSelectedProjectId(context), AppPreference.getSelectedAlloMediaId(context));
+            Log.e(TAG, "onCreateView: list >> " + list);
+        } else {
+            getDataFromServer();
+        }
+        setAdapter();
     }
+
+    private void getDataFromServer() {
+        if (Functions.isConnectingToInternet(context)) {
+            Log.e(TAG, "getDataFromServer: deleteMediaTypes() >> " + db.deleteMediaTypes(AppPreference.getSelectedProjectId(context), AppPreference.getSelectedAlloMediaId(context)));
+            tvEmpty.setVisibility(View.GONE);
+            new GetData().execute();
+        } else {
+            Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     private void init() {
         list = new ArrayList<MediaModel>();
         tvEmpty = (TextView) findViewById(R.id.tvEmpty);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDataFromServer();
+            }
+        });
     }
 
-    private void setRecyclerView() {
+    private void setAdapter() {
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view_transit);
         LinearLayoutManager manager = new LinearLayoutManager(SelectHoardingMediaTypeActivity.this);
         recycler_view.setLayoutManager(manager);
@@ -139,6 +171,7 @@ public class SelectHoardingMediaTypeActivity extends AppCompatActivity implement
         protected void onPreExecute() {
             super.onPreExecute();
             showProgressDialog();
+            refreshLayout.setRefreshing(false);
             tvEmpty.setVisibility(View.GONE);
             list.clear();
         }
@@ -166,20 +199,19 @@ public class SelectHoardingMediaTypeActivity extends AppCompatActivity implement
                             JSONArray jsonArray = jsonObject1.getJSONArray("result");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject11 = jsonArray.getJSONObject(i);
-                                MediaModel model = new MediaModel(jsonObject11.getString("media_type_id"), jsonObject11.getString("media_type_name"));
-                                list.add(model);
+                                MediaModel data = new MediaModel(jsonObject11.getString("media_type_id"), jsonObject11.getString("media_type_name"));
+                                list.add(data);
+                                //insert into local
+                                db.saveMediaType(data, AppPreference.getSelectedProjectId(context), AppPreference.getSelectedAlloMediaId(context));
                             }
-                            adapter.notifyDataSetChanged();
                             publishProgress("200", "");
                         } else {
-
                             String msg = jsonObject1.getJSONArray("result").getJSONObject(0).getString("msg");
                             publishProgress("400", msg);
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-
                         Log.e(TAG, "onResponse: " + e.getMessage());
                         publishProgress("400", getResources().getString(R.string.api_error_msg));
                     }
@@ -187,8 +219,6 @@ public class SelectHoardingMediaTypeActivity extends AppCompatActivity implement
 
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
-                    list.clear();
-                    adapter.notifyDataSetChanged();
                     Log.e(TAG, "onFailure: " + t.getMessage());
                     publishProgress("400", getResources().getString(R.string.api_error_msg));
                 }
@@ -202,12 +232,11 @@ public class SelectHoardingMediaTypeActivity extends AppCompatActivity implement
             hideProgressDialog();
             String status = values[0];
             String msg = values[1];
+            adapter.notifyDataSetChanged();
             if (status.equalsIgnoreCase("200")) {
             } else if (status.equalsIgnoreCase("400")) {
-                list.clear();
-                adapter.notifyDataSetChanged();
                 tvEmpty.setVisibility(View.VISIBLE);
-                Toast.makeText(SelectHoardingMediaTypeActivity.this, msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -169,8 +169,8 @@ public class SelectTransitMediaOptionActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            refreshLayout.setRefreshing(false);
             showProgressDialog();
+            refreshLayout.setRefreshing(false);
             list.clear();
             tvEmpty.setVisibility(View.GONE);
         }

@@ -89,14 +89,16 @@ import retrofit2.Response;
 
 public class AddWallActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final int REQUEST_STORAGE = 0;
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
     private static final int PIC_CROP = REQUEST_LOAD_IMAGE + 1;
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final String TAG = "AddWallActivity";
     String wallName, contName, contNo, state, city, address, startDate, endDate;
+    ArrayList<String> listState = new ArrayList<String>();
+    ArrayList<String> listCity = new ArrayList<String>();
     private Button btnCancel, btnConfirm;
     private EditText etWallName, etContName, etContNo, etAddress, etStartDate, etEndDate;
     private String start_date = "", end_date = "";
@@ -104,8 +106,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
     private ProgressHUD progressHD;
     private Context context;
     private FusedLocationProviderClient mFusedLocationClient;
-    ArrayList<String> listState = new ArrayList<String>();
-    ArrayList<String> listCity = new ArrayList<String>();
     private AppCompatAutoCompleteTextView atvStates;
     private AppCompatAutoCompleteTextView atvCities;
     private ImageView imgDoc1, imgDoc2;
@@ -404,7 +404,7 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
                             progressBar.setVisibility(View.GONE);
                             tvRequestOtp.setText("");
                         }
-                    }, 5000);
+                    }, 3000);
                 } else
                     etContNo.setError("Enter valid contact no.");
                 break;
@@ -683,85 +683,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-
-    private class AddWallTask extends AsyncTask<String, String, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgressDialog();
-        }
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.ADDWALLDETAIL);
-            jsonObject.addProperty("user_id", AppPreference.getUserId(AddWallActivity.this));
-            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddWallActivity.this));
-            jsonObject.addProperty("contact_per_number", contNo);
-            jsonObject.addProperty("contact_per_name", contName);
-            jsonObject.addProperty("branding_id", AppPreference.getSelectedAlloMediaId(AddWallActivity.this));
-            jsonObject.addProperty("media_option_id", media_option_id);
-            jsonObject.addProperty("wall_name", wallName);
-            jsonObject.addProperty("state", state);
-            jsonObject.addProperty("city", city);
-            jsonObject.addProperty("address", address);
-
-            Log.e(TAG, "Request ADD WALL >> " + jsonObject.toString());
-
-            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
-            Call<JsonObject> call = apiService.project_wall_api(jsonObject);
-            call.enqueue(new Callback<JsonObject>() {
-                @SuppressLint("LongLogTag")
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    Log.e(TAG, "Response ADD WALL >>" + response.body().toString());
-                    String resp = response.body().toString();
-                    try {
-                        JSONObject jsonObject = new JSONObject(resp);
-                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
-                            JSONObject jsonObject1 = jsonObject.getJSONArray("result").getJSONObject(0);
-                            Log.e(TAG, "onResponse: inserted wall_id >> " + jsonObject1.getString("id"));
-                            AppPreference.setSelectedWallId(AddWallActivity.this, jsonObject1.getString("id"));
-                            publishProgress("200", resp);
-                        } else {
-                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
-                            publishProgress("400", msg);
-                        }
-                    } catch (JSONException e) {
-                        publishProgress("400", getResources().getString(R.string.api_error_msg));
-                        e.printStackTrace();
-                    }
-                }
-
-                @SuppressLint("LongLogTag")
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
-                    publishProgress("400", getResources().getString(R.string.api_error_msg));
-                }
-            });
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-            hideProgressDialog();
-            String status = values[0];
-            String msg = values[1];
-            if (status.equalsIgnoreCase("200")) {
-                AppPreference.setSelectedWallName(AddWallActivity.this, etWallName.getText().toString());
-                Intent intent = new Intent(AddWallActivity.this, PerformWallActivity.class);
-                intent.putExtra("media_option_id", media_option_id);
-                startActivity(intent);
-                finish();
-            } else if (status.equalsIgnoreCase("400")) {
-                Toast.makeText(AddWallActivity.this, msg, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void showOtpDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Enter OTP Here");
@@ -887,6 +808,84 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+    }
+
+    private class AddWallTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.ADDWALLDETAIL);
+            jsonObject.addProperty("user_id", AppPreference.getUserId(AddWallActivity.this));
+            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddWallActivity.this));
+            jsonObject.addProperty("contact_per_number", contNo);
+            jsonObject.addProperty("contact_per_name", contName);
+            jsonObject.addProperty("branding_id", AppPreference.getSelectedAlloMediaId(AddWallActivity.this));
+            jsonObject.addProperty("media_option_id", media_option_id);
+            jsonObject.addProperty("wall_name", wallName);
+            jsonObject.addProperty("state", state);
+            jsonObject.addProperty("city", city);
+            jsonObject.addProperty("address", address);
+
+            Log.e(TAG, "Request ADD WALL >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.project_wall_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "Response ADD WALL >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            JSONObject jsonObject1 = jsonObject.getJSONArray("result").getJSONObject(0);
+                            Log.e(TAG, "onResponse: inserted wall_id >> " + jsonObject1.getString("id"));
+                            AppPreference.setSelectedWallId(AddWallActivity.this, jsonObject1.getString("id"));
+                            publishProgress("200", resp);
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            hideProgressDialog();
+            String status = values[0];
+            String msg = values[1];
+            if (status.equalsIgnoreCase("200")) {
+                AppPreference.setSelectedWallName(AddWallActivity.this, etWallName.getText().toString());
+                Intent intent = new Intent(AddWallActivity.this, PerformWallActivity.class);
+                intent.putExtra("media_option_id", media_option_id);
+                startActivity(intent);
+                finish();
+            } else if (status.equalsIgnoreCase("400")) {
+                Toast.makeText(AddWallActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     class ImageTask extends AsyncTask<Bitmap, String, Void> {

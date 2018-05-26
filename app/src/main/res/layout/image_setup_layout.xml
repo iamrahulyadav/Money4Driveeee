@@ -80,12 +80,12 @@
                         android:layout_below="@+id/btnAddMore"
                         android:orientation="vertical">
                         <TextView
+                            android:id="@+id/tvDimenUnit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/white"
-
                             android:text="@string/dimentation"/>
 
                         <LinearLayout

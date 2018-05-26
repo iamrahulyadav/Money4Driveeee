@@ -7,35 +7,57 @@
     android:layout_marginLeft="@dimen/_10sdp"
     android:layout_marginRight="@dimen/_10sdp"
     android:layout_marginTop="@dimen/_10sdp"
-    android:elevation="0dp"
-    app:cardElevation="@dimen/_5sdp"
-    app:cardCornerRadius="@dimen/_5sdp"
-    android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
-   >
+    android:elevation="0dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="@dimen/_5sdp"
+    app:cardElevation="@dimen/_5sdp">
 
 
     <RelativeLayout
-        android:layout_margin="@dimen/_5sdp"
         android:id="@+id/tab_new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
         android:orientation="horizontal">
 
-        <ImageView
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardLabel"
+            android:layout_width="@dimen/_44sdp"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:elevation="0dp"
+            app:cardBackgroundColor="@color/gray"
+            app:cardCornerRadius="@dimen/_22sdp"
+            app:cardElevation="0dp">
+
+            <TextView
+                android:id="@+id/tvLabel"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="P"
+                android:textAllCaps="true"
+                android:textColor="@color/hintcolor" />
+        </android.support.v7.widget.CardView>
+
+        <!--<ImageView
             android:id="@+id/noti_image"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_centerVertical="true"
             android:padding="@dimen/_3sdp"
-            android:src="@drawable/projectdefault" />
+            android:src="@drawable/projectdefault" />-->
 
         <LinearLayout
-            android:layout_marginLeft="@dimen/_5sdp"
             android:id="@+id/text_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/noti_image"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_toRightOf="@+id/cardLabel"
             android:orientation="vertical">
 
             <TextView
@@ -44,53 +66,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/etNameCMA"
-                android:inputType="text"
-                android:singleLine="true"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:text="Project Title Here"
                 android:textColor="@color/colorPrimary" />
 
             <View
-                android:layout_marginTop="@dimen/_3sdp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#3eb4b4b4"
-                />
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="#3eb4b4b4" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:weightSum="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="1">
+
                 <RelativeLayout
-                    android:layout_weight="0.8"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8">
+
                     <LinearLayout
                         android:id="@+id/ll1"
-                        android:layout_marginTop="@dimen/_2sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
                         android:orientation="horizontal">
 
                         <TextView
+                            style="@style/TextAppearance.AppCompat.Notification.Time.Media"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
-                            android:inputType="text|textMultiLine"
                             android:text="City"
-                            style="@style/TextAppearance.AppCompat.Notification.Time.Media"
-                            android:textColor="@color/hintcolor"
-
-                            />
+                            android:textColor="@color/hintcolor" />
 
                         <TextView
-
                             style="@style/Base.TextAppearance.AppCompat.Small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
-                            android:inputType="text|textMultiLine"
                             android:maxLines="2"
                             android:text=" - "
                             android:textColor="@color/hintcolor"
@@ -103,19 +120,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
-                            android:inputType="text|textMultiLine"
                             android:maxLines="2"
                             android:text="Indore"
-                            android:textColor="@color/hintcolor"
-
-                            />
+                            android:textColor="@color/hintcolor" />
 
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_below="@id/ll1"
-                        android:layout_marginTop="@dimen/_2sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/ll1"
+                        android:layout_marginTop="@dimen/_2sdp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -123,25 +138,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
-                            android:inputType="text|textMultiLine"
                             android:maxLines="2"
                             android:text="Date"
-                            android:textColor="@color/hintcolor"
-
-                            />
+                            android:textColor="@color/hintcolor" />
 
                         <TextView
-
                             style="@style/TextAppearance.AppCompat.Notification.Time.Media"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
-                            android:inputType="text|textMultiLine"
                             android:text=" - "
-                            android:textColor="@color/hintcolor"
-
-
-                            />
+                            android:textColor="@color/hintcolor" />
 
                         <TextView
                             android:id="@+id/date"
@@ -149,34 +156,30 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
-                            android:inputType="text|textMultiLine"
                             android:maxLines="2"
                             android:text="02/08/2018"
-                            android:textColor="@color/hintcolor"
-                            />
+                            android:textColor="@color/hintcolor" />
 
                     </LinearLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_keyboard_arrow_right_green_24dp"
-                        android:layout_alignParentRight="true" />
+                        android:src="@drawable/ic_keyboard_arrow_right_green_24dp" />
                 </RelativeLayout>
             </LinearLayout>
 
 
-
         </LinearLayout>
-
-
 
 
     </RelativeLayout>

@@ -562,7 +562,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                             progressBar.setVisibility(View.GONE);
                             tvRequestOtp.setText("");
                         }
-                    }, 5000);
+                    }, 3000);
                 } else
                     etDriverContact.setError("Enter valid contact no.");
                 break;

@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.ProjectDetailsActivity;
-import com.hvantage2.money4driveeee.adapter.ProjectHistoryAdapter;
+import com.hvantage2.money4driveeee.adapter.ProjectListAdapter;
 
 import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.ProjectModel;
@@ -54,7 +54,7 @@ public class Pending2Fragment extends Fragment {
     TextView tvEmpty;
     RecyclerView recyclerView;
     List<ProjectModel> list;
-    ProjectHistoryAdapter adapter;
+    ProjectListAdapter adapter;
     FragmentIntraction intraction;
     private View rootview;
     private ProgressHUD progressHD;
@@ -104,7 +104,7 @@ public class Pending2Fragment extends Fragment {
 
     private void setAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new ProjectHistoryAdapter(context, list);
+        adapter = new ProjectListAdapter(context, list);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override

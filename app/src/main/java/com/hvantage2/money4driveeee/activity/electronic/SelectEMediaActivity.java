@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,12 +20,11 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
-import com.hvantage2.money4driveeee.retrofit.ApiClient;
-import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.SourceAdapter;
-
 import com.hvantage2.money4driveeee.model.SourceModel;
+import com.hvantage2.money4driveeee.retrofit.ApiClient;
+import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
@@ -49,6 +49,7 @@ public class SelectEMediaActivity extends AppCompatActivity {
     private ProgressHUD progressHD;
     private RecyclerView recycler_view_reg_no;
     private String media_option_name;
+    private SwipeRefreshLayout refreshLayout;
 
 
     @Override
@@ -65,7 +66,7 @@ public class SelectEMediaActivity extends AppCompatActivity {
             media_option_name = getIntent().getStringExtra("media_option_name");
             Log.e(TAG, "onCreate: media_option_id >> " + media_option_id);
             Log.e(TAG, "onCreate: media_option_name >> " + media_option_name);
-            if(!media_option_name.equalsIgnoreCase("")&&media_option_name!=null)
+            if (!media_option_name.equalsIgnoreCase("") && media_option_name != null)
                 getSupportActionBar().setTitle(media_option_name);
         }
     }
@@ -124,6 +125,14 @@ public class SelectEMediaActivity extends AppCompatActivity {
         list = new ArrayList<SourceModel>();
         tvEmpty = (TextView) findViewById(R.id.tvEmpty);
         setTransitListRecyclerView();
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onResume();
+            }
+        });
     }
 
     @Override
