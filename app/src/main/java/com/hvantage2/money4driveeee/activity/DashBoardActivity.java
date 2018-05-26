@@ -72,10 +72,12 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
         clearPreferenceData();
 
         if (ContextCompat.checkSelfPermission(DashBoardActivity.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(DashBoardActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                || ContextCompat.checkSelfPermission(DashBoardActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(DashBoardActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(DashBoardActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(DashBoardActivity.this, android.Manifest.permission.CAMERA)) {
             } else {
-                ActivityCompat.requestPermissions(DashBoardActivity.this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE}, 10);
+                ActivityCompat.requestPermissions(DashBoardActivity.this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 10);
             }
         }
 
@@ -200,7 +202,6 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
     private void logoutAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
         builder.setMessage("Are you sure you want to logout this app?");
-        builder.setTitle("Logout");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

@@ -7,22 +7,25 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.wallpainting.AddWallActivity"
     tools:showIn="@layout/activity_add_wall">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background">
+
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/footerimg"
-            android:layout_height="wrap_content"></LinearLayout>
+            android:background="@drawable/footerimg"></LinearLayout>
+
         <ScrollView
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="horizontal"
             android:overScrollMode="never"
-            >
+            android:scrollbars="horizontal">
+
             <LinearLayout
                 android:id="@+id/linearmain"
                 android:layout_width="match_parent"
@@ -33,259 +36,269 @@
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:padding="@dimen/_5sdp"
                     android:text="Wall Title/Name"
                     android:textColor="@color/white" />
+
                 <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
                     android:id="@+id/etWallName"
+                    style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Wall Title/Name"
                     android:background="@null"
+                    android:hint="Enter Wall Title/Name"
+                    android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
+                    android:padding="@dimen/_5sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
 
 
-                    android:imeOptions="actionNext"/>
+                    android:textColorHint="@color/hintcolor" />
+
                 <View
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/dividerColor">
-                </View>
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@color/dividerColor"></View>
 
 
                 <TextView
-                    android:layout_marginTop="@dimen/_8sdp"
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/contact_name"
                     android:textColor="@color/white" />
+
                 <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
                     android:id="@+id/etContName"
+                    style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Contact Person Name"
                     android:background="@null"
+                    android:hint="Enter Contact Person Name"
+                    android:imeOptions="actionNext"
                     android:inputType="textCapSentences|textPersonName"
 
-                    android:imeOptions="actionNext"
+                    android:padding="@dimen/_5sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
 
-                     />
+                    />
+
                 <View
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:background="@color/dividerColor">
 
                 </View>
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_marginTop="@dimen/_8sdp"
-
                     android:layout_width="match_parent"
+
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/contact_no"
                     android:textColor="@color/white" />
+
                 <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
-                    android:layout_width="match_parent"
                     android:id="@+id/etContNo"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:hint="Enter Contact Person No."
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="10"
+                    android:padding="@dimen/_5sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
 
-                     />
+                    />
+
                 <View
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:background="@color/dividerColor">
 
                 </View>
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:padding="@dimen/_5sdp"
                     android:text="State"
                     android:textColor="@color/white" />
+
                 <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
                     android:id="@+id/etState"
+                    style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter State"
                     android:background="@null"
-                    android:singleLine="true"
-                    android:inputType="textCapSentences"
+                    android:hint="Enter State"
                     android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:padding="@dimen/_5sdp"
+                    android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
 
-                     />
+                    />
+
                 <View
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:background="@color/dividerColor">
 
                 </View>
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/City"
                     android:textColor="@color/white" />
+
                 <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
                     android:id="@+id/etCity"
+                    style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter City"
                     android:background="@null"
-                    android:inputType="textCapSentences"
-                    android:singleLine="true"
+                    android:hint="Enter City"
                     android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:padding="@dimen/_5sdp"
+                    android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
 
-                     />
+                    />
+
                 <View
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:background="@color/dividerColor">
 
                 </View>
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/address"
                     android:textColor="@color/white" />
+
                 <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
                     android:id="@+id/etAddress"
+                    style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
-                    android:maxLines="2"
                     android:background="@null"
-                    android:singleLine="true"
                     android:hint="Enter Address"
                     android:imeOptions="actionDone"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:maxLines="3"
+                    android:padding="@dimen/_5sdp"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
 
-                     />
+                    />
 
                 <View
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/dividerColor">
-                </View>
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@color/dividerColor"></View>
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:padding="@dimen/_5sdp"
                     android:text="Start Date"
                     android:textColor="@color/white" />
+
                 <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
                     android:id="@+id/etStartDate"
+                    style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Select Start Date"
-                    android:inputType="textMultiLine"
-                    android:focusableInTouchMode="false"
                     android:background="@null"
-                    android:enabled="false"
                     android:editable="false"
-                    android:singleLine="false"
+                    android:enabled="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Select Start Date"
                     android:imeOptions="actionDone"
+                    android:inputType="textMultiLine"
+                    android:padding="@dimen/_5sdp"
+                    android:singleLine="false"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
 
-                     />
+                    />
+
                 <View
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/dividerColor">
-                </View>
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@color/dividerColor"></View>
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:padding="@dimen/_5sdp"
                     android:text="End Date"
                     android:textColor="@color/white" />
+
                 <EditText
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:padding="@dimen/_5sdp"
                     android:id="@+id/etEndDate"
+                    style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Select End Date"
-                    android:inputType="textMultiLine"
-                    android:focusableInTouchMode="false"
                     android:background="@null"
-                    android:singleLine="false"
-                    android:enabled="false"
                     android:editable="false"
+                    android:enabled="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Select End Date"
                     android:imeOptions="actionDone"
+                    android:inputType="textMultiLine"
+                    android:padding="@dimen/_5sdp"
+                    android:singleLine="false"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
 
-                     />
+                    />
+
                 <View
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/dividerColor">
-                </View>
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@color/dividerColor"></View>
 
 
                 <LinearLayout
@@ -307,8 +320,7 @@
                         android:gravity="center"
                         android:padding="@dimen/_1sdp"
                         android:text="@string/Cancel"
-                        android:textColor="@color/green"
-                        />
+                        android:textColor="@color/green" />
 
                     <Button
                         android:id="@+id/btnConfirm"
@@ -320,8 +332,7 @@
                         android:gravity="center"
                         android:padding="@dimen/_1sdp"
                         android:text="Add"
-                        android:textColor="@color/white"
-                        />
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 

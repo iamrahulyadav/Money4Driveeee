@@ -113,7 +113,7 @@ public class Functions {
 
     public static void showSettingsAlert(final Activity mContext) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-        alertDialog.setTitle("GPS is settings");
+        alertDialog.setTitle("GPS is disabled");
         alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("Enable Location", new DialogInterface.OnClickListener() {

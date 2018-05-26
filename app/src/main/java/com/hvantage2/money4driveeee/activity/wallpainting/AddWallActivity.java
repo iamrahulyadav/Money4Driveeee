@@ -80,9 +80,9 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        showProgressDialog();
-        checkLocationPermission();
-        setUpFused();
+        if (checkLocationPermission()) {
+            setUpFused();
+        }
         init();
         if (getIntent().hasExtra("media_option_id"))
             media_option_id = getIntent().getStringExtra("media_option_id");
@@ -108,6 +108,11 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             Functions.showSettingsAlert(this);
+        else {
+            if (checkLocationPermission()) {
+                setUpFused();
+            }
+        }
     }
 
     private void showLocationErrorDialog() {
@@ -141,6 +146,7 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
             }
             return false;
         } else {
+
             return true;
         }
     }
@@ -155,18 +161,21 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
                     // location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         //Request location updates:
+                        setUpFused();
                     }
 
                 } else {
+                    checkLocationPermission();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(context, "Please grant location permission", Toast.LENGTH_SHORT).show();
-                    finish();
+                    /*Toast.makeText(context, "Please grant location permission", Toast.LENGTH_SHORT).show();
+                    finish();*/
                 }
                 return;
             }
         }
     }
+
 
     private void setUpFused() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -178,14 +187,13 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        hideProgressDialog();
 
                         if (location != null) {
                             Log.e(TAG, "setUpFused: onSuccess: location >> " + location);
                             try {
-                                showLocationErrorDialog();
                                 getLocationAddress(location);
                             } catch (IOException e) {
+                                showLocationErrorDialog();
                                 e.printStackTrace();
                                 Log.e(TAG, "setUpFused: onSuccess: Exc >> " + e.getMessage());
                             }
@@ -194,8 +202,7 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
                 }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                showProgressDialog();
-
+                hideProgressDialog();
                 showLocationErrorDialog();
                 Log.e(TAG, "setUpFused: onFailure: Exc >> " + e.getMessage());
             }
