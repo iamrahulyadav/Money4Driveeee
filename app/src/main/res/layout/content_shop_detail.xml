@@ -32,7 +32,8 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/shopprsonnm"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
                 <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
@@ -45,6 +46,7 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"
 
                      />
 
@@ -64,7 +66,8 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/personNm"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
                 <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
@@ -79,6 +82,7 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"
 
                      />
 
@@ -97,7 +101,8 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/shopid"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
                 <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
@@ -113,6 +118,7 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"
 
                      />
 
@@ -131,7 +137,8 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/address"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
                 <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
@@ -146,6 +153,7 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"
 
                      />
 
@@ -164,7 +172,8 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/City"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen"/>
                 <EditText
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:padding="@dimen/_5sdp"
@@ -179,6 +188,7 @@
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"
 
                      />
 
@@ -213,6 +223,7 @@
                         android:padding="@dimen/_1sdp"
                         android:text="@string/Cancel"
                         android:textColor="@color/green"
+                        android:fontFamily="@font/oxygen"
                         />
 
                     <Button
@@ -226,6 +237,7 @@
                         android:padding="@dimen/_1sdp"
                         android:text="@string/Confirm"
                         android:textColor="@color/white"
+                        android:fontFamily="@font/oxygen"
                          />
 
                 </LinearLayout>

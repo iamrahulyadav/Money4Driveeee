@@ -55,6 +55,7 @@
                         android:layout_marginRight="@dimen/_5sdp"
                         android:background="@drawable/solid_circle"
                         android:elevation="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
                         android:gravity="center"
                         android:padding="@dimen/_2sdp"
                         android:text="0"
@@ -71,6 +72,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
+                            android:fontFamily="@font/oxygen"
                             android:maxLines="2"
                             android:text="@string/totalprojecttxt"
                             android:textColor="@color/dashboard_text_color" />
@@ -109,6 +111,7 @@
                         android:layout_marginRight="@dimen/_5sdp"
                         android:background="@drawable/solid_circle"
                         android:elevation="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
                         android:gravity="center"
                         android:padding="@dimen/_2sdp"
                         android:text="0"
@@ -125,6 +128,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
+                            android:fontFamily="@font/oxygen"
                             android:text="@string/compProj"
                             android:textColor="@color/dashboard_text_color" />
                     </RelativeLayout>
@@ -173,6 +177,7 @@
                         android:layout_marginRight="@dimen/_5sdp"
                         android:background="@drawable/solid_circle"
                         android:elevation="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
                         android:gravity="center"
                         android:padding="@dimen/_2sdp"
                         android:text="0"
@@ -189,6 +194,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
+                            android:fontFamily="@font/oxygen"
                             android:text="@string/newAssign"
                             android:textColor="@color/dashboard_text_color" />
 
@@ -223,6 +229,7 @@
                         android:layout_marginRight="@dimen/_5sdp"
                         android:background="@drawable/solid_circle"
                         android:elevation="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
                         android:gravity="center"
                         android:padding="@dimen/_2sdp"
                         android:text="0"
@@ -239,6 +246,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableRight="@drawable/ic_keyboard_arrow_right_green_dashboard"
+                            android:fontFamily="@font/oxygen"
                             android:text="@string/pending"
                             android:textColor="@color/dashboard_text_color" />
                     </RelativeLayout>
@@ -280,6 +288,7 @@
                             android:background="@null"
                             android:drawableLeft="@drawable/recentmsg"
                             android:drawablePadding="@dimen/_5sdp"
+                            android:fontFamily="@font/oxygen"
                             android:text="@string/recentmsg"
                             android:textAllCaps="false"
                             android:textColor="@color/white" />
@@ -323,6 +332,7 @@
                         android:background="@drawable/green_border_rounded"
                         android:drawableLeft="@drawable/ic_call_white_drawable"
                         android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
                         android:maxLines="1"
                         android:paddingLeft="@dimen/_5sdp"
                         android:paddingRight="@dimen/_10sdp"
@@ -345,6 +355,7 @@
                         android:background="@drawable/green_plan_border"
                         android:drawableLeft="@drawable/ic_mail_outline_white_drawable"
                         android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
                         android:paddingLeft="@dimen/_10sdp"
                         android:paddingRight="@dimen/_15sdp"
                         android:text="Messages"

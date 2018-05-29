@@ -37,8 +37,6 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -108,11 +106,11 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
     private FusedLocationProviderClient mFusedLocationClient;
     private AppCompatAutoCompleteTextView atvStates;
     private AppCompatAutoCompleteTextView atvCities;
-    private ImageView imgDoc1, imgDoc2;
     private String userChoosenTask;
-    private int imgCounter = 1;
     private Bitmap bitmapImage1;
     private String base64image1 = "", base64image2 = "";
+    private ImageView imgDoc1, imgDoc2;
+    private int imgCounter = 1;
     private TextView tvImgDoc1Remark, tvImgDoc2Remark;
     private TextView tvRequestOtp;
     private ProgressBar progressBar;
@@ -266,20 +264,22 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
         btnCancel = (Button) findViewById(R.id.btnCancel);
 
+
+
+
+        btnCancel.setOnClickListener(this);
+        btnConfirm.setOnClickListener(this);
+
         imgDoc1 = (ImageView) findViewById(R.id.imgDoc1);
         imgDoc2 = (ImageView) findViewById(R.id.imgDoc2);
         tvImgDoc1Remark = (TextView) findViewById(R.id.tvImgDoc1Remark);
         tvImgDoc2Remark = (TextView) findViewById(R.id.tvImgDoc2Remark);
 
-        tvRequestOtp = (TextView) findViewById(R.id.tvRequestOtp);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        btnCancel.setOnClickListener(this);
-        btnConfirm.setOnClickListener(this);
-
         imgDoc1.setOnClickListener(this);
         imgDoc2.setOnClickListener(this);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        tvRequestOtp = (TextView) findViewById(R.id.tvRequestOtp);
         tvRequestOtp.setOnClickListener(this);
 
         ((ScrollView) findViewById(R.id.container)).setOnTouchListener(new View.OnTouchListener() {
@@ -362,12 +362,12 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
             progressHD.dismiss();
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.product_menu, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -472,7 +472,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
-
 
     private void galleryIntent() {
         startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);

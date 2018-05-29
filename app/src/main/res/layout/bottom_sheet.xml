@@ -32,7 +32,8 @@
             android:lineSpacingExtra="3sp"
             android:textAlignment="textStart"
             style="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/oxygen"/>
         <Spinner
             android:id="@+id/spinner"
             android:background="@null"
@@ -62,7 +63,8 @@
             android:lineSpacingExtra="3sp"
             android:textColor="@color/hintcolor"
             android:textAlignment="textStart"
-            style="@style/TextAppearance.AppCompat.Subhead"/>
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:fontFamily="@font/oxygen"/>
 
         <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
@@ -77,6 +79,7 @@
             android:text="Send"
             android:layout_gravity="bottom"
             android:gravity="bottom"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/oxygen" />
     </LinearLayout>
 </RelativeLayout>

@@ -35,7 +35,8 @@
             android:layout_toRightOf="@id/news_pic"
             android:maxLines="1"
             android:text="Jamess Hopess"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:fontFamily="@font/oxygen"/>
 
         <TextView
             android:id="@+id/message"
@@ -46,7 +47,8 @@
             android:layout_toRightOf="@id/news_pic"
             android:maxLines="1"
             android:text="Hi..how r u ?"
-            android:textColor="@color/hintcolor" />
+            android:textColor="@color/hintcolor"
+            android:fontFamily="@font/oxygen" />
 
         <TextView
             android:id="@+id/date"
@@ -57,7 +59,8 @@
             android:layout_alignParentRight="true"
             android:paddingRight="@dimen/_5sdp"
             android:text="07/03/2018"
-            android:textColor="@color/hintcolor" />
+            android:textColor="@color/hintcolor"
+            android:fontFamily="@font/oxygen" />
     </RelativeLayout>
 
     <View

@@ -41,7 +41,8 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:padding="@dimen/_4sdp"
                     android:text="Wall Title/Name"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
 
                 <EditText
                     android:id="@+id/etWallName"
@@ -55,7 +56,8 @@
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor" />
+                    android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -70,7 +72,8 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:padding="@dimen/_4sdp"
                     android:text="@string/contact_name"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
 
                 <EditText
                     android:id="@+id/etContName"
@@ -86,6 +89,7 @@
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
 
+                    android:fontFamily="@font/oxygen"
                     />
 
                 <View
@@ -102,7 +106,8 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:padding="@dimen/_4sdp"
                     android:text="@string/contact_no"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -121,7 +126,8 @@
                         android:padding="@dimen/_4sdp"
                         android:singleLine="true"
                         android:textColor="@color/hintcolor"
-                        android:textColorHint="@color/hintcolor" />
+                        android:textColorHint="@color/hintcolor"
+                        android:fontFamily="@font/oxygen"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -140,7 +146,8 @@
                             android:clickable="true"
                             android:padding="@dimen/_4sdp"
                             android:text="Send OTP"
-                            android:textColor="@color/colorAccent" />
+                            android:textColor="@color/colorAccent"
+                            android:fontFamily="@font/oxygen"/>
 
                         <ProgressBar
                             android:id="@+id/progressBar"
@@ -176,7 +183,8 @@
                             android:layout_marginTop="@dimen/_15sdp"
                             android:padding="@dimen/_4sdp"
                             android:text="State"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/oxygen" />
 
 
                         <android.support.v7.widget.AppCompatAutoCompleteTextView
@@ -214,7 +222,8 @@
                             android:layout_marginTop="@dimen/_15sdp"
                             android:padding="@dimen/_4sdp"
                             android:text="City"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/oxygen" />
 
                         <android.support.v7.widget.AppCompatAutoCompleteTextView
                             android:id="@+id/atvCities"
@@ -245,7 +254,8 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:padding="@dimen/_4sdp"
                     android:text="@string/address"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
 
                 <EditText
                     android:id="@+id/etAddress"
@@ -259,7 +269,8 @@
                     android:maxLines="3"
                     android:padding="@dimen/_4sdp"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor" />
+                    android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen" />
 
                 <View
                     android:layout_width="match_parent"
@@ -274,7 +285,8 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:padding="@dimen/_4sdp"
                     android:text="Start Date"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
 
                 <EditText
                     android:id="@+id/etStartDate"
@@ -292,6 +304,7 @@
                     android:singleLine="false"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"
 
                     />
 
@@ -307,7 +320,8 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:padding="@dimen/_4sdp"
                     android:text="End Date"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
 
                 <EditText
                     android:id="@+id/etEndDate"
@@ -324,7 +338,8 @@
                     android:padding="@dimen/_4sdp"
                     android:singleLine="false"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor" />
+                    android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen" />
 
                 <View
                     android:layout_width="match_parent"
@@ -339,7 +354,8 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:padding="@dimen/_4sdp"
                     android:text="Upload Documents (Max. 2)"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -371,7 +387,8 @@
                             android:maxLines="1"
                             android:singleLine="true"
                             android:text=""
-                            android:textColor="@color/hintcolor" />
+                            android:textColor="@color/hintcolor"
+                            android:fontFamily="@font/oxygen" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -397,7 +414,8 @@
                             android:maxLines="1"
                             android:singleLine="true"
                             android:text=""
-                            android:textColor="@color/hintcolor" />
+                            android:textColor="@color/hintcolor"
+                            android:fontFamily="@font/oxygen"/>
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -405,7 +423,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/dividerColor"></View>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -425,7 +442,8 @@
                         android:gravity="center"
                         android:padding="@dimen/_1sdp"
                         android:text="@string/Cancel"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/green"
+                        android:fontFamily="@font/oxygen" />
 
                     <Button
                         android:id="@+id/btnConfirm"
@@ -437,12 +455,10 @@
                         android:gravity="center"
                         android:padding="@dimen/_1sdp"
                         android:text="Add"
-                        android:textColor="@color/white" />
-
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/oxygen"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-
     </RelativeLayout>
-
 </android.support.constraint.ConstraintLayout>

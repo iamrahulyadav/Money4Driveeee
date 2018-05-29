@@ -23,7 +23,8 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical"
             android:textAlignment="center"
-            android:textColor="@color/hintcolor"/>
+            android:textColor="@color/hintcolor"
+            android:fontFamily="@font/oxygen"/>
     </RelativeLayout>
 
     <TextView
@@ -38,6 +39,7 @@
         android:textColor="@color/hintcolor"
         android:layout_gravity="center_vertical"
         style="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:fontFamily="@font/oxygen"
         />
 
     <ImageView

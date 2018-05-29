@@ -18,7 +18,8 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@style/ToolbarTitleTextAppearance" />
     </android.support.design.widget.AppBarLayout>
     <include layout="@layout/content_add_hoarding" />
 </android.support.design.widget.CoordinatorLayout>

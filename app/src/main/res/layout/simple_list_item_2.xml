@@ -7,4 +7,5 @@
     android:gravity="center_vertical"
     android:padding="@dimen/_5sdp"
     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-    android:textColor="@color/colorPrimary" />
+    android:textColor="@color/colorPrimary"
+    android:fontFamily="@font/oxygen"/>

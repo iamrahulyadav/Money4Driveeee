@@ -1,425 +1,502 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/background"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.hvantage2.money4driveeee.activity.shop.AddShopActivity"
-    tools:showIn="@layout/activity_add_shop"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_alignParentBottom="true"
-    android:background="@drawable/footerimg"
-    android:layout_height="wrap_content"></LinearLayout>
-<ScrollView
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="horizontal"
-    android:overScrollMode="never"
-    >
+    tools:showIn="@layout/activity_add_shop">
+
     <LinearLayout
-        android:id="@+id/linearmain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:orientation="vertical">
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/footerimg"></LinearLayout>
 
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/shopid"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etShopID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Shop Id"
-            android:background="@null"
-            android:inputType="textCapSentences"
-            android:singleLine="true"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-
-            android:imeOptions="actionNext"/>
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-        </View>
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/shop_name"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etShopName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Shop Name"
-            android:background="@null"
-            android:inputType="textCapSentences"
-            android:imeOptions="actionNext"
-
-            android:singleLine="true"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-
-        </View>
-
-        <TextView
-            android:layout_marginTop="@dimen/_8sdp"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/contact_name"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etContName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Contact Person Name"
-            android:background="@null"
-            android:inputType="textCapSentences|textPersonName"
-
-            android:imeOptions="actionNext"
-            android:singleLine="true"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-
-        </View>
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/contact_no"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:layout_width="match_parent"
-            android:id="@+id/etContNo"
-            android:editable="false"
-            android:enabled="false"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="Enter Contact Person No."
-            android:imeOptions="actionNext"
-            android:inputType="number"
-            android:maxLength="10"
-            android:singleLine="true"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-
-        </View>
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="State"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etState"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter State"
-            android:background="@null"
-            android:singleLine="true"
-            android:inputType="textCapSentences|textNoSuggestions"
-            android:imeOptions="actionNext"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-
-        </View>
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/City"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etCity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter City"
-            android:background="@null"
-            android:inputType="textCapSentences|textNoSuggestions"
-            android:singleLine="true"
-            android:imeOptions="actionNext"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-
-        </View>
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/address"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textCapSentences|textNoSuggestions"
-            android:maxLines="2"
-            android:background="@null"
-            android:singleLine="true"
-            android:hint="Enter Address"
-            android:imeOptions="actionDone"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-        </View>
-<!--
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="Branding Types"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etBType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select Branding Type"
-            android:inputType="textMultiLine"
-            android:focusableInTouchMode="false"
-            android:background="@null"
-            android:singleLine="false"
-            android:imeOptions="actionDone"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-        </View>
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="Branding Options"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etBOptions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select Branding Options"
-            android:inputType="textMultiLine"
-            android:focusableInTouchMode="false"
-            android:background="@null"
-            android:singleLine="false"
-            android:imeOptions="actionDone"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-        </View>-->
-
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="Start Date"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etStartDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select Start Date"
-            android:inputType="textMultiLine|textNoSuggestions"
-            android:focusableInTouchMode="false"
-            android:background="@null"
-            android:enabled="false"
-            android:editable="false"
-            android:singleLine="false"
-            android:imeOptions="actionDone"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-        </View>
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="End Date"
-            android:textColor="@color/white" />
-        <EditText
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:padding="@dimen/_5sdp"
-            android:id="@+id/etEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select End Date"
-            android:inputType="textMultiLine|textNoSuggestions"
-            android:focusableInTouchMode="false"
-            android:background="@null"
-            android:singleLine="false"
-            android:enabled="false"
-            android:editable="false"
-            android:imeOptions="actionDone"
-            android:textColor="@color/hintcolor"
-            android:textColorHint="@color/hintcolor"
-
-             />
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor">
-        </View>
-
+    <ScrollView
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="horizontal">
 
         <LinearLayout
+            android:id="@+id/linearmain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/linearmain"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnCancel"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_margin="@dimen/_10sdp"
-                android:layout_weight="0.5"
-                android:background="@drawable/green_plan_border"
-                android:gravity="center"
-                android:padding="@dimen/_1sdp"
-                android:text="@string/Cancel"
-                android:textColor="@color/green"
-                 />
+            <TextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/oxygen"
+                android:padding="@dimen/_4sdp"
+                android:text="@string/shopid"
+                android:textColor="@color/white" />
 
-            <Button
-                android:id="@+id/btnConfirm"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_margin="@dimen/_10sdp"
-                android:layout_weight="0.5"
-                android:background="@drawable/green_border_rounded"
-                android:gravity="center"
-                android:padding="@dimen/_1sdp"
-                android:text="Add"
-                android:textColor="@color/white"
+            <EditText
+                android:id="@+id/etShopID"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:fontFamily="@font/oxygen"
+                android:hint="Enter Shop Id"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:padding="@dimen/_4sdp"
+                android:singleLine="true"
+
+
+                android:textColor="@color/hintcolor"
+                android:textColorHint="@color/hintcolor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"></View>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/oxygen"
+                android:padding="@dimen/_4sdp"
+                android:text="@string/shop_name"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/etShopName"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:fontFamily="@font/oxygen"
+                android:hint="Enter Shop Name"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+
+                android:padding="@dimen/_4sdp"
+                android:singleLine="true"
+                android:textColor="@color/hintcolor"
+
+                android:textColorHint="@color/hintcolor" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor">
+
+            </View>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/oxygen"
+                android:padding="@dimen/_4sdp"
+                android:text="@string/contact_name"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/etContName"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_80sdp"
+                android:background="@null"
+                android:hint="Enter Contact Person No."
+                android:inputType="number"
+                android:maxLength="10"
+                android:padding="@dimen/_4sdp"
+                android:singleLine="true"
+                android:textColor="@color/hintcolor"
+                android:textColorHint="@color/hintcolor"
+                android:fontFamily="@font/oxygen"/>
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor">
+
+            </View>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/oxygen"
+                android:padding="@dimen/_4sdp"
+                android:text="@string/contact_no"
+                android:textColor="@color/white" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etContNo"
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_80sdp"
+                    android:background="@null"
+                    android:hint="Enter Contact Person No."
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:padding="@dimen/_4sdp"
+                    android:singleLine="true"
+                    android:textColor="@color/hintcolor"
+                    android:textColorHint="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvRequestOtp"
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:clickable="true"
+                        android:padding="@dimen/_4sdp"
+                        android:text="Send OTP"
+                        android:textColor="@color/colorAccent"
+                        android:fontFamily="@font/oxygen"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/oxygen"
+                        android:padding="@dimen/_4sdp"
+                        android:text="State"
+                        android:textColor="@color/white" />
+
+
+                    <android.support.v7.widget.AppCompatAutoCompleteTextView
+                        android:id="@+id/atvStates"
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="Enter State"
+                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:padding="@dimen/_4sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/hintcolor"
+                        android:textColorHint="@color/hintcolor" />
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dividerColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/oxygen"
+                        android:padding="@dimen/_4sdp"
+                        android:text="City"
+                        android:textColor="@color/white" />
+
+                    <android.support.v7.widget.AppCompatAutoCompleteTextView
+                        android:id="@+id/atvCities"
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="Enter City"
+                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:padding="@dimen/_4sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/hintcolor"
+                        android:textColorHint="@color/hintcolor" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dividerColor" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/oxygen"
+                android:padding="@dimen/_4sdp"
+                android:text="@string/address"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/etAddress"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:fontFamily="@font/oxygen"
+                android:hint="Enter Address"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences|textNoSuggestions"
+                android:maxLines="2"
+                android:padding="@dimen/_4sdp"
+                android:singleLine="true"
+                android:textColor="@color/hintcolor"
+                android:textColorHint="@color/hintcolor"
+
                 />
 
-        </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"></View>
 
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/oxygen"
+                android:padding="@dimen/_4sdp"
+                android:text="Start Date"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/etStartDate"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:editable="false"
+                android:enabled="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/oxygen"
+                android:hint="Select Start Date"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:padding="@dimen/_4sdp"
+                android:singleLine="false"
+                android:textColor="@color/hintcolor"
+                android:textColorHint="@color/hintcolor"
+
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"></View>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/oxygen"
+                android:padding="@dimen/_4sdp"
+                android:text="End Date"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/etEndDate"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:editable="false"
+                android:enabled="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/oxygen"
+                android:hint="Select End Date"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:padding="@dimen/_4sdp"
+                android:singleLine="false"
+                android:textColor="@color/hintcolor"
+                android:textColorHint="@color/hintcolor"
+
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"></View>
+
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/oxygen"
+                android:padding="@dimen/_4sdp"
+                android:text="Upload Documents (Max. 2)"
+                android:textColor="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="@dimen/_64sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp">
+
+                    <ImageView
+                        android:id="@+id/imgDoc1"
+                        android:layout_width="@dimen/_64sdp"
+                        android:layout_height="@dimen/_64sdp"
+                        android:background="@drawable/doc_thumb_border"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_doc_thumb" />
+
+                    <TextView
+                        android:id="@+id/tvImgDoc1Remark"
+                        style="@style/TextAppearance.AppCompat.Notification.Time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/imgDoc1"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/hintcolor" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="@dimen/_64sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp">
+
+                    <ImageView
+                        android:id="@+id/imgDoc2"
+                        android:layout_width="@dimen/_64sdp"
+                        android:layout_height="@dimen/_64sdp"
+                        android:background="@drawable/doc_thumb_border"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_doc_thumb" />
+
+                    <TextView
+                        android:id="@+id/tvImgDoc2Remark"
+                        style="@style/TextAppearance.AppCompat.Notification.Time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/imgDoc2"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/hintcolor" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/linearmain"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/btnCancel"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/green_plan_border"
+                    android:gravity="center"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/Cancel"
+                    android:textColor="@color/green"
+                    android:fontFamily="@font/oxygen" />
+
+                <Button
+                    android:id="@+id/btnConfirm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/green_border_rounded"
+                    android:gravity="center"
+                    android:padding="@dimen/_1sdp"
+                    android:text="Add"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/oxygen"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

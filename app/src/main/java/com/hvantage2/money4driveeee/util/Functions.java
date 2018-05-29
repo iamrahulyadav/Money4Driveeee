@@ -7,10 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.EditText;
 
 import java.io.IOException;
@@ -32,14 +30,14 @@ public class Functions {
         //add your own logic
         if (TextUtils.isEmpty(tv.getText())) {
             EditTextPointer = tv;
-            errorMessage = "This field can't be empty.!";
+            errorMessage = "Enter email address";
             return false;
         } else {
             if (android.util.Patterns.EMAIL_ADDRESS.matcher(tv.getText()).matches()) {
                 return true;
             } else {
                 EditTextPointer = tv;
-                errorMessage = "Invalid Email-Id";
+                errorMessage = "Invalid email";
                 return false;
             }
         }

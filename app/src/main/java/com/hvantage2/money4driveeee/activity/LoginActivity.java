@@ -1,6 +1,5 @@
 package com.hvantage2.money4driveeee.activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,15 +22,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.hvantage2.money4driveeee.model.UserModal;
 import com.hvantage2.money4driveeee.R;
+import com.hvantage2.money4driveeee.model.UserModal;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.Functions;
-
-
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import retrofit2.Call;
@@ -41,9 +38,8 @@ import retrofit2.Response;
 import static com.hvantage2.money4driveeee.util.Functions.errorMessage;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "FeildExeLoginA";
+    private static final String TAG = "LoginActivity";
     EditText etEmail, etPassword;
-    private ProgressDialog dialog;
     private TextView btnLogin;
     private String fcm_token = "";
     private ProgressHUD progressHD;
@@ -102,14 +98,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(this, ForgotPasswordActivity.class));
                 break;
             case R.id.btnLogin:
+                hideSoftKeyboard(view);
                 if (TextUtils.isEmpty(etEmail.getText())) {
-                    etEmail.setError("Enter email address");
+                    Snackbar.make(findViewById(android.R.id.content), "Enter email address", Snackbar.LENGTH_SHORT).show();
                 } else if (!Functions.isEmailValid(etEmail)) {
-                    etEmail.setError(errorMessage);
+                    Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(etPassword.getText())) {
-                    etPassword.setError("Enter password");
+                    Snackbar.make(findViewById(android.R.id.content), "Enter password", Snackbar.LENGTH_SHORT).show();
                 } else {
-                    hideSoftKeyboard(view);
                     performLogin();
                 }
                 break;
@@ -190,7 +186,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         AppPreference.setUserTypeId(LoginActivity.this, String.valueOf(user.getLogin_type_id()));
                         AppPreference.setManagerContactNo(LoginActivity.this, String.valueOf(user.getManager_contact_no()));
                         Log.e(TAG, "User Data >> " + user);
-                        Log.e(TAG, "onClick: manager_contact_no >> "+AppPreference.getManagerContactNo(LoginActivity.this));
+                        Log.e(TAG, "onClick: manager_contact_no >> " + AppPreference.getManagerContactNo(LoginActivity.this));
                         publishProgress("200", "");
                     } else {
                         JsonArray jsonArray = jsonObject.getAsJsonArray("result");

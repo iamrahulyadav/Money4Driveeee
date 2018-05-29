@@ -34,6 +34,7 @@
                     android:layout_height="wrap_content"
                     android:text="Project Title"
                     android:textColor="@color/green"
+                    android:fontFamily="@font/oxygen"
                     />
 
                 <TextView
@@ -45,6 +46,7 @@
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"
                     />
             </LinearLayout>
 
@@ -67,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:text="Project Description"
                     android:textColor="@color/green"
+                    android:fontFamily="@font/oxygen"
                     />
 
                 <TextView
@@ -78,6 +81,7 @@
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/hintcolor"
+                    android:fontFamily="@font/oxygen"
                     />
             </LinearLayout>
 
@@ -109,6 +113,7 @@
                         android:layout_height="wrap_content"
                         android:text="Creation Date"
                         android:textColor="@color/green"
+                        android:fontFamily="@font/oxygen"
                         />
 
                     <TextView
@@ -120,6 +125,7 @@
                         style="@style/TextAppearance.AppCompat.Subhead"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:textColor="@color/hintcolor"
+                        android:fontFamily="@font/oxygen"
                         />
                 </LinearLayout>
 
@@ -141,6 +147,7 @@
                         android:singleLine="true"
                         android:text="Allotted Date"
                         android:textColor="@color/green"
+                        android:fontFamily="@font/oxygen"
                         />
 
                     <TextView
@@ -152,6 +159,7 @@
                         style="@style/TextAppearance.AppCompat.Subhead"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:textColor="@color/hintcolor"
+                        android:fontFamily="@font/oxygen"
                         />
                 </LinearLayout>
 
@@ -175,7 +183,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Allotted Media"
-                    android:textColor="@color/green" />
+                    android:textColor="@color/green"
+                    android:fontFamily="@font/oxygen"/>
                 <android.support.v7.widget.RecyclerView
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="match_parent"

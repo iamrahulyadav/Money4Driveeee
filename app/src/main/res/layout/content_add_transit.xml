@@ -43,6 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Vehicle No."
                     android:textColor="@color/white" />
@@ -55,6 +56,7 @@
                     android:background="@null"
                     android:editable="false"
                     android:enabled="false"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Enter Vehicle No."
                     android:inputType="text"
                     android:padding="@dimen/_4sdp"
@@ -72,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Vehicle"
                     android:textColor="@color/white" />
@@ -82,6 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Enter Vehicle Name"
                     android:inputType="textCapSentences|textNoSuggestions"
                     android:padding="@dimen/_4sdp"
@@ -99,6 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Driver Name"
                     android:textColor="@color/white" />
@@ -109,6 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Enter Driver Name"
                     android:inputType="textCapSentences|textAutoCorrect|textPersonName|textNoSuggestions"
                     android:padding="@dimen/_4sdp"
@@ -126,6 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Driver Contact No."
                     android:textColor="@color/white" />
@@ -141,6 +148,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/_80sdp"
                         android:background="@null"
+                        android:fontFamily="@font/oxygen"
                         android:hint="Enter Contact No."
                         android:inputType="number"
                         android:maxLength="10"
@@ -164,6 +172,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:clickable="true"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_4sdp"
                             android:text="Send OTP"
                             android:textColor="@color/colorAccent" />
@@ -199,6 +208,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_4sdp"
                             android:text="State"
                             android:textColor="@color/white" />
@@ -237,6 +247,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_4sdp"
                             android:text="City"
                             android:textColor="@color/white" />
@@ -268,6 +279,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Address/Stand/Stop"
                     android:textColor="@color/white" />
@@ -278,6 +290,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Enter Address or Stand or Stop"
                     android:inputType="textCapSentences|textNoSuggestions"
                     android:maxLines="2"
@@ -310,6 +323,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_4sdp"
                             android:text="Start Date"
                             android:textColor="@color/white" />
@@ -323,15 +337,15 @@
                             android:editable="false"
                             android:enabled="false"
                             android:focusableInTouchMode="false"
+                            android:fontFamily="@font/oxygen"
                             android:hint="Select Start Date"
                             android:imeOptions="actionDone"
                             android:inputType="textMultiLine|textNoSuggestions"
                             android:padding="@dimen/_4sdp"
                             android:singleLine="false"
                             android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor"
 
-                            />
+                            android:textColorHint="@color/hintcolor" />
 
                         <View
                             android:layout_width="match_parent"
@@ -352,6 +366,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_4sdp"
                             android:text="End Date"
                             android:textColor="@color/white" />
@@ -365,6 +380,7 @@
                             android:editable="false"
                             android:enabled="false"
                             android:focusableInTouchMode="false"
+                            android:fontFamily="@font/oxygen"
                             android:hint="Select End Date"
                             android:imeOptions="actionDone"
                             android:inputType="textMultiLine|textNoSuggestions"
@@ -387,6 +403,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Select Gift"
                     android:textColor="@color/white" />
@@ -406,6 +423,7 @@
                         android:background="@null"
                         android:editable="false"
                         android:focusableInTouchMode="false"
+                        android:fontFamily="@font/oxygen"
                         android:hint="Select Gift"
                         android:imeOptions="actionDone"
                         android:inputType="textMultiLine|textNoSuggestions"
@@ -444,6 +462,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Upload Documents (Max. 2)"
                     android:textColor="@color/white" />
@@ -475,6 +494,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/imgDoc1"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/oxygen"
                             android:maxLines="1"
                             android:singleLine="true"
                             android:text=""
@@ -501,6 +521,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/imgDoc2"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/oxygen"
                             android:maxLines="1"
                             android:singleLine="true"
                             android:text=""
@@ -530,6 +551,7 @@
                         android:layout_margin="@dimen/_10sdp"
                         android:layout_weight="0.5"
                         android:background="@drawable/green_plan_border"
+                        android:fontFamily="@font/oxygen"
                         android:gravity="center"
                         android:padding="@dimen/_1sdp"
                         android:text="@string/Cancel"
@@ -542,6 +564,7 @@
                         android:layout_margin="@dimen/_10sdp"
                         android:layout_weight="0.5"
                         android:background="@drawable/green_border_rounded"
+                        android:fontFamily="@font/oxygen"
                         android:gravity="center"
                         android:padding="@dimen/_1sdp"
                         android:text="Add"

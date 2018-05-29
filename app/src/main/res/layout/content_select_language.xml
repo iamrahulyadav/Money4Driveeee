@@ -31,14 +31,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingLeft="@dimen/_10sdp"
-               app:textAllCaps="true"
+               android:textAllCaps="true"
                 android:textColor="@color/white"
 
                 style="@style/Base.TextAppearance.AppCompat.Title"
-                android:textAllCaps="true"
                 android:text="English"
 
 
+                android:fontFamily="@font/oxygen"
               />
     </LinearLayout>
     <LinearLayout
@@ -90,6 +90,7 @@ android:visibility="gone"
             android:text="Next"
             android:textAllCaps="false"
             android:textColor="@color/white"
+            android:fontFamily="@font/oxygen"
              />
 
     </LinearLayout>

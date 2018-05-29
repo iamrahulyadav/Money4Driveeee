@@ -25,7 +25,8 @@
             android:hint="AA"
             android:inputType="textCapCharacters|textNoSuggestions"
             android:maxLength="2"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:fontFamily="@font/oxygen" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
@@ -33,7 +34,8 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="-"
-            android:textColor="@color/hintcolor" />
+            android:textColor="@color/hintcolor"
+            android:fontFamily="@font/oxygen" />
 
         <EditText
             android:id="@+id/etDistrictCode"
@@ -45,7 +47,8 @@
             android:hint="00"
             android:inputType="number"
             android:maxLength="2"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:fontFamily="@font/oxygen"/>
 
         <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
@@ -53,7 +56,8 @@
             android:layout_height="match_parent"
             android:padding="8dp"
             android:text="-"
-            android:textColor="@color/hintcolor" />
+            android:textColor="@color/hintcolor"
+            android:fontFamily="@font/oxygen" />
 
         <EditText
             android:id="@+id/etSeries"
@@ -66,7 +70,8 @@
             android:inputType="textCapCharacters|textNoSuggestions"
             android:maxLength="2"
             android:padding="8dp"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"
+            android:fontFamily="@font/oxygen" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
@@ -74,7 +79,8 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="-"
-            android:textColor="@color/hintcolor" />
+            android:textColor="@color/hintcolor"
+            android:fontFamily="@font/oxygen" />
 
         <EditText
             android:id="@+id/etVehNo"
@@ -86,7 +92,8 @@
             android:hint="0000"
             android:inputType="number"
             android:maxLength="4"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:fontFamily="@font/oxygen" />
 
         <ImageView
             android:id="@+id/imgRight"

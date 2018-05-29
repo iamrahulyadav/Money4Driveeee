@@ -27,6 +27,7 @@ android:background="@color/background"
         android:padding="@dimen/_10sdp"
         android:text="Airport Cabs Advertising"
         android:textColor="@color/white"
+        android:fontFamily="@font/oxygen"
          />
 
     <TextView
@@ -40,6 +41,7 @@ android:background="@color/background"
         android:padding="@dimen/_10sdp"
         android:text="@string/txt"
         android:textColor="@color/hintcolor"
+        android:fontFamily="@font/oxygen"
 
          />
 

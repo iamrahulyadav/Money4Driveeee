@@ -35,6 +35,7 @@
         android:paddingBottom="@dimen/_3sdp"
         android:layout_centerHorizontal="true"
         style="@style/TextAppearance.AppCompat.Small"
+        android:fontFamily="@font/oxygen"
         />
 
 
@@ -62,7 +63,8 @@
             android:background="@color/placeholder_bg"
             android:gravity="center"
             android:text="A"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/oxygen" />
 
         <ImageView
             android:id="@+id/image_message_profile"
@@ -79,7 +81,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_toRightOf="@id/card_image"
-        android:text="Raj Kumar" />
+        android:text="Raj Kumar"
+        android:fontFamily="@font/oxygen" />
 
     <TextView
         android:id="@+id/tvMsgText"
@@ -97,7 +100,8 @@
         android:paddingRight="@dimen/_10sdp"
         android:paddingTop="@dimen/_5sdp"
         android:text="hi man, how are you?"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:fontFamily="@font/oxygen" />
 
     <TextView
         android:id="@+id/tvMsgTime"
@@ -108,5 +112,6 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/card_image"
         android:text="11:40"
-        android:textColor="@color/hintcolor"/>
+        android:textColor="@color/hintcolor"
+        android:fontFamily="@font/oxygen"/>
 </RelativeLayout>

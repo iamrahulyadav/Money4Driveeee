@@ -35,6 +35,7 @@
             android:layout_marginLeft="@dimen/_10sdp"
             style="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/progress_dialog_text"
+            android:fontFamily="@font/oxygen"
             />
 
         <!---->

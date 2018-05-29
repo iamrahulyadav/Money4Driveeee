@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.EditPhotoActivity;
-
 import com.hvantage2.money4driveeee.model.ImageUploadModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -65,7 +64,13 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
     public void onBindViewHolder(final UploadedImageAdapter.ViewHolder holder, final int position) {
         final ImageUploadModel modal = modalList.get(position);
         Log.e("UploadedImageAdapter", " ImageModel >> " + modal);
-        Log.e("UploadedImageAdapter", "action >> " + action);
+        Log.e("UploadedImageAdapter", " action >> " + action);
+
+        if (modal.getDimension().equalsIgnoreCase(""))
+            holder.llDimen.setVisibility(View.GONE);
+        else
+            holder.llDimen.setVisibility(View.VISIBLE);
+
         holder.tvRemark.setText(modal.getRemark());
         holder.tvDimen.setText(modal.getDimension());
 
@@ -77,7 +82,6 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
             holder.tvDateTime.setText(modal.getDatetime());
             if (!modal.getImage_url().equalsIgnoreCase(""))
                 Picasso.with(context).load(modal.getImage_url()).placeholder(R.drawable.no_image_placeholder).into(holder.image);
-
             if (AppPreference.getSelectedProjectType(context).equalsIgnoreCase(AppConstants.PROJECT_TYPE.PENDING)) {
                 holder.ll_edit.setVisibility(View.VISIBLE);
                 holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -147,9 +151,11 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
         CircleImageView image;
         ImageView edit, delete;
         LinearLayout ll_edit;
+        LinearLayout llDimen;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            llDimen = (LinearLayout) itemView.findViewById(R.id.llDimen);
             tvRemark = (TextView) itemView.findViewById(R.id.tvRemark);
             tvDimen = (TextView) itemView.findViewById(R.id.tvDimen);
             tvDateTime = (TextView) itemView.findViewById(R.id.tvDateTime);

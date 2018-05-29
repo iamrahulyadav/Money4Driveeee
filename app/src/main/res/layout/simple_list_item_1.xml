@@ -11,4 +11,5 @@
     android:paddingLeft="@dimen/_10sdp"
     android:paddingRight="@dimen/_10sdp"
     android:paddingTop="@dimen/_5sdp"
-    android:paddingBottom="@dimen/_5sdp"/>
+    android:paddingBottom="@dimen/_5sdp"
+    android:fontFamily="@font/oxygen"/>

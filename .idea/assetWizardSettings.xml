@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="paddingPercent" value="25" />
+                                                <entry key="paddingPercent" value="5" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,10 +34,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Hvantage\Downloads\nav\add_doc_thumb2.png" />
-                                      <entry key="outputName" value="icon_doc_thumb" />
+                                      <entry key="imageAsset" value="C:\Users\Hvantage\Downloads\left-arrow.png" />
+                                      <entry key="outputName" value="ic_action_back" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="a4a7ac" />
+                                      <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>
                                 </PersistentState>

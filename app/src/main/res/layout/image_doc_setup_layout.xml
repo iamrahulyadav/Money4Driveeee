@@ -72,7 +72,8 @@
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_4sdp"
                             android:text="@string/remark"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/oxygen"/>
 
                         <EditText
                             android:id="@+id/remarkText"
@@ -85,7 +86,8 @@
                             android:maxLength="50"
                             android:padding="@dimen/_4sdp"
                             android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor" />
+                            android:textColorHint="@color/hintcolor"
+                            android:fontFamily="@font/oxygen" />
 
                         <View
                             android:id="@+id/view1"
@@ -108,7 +110,8 @@
                         android:paddingLeft="@dimen/_30sdp"
                         android:paddingRight="@dimen/_30sdp"
                         android:text="Add"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/oxygen"/>
 
                 </LinearLayout>
 

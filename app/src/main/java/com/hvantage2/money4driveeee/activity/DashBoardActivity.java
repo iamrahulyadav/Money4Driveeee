@@ -135,7 +135,6 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
 
     private void exitApplication() {
         new AlertDialog.Builder(this)
-                .setTitle("Exit")
                 .setMessage("Are you sure you want to quit this app?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 

@@ -27,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Dimension :"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/oxygen" />
 
         <TextView
             android:id="@+id/tvDimen"
@@ -35,7 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="NA"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:fontFamily="@font/oxygen" />
 
         <TextView
             style="@style/Base.TextAppearance.AppCompat.Subhead"
@@ -43,7 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="Remark :"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/oxygen" />
 
         <TextView
             android:id="@+id/tvRemark"
@@ -51,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="NA"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:fontFamily="@font/oxygen" />
     </LinearLayout>
 </RelativeLayout>

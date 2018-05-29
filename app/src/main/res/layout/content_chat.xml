@@ -43,7 +43,8 @@
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
             android:singleLine="true"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/oxygen"/>
 
 
         <ImageView

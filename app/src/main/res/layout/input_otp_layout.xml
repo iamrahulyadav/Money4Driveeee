@@ -25,7 +25,8 @@
             android:inputType="number"
             android:maxLength="1"
             android:padding="10dp"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/oxygen" />
 
 
         <EditText
@@ -39,7 +40,8 @@
             android:inputType="number"
             android:maxLength="1"
             android:padding="10dp"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/oxygen" />
 
 
         <EditText
@@ -53,8 +55,8 @@
             android:inputType="number"
             android:maxLength="1"
             android:padding="10dp"
-            android:textColor="@color/colorPrimary" />
-
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/oxygen" />
 
         <EditText
             android:id="@+id/etNo4"
@@ -67,8 +69,8 @@
             android:inputType="number"
             android:maxLength="1"
             android:padding="10dp"
-            android:textColor="@color/colorPrimary" />
-
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/oxygen" />
 
     </LinearLayout>
 </RelativeLayout>

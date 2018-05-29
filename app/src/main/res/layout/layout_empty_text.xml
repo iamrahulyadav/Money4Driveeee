@@ -18,5 +18,6 @@
         android:paddingTop="@dimen/_5sdp"
         android:text="Empty"
         android:textColor="@color/white"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:fontFamily="@font/oxygen" />
 </RelativeLayout>

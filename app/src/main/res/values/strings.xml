@@ -5,8 +5,8 @@
     <string name="title_activity_feild_exe_login">Login</string>
     <string name="email">Email-id</string>
     <string name="pass">Password</string>
-    <string name="emailhint">Enter email-id here</string>
-    <string name="passwordhint">Enter password here</string>
+    <string name="emailhint">Enter email-id</string>
+    <string name="passwordhint">Enter password</string>
     <string name="title_activity_dash_board">Dashboard</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

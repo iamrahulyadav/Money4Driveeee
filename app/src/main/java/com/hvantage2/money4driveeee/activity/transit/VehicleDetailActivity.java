@@ -1,12 +1,12 @@
 package com.hvantage2.money4driveeee.activity.transit;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -15,25 +15,30 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-
-
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
+import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,18 +47,24 @@ import retrofit2.Response;
 public class VehicleDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "TransitDetailActivity";
+    ArrayList<String> listState = new ArrayList<String>();
+    ArrayList<String> listCity = new ArrayList<String>();
     private Button btnConfirm;
-    private EditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etDriverCity, etState;
-    private ProgressDialog dialog;
+    private EditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress;
     private Button btnCancel;
     private String media_option_id = "0";
     private ProgressHUD progressHD;
-
+    private ImageView imgDoc1, imgDoc2;
+    private TextView tvImgDoc1Remark, tvImgDoc2Remark;
+    private AppCompatAutoCompleteTextView atvStates;
+    private AppCompatAutoCompleteTextView atvCities;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transit_media_detail);
+        context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -65,7 +76,6 @@ public class VehicleDetailActivity extends AppCompatActivity {
 
     }
 
-
     private void init() {
 
         etDriverName = (EditText) findViewById(R.id.etDriverName);
@@ -73,8 +83,6 @@ public class VehicleDetailActivity extends AppCompatActivity {
         etVehicle = (EditText) findViewById(R.id.etVehicle);
         etRegNo = (EditText) findViewById(R.id.etRegNo);
         etDriverAddress = (EditText) findViewById(R.id.etDriverAddress);
-        etDriverCity = (EditText) findViewById(R.id.etDriverCity);
-        etState = (EditText) findViewById(R.id.etState);
 
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
         btnCancel = (Button) findViewById(R.id.btnCancel);
@@ -99,6 +107,64 @@ public class VehicleDetailActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        imgDoc1 = (ImageView) findViewById(R.id.imgDoc1);
+        imgDoc2 = (ImageView) findViewById(R.id.imgDoc2);
+        tvImgDoc1Remark = (TextView) findViewById(R.id.tvImgDoc1Remark);
+        tvImgDoc2Remark = (TextView) findViewById(R.id.tvImgDoc2Remark);
+
+        atvStates = (AppCompatAutoCompleteTextView) findViewById(R.id.atvStates);
+        atvCities = (AppCompatAutoCompleteTextView) findViewById(R.id.atvCities);
+        atvStates.setThreshold(2);
+        atvCities.setThreshold(2);
+        setStateAdapter();
+        setCityAdapter();
+        atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int p, long l) {
+                setCityAdapter();
+            }
+        });
+
+    }
+
+    private void setCityAdapter() {
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_cities.json"));
+            JSONObject cityJObj = jsonObject.getJSONObject(atvStates.getText().toString());
+            JSONArray jsonArray = cityJObj.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listCity.add(state);
+            }
+            ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listCity);
+            atvCities.setAdapter(adapterCity);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setStateAdapter() {
+
+
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
+            JSONArray jsonArray = jsonObject.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listState.add(state);
+            }
+            ArrayAdapter<String> adapterState = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listState);
+            atvStates.setAdapter(adapterState);
+            Log.e(TAG, "setAdapter: listState >> " + listState);
+        } catch (JSONException e) {
+            Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -192,8 +258,8 @@ public class VehicleDetailActivity extends AppCompatActivity {
                             etDriverContact.setText(driver_contact_no);
                             etVehicle.setText(vehicle_name);
                             etRegNo.setText(vehicle_no);
-                            etState.setText(state);
-                            etDriverCity.setText(city);
+                            atvStates.setText(state);
+                            atvCities.setText(city);
                             etDriverAddress.setText(address);
                             publishProgress("200", "");
                         } else {
@@ -248,8 +314,8 @@ public class VehicleDetailActivity extends AppCompatActivity {
             jsonObject.addProperty(AppConstants.KEYS.DRIVER_CONTACT_NO, etDriverContact.getText().toString());
             jsonObject.addProperty(AppConstants.KEYS.VEHICLE_MODEL, etVehicle.getText().toString());
             jsonObject.addProperty(AppConstants.KEYS.VEHICLE_REGIS_NUMBER, etRegNo.getText().toString());
-            jsonObject.addProperty(AppConstants.KEYS.STATE, etState.getText().toString());
-            jsonObject.addProperty(AppConstants.KEYS.CITY, etDriverCity.getText().toString());
+            jsonObject.addProperty(AppConstants.KEYS.STATE, atvStates.getText().toString());
+            jsonObject.addProperty(AppConstants.KEYS.CITY, atvCities.getText().toString());
             jsonObject.addProperty(AppConstants.KEYS.ADDRESS, etDriverAddress.getText().toString());
 
             Log.e(TAG, "Request UPDATE DETAIL >> " + jsonObject);

@@ -19,9 +19,10 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
-            app:subtitleTextAppearance="@style/TextAppearance.Compat.Notification.Time"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:subtitleTextColor="@android:color/white"/>
+            app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
+            app:subtitleTextColor="@android:color/white"
+            app:titleTextAppearance="@style/ToolbarTitleTextAppearance" />
 
     </android.support.design.widget.AppBarLayout>
     <!--app:titleTextAppearance="@style/TextAppearance.AppCompat.Subhead"-->

@@ -137,6 +137,10 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="46b22deb00c3fd241060e73dbd5f7205877688ec" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
 
         <activity
             android:name=".activity.shop.SelectShopMediaTypeActivity"

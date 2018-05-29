@@ -19,12 +19,12 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
+            />
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_feild_exe_login" />
-
-
 
 </android.support.design.widget.CoordinatorLayout>

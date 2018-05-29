@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -45,9 +46,6 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.UploadedImageAdapter;
-
-
-
 import com.hvantage2.money4driveeee.model.ImageUploadModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -89,19 +87,23 @@ public class SingleActivityDetail extends AppCompatActivity {
     private String tempDimen = "", tempRemark = "";
     private String userChoosenTask;
     private String base64image;
-    private Button btnfinish;
     private String action;
     private ProgressHUD progressHD;
     private String media_option_id;
     private String media_option_name;
+    private Button btnAddDoc;
+    private int imgType = 1;
+    private SingleActivityDetail context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_detail);
+        context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        init();
         if (getIntent().getAction().equalsIgnoreCase("shop")) {
             action = "shop";
             if (getIntent().hasExtra("media_option_id") && getIntent().hasExtra("media_option_name")) {
@@ -132,6 +134,7 @@ public class SingleActivityDetail extends AppCompatActivity {
                 media_option_id = getIntent().getStringExtra("media_option_id");
                 media_option_name = getIntent().getStringExtra("media_option_name");
             }
+            btnAddDoc.setVisibility(View.VISIBLE);
         } else if (getIntent().getAction().equalsIgnoreCase("emedia")) {
             action = "emedia";
             if (getIntent().hasExtra("media_option_id") && getIntent().hasExtra("media_option_name")) {
@@ -157,7 +160,7 @@ public class SingleActivityDetail extends AppCompatActivity {
         list = new ArrayList<ImageUploadModel>();
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         addmore = (Button) findViewById(R.id.takepicture);
-        btnfinish = (Button) findViewById(R.id.btnfinish);
+        btnAddDoc = (Button) findViewById(R.id.btnAddDoc);
         LinearLayoutManager layoutManager = new LinearLayoutManager(SingleActivityDetail.this);
         recycler_view.setLayoutManager(layoutManager);
         adapter = new UploadedImageAdapter(SingleActivityDetail.this, list, action);
@@ -170,25 +173,26 @@ public class SingleActivityDetail extends AppCompatActivity {
 
             @Override
             public void onItemLongClick(View view, int position) {
-
             }
         }));
         addmore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                imgType = 1;
                 selectImage();
             }
         });
-        btnfinish.setOnClickListener(new View.OnClickListener() {
+        btnAddDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                imgType = 2;
+                selectImage();
             }
         });
+
         if (AppPreference.getSelectedProjectType(SingleActivityDetail.this).equalsIgnoreCase(AppConstants.PROJECT_TYPE.COMPLETED)) {
             ((LinearLayout) findViewById(R.id.llBottom)).setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -226,7 +230,10 @@ public class SingleActivityDetail extends AppCompatActivity {
                 }
             } else if (requestCode == PIC_CROP) {
                 Log.e("img uri ", data.getData() + "");
-                addImageDialog();
+                if (imgType == 1)
+                    addImageDialog();
+                else if (imgType == 2)
+                    addDocDialog();
 
                 //Bitmap bitmapImage = data.getExtras().getParcelable("data");
               /*  if (data.getData() != null) {
@@ -242,6 +249,59 @@ public class SingleActivityDetail extends AppCompatActivity {
                 // MediaStore.Images.Media.insertImage(getContentResolver(), bitmapImage, "report_img", "report_img_cropped.jpg");
             }
         }
+    }
+
+    private void addDocDialog() {
+        final Dialog dialog1 = new Dialog(context, R.style.image_preview_dialog);
+        dialog1.setContentView(R.layout.image_doc_setup_layout);
+        Window window = dialog1.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog1.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog1.setCancelable(true);
+        dialog1.setCanceledOnTouchOutside(false);
+
+        ImageView imageView = (ImageView) dialog1.findViewById(R.id.img_circle);
+        ScrollView container = (ScrollView) dialog1.findViewById(R.id.container);
+
+        ImageView imgBack = (ImageView) dialog1.findViewById(R.id.imgBack);
+        Button btnSave = (Button) dialog1.findViewById(R.id.btnSave);
+        final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
+
+        String croppedfilePath = Environment.getExternalStorageDirectory() + "/activity_image.jpg";
+        bitmapImage1 = BitmapFactory.decodeFile(croppedfilePath);
+        imageView.setImageBitmap(bitmapImage1);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TextUtils.isEmpty(remarkText.getText().toString())) {
+                    remarkText.setError("Enter a remark");
+                } else {
+                    dialog1.dismiss();
+                    tempDimen = "";
+                    tempRemark = remarkText.getText().toString();
+                    new ImageTask().execute(bitmapImage1);
+                }
+            }
+        });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
+        });
+        dialog1.show();
+
+        container.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                return false;
+            }
+        });
     }
 
 
@@ -260,13 +320,18 @@ public class SingleActivityDetail extends AppCompatActivity {
 
         ImageView imgBack = (ImageView) dialog1.findViewById(R.id.imgBack);
         final Button btnSave = (Button) dialog1.findViewById(R.id.btnSave);
+        final TextView tvDimenUnit = (TextView) dialog1.findViewById(R.id.tvDimenUnit);
         final EditText height = (EditText) dialog1.findViewById(R.id.dimensionTextheight);
         final EditText width = (EditText) dialog1.findViewById(R.id.dimensionTextwidth);
         final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
 
+        if (action.equalsIgnoreCase("wall"))
+            tvDimenUnit.setText("Dimension(inches)");
+
         String croppedfilePath = Environment.getExternalStorageDirectory() + "/activity_image.jpg";
         bitmapImage1 = BitmapFactory.decodeFile(croppedfilePath);
         imageView.setImageBitmap(bitmapImage1);
+
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,7 +346,6 @@ public class SingleActivityDetail extends AppCompatActivity {
                     tempDimen = height.getText().toString() + "x" + width.getText().toString();
                     Log.e(TAG, "tempDimen: " + tempDimen);
                     tempRemark = remarkText.getText().toString();
-                    btnfinish.setVisibility(View.VISIBLE);
                     dialog1.dismiss();
                     new ImageTask().execute(bitmapImage1);
                 }

@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:background="@color/background"
-        android:scrollbars="none"
         android:id="@+id/container"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:scrollbars="none">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:id="@+id/main_layout"
-                >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <!--<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_alignParentBottom="true"
@@ -38,7 +35,6 @@
                     android:layout_height="240dp">
 
 
-
                     <ImageView
                         android:id="@+id/img_circle"
                         android:layout_width="match_parent"
@@ -46,98 +42,107 @@
                         android:background="#e9e9e9"
                         android:scaleType="centerCrop"
                         android:src="@drawable/no_image_placeholder" />
+
                     <ImageView
                         android:id="@+id/imgBack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_10sdp"
-                        android:src="@drawable/ic_arrow_back_green_24dp"
-                        />
+                        android:src="@drawable/ic_arrow_back_green_24dp" />
                 </RelativeLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_below="@+id/signup_image"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:orientation="vertical">
+
                     <Button
+                        android:id="@+id/btnAddMore"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_30sdp"
-                        android:id="@+id/btnAddMore"
-                        android:visibility="gone"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@drawable/green_plan_border"
                         android:paddingLeft="@dimen/_10sdp"
                         android:paddingRight="@dimen/_10sdp"
                         android:text="@string/addmore"
                         android:textColor="@color/green"
-                         />
+                        android:visibility="gone"
+                        android:fontFamily="@font/oxygen" />
+
                     <LinearLayout
+                        android:id="@+id/detaillinear"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/detaillinear"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_below="@+id/btnAddMore"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/tvDimenUnit"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:text="Dimension(feets)"
                             android:textColor="@color/white"
-                            android:text="@string/dimentation"/>
+                            android:fontFamily="@font/oxygen"/>
 
                         <LinearLayout
-                            android:layout_marginTop="@dimen/_5sdp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp">
+
                             <EditText
-                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:id="@+id/dimensionTextheight"
+                                style="@style/Base.TextAppearance.AppCompat.Subhead"
                                 android:layout_width="@dimen/_80sdp"
                                 android:layout_height="wrap_content"
-                                android:padding="@dimen/_5sdp"
-                                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                                android:textColorHint="@color/hintcolor"
+                                android:layout_marginLeft="@dimen/_5sdp"
                                 android:background="@drawable/square_border"
-                                android:inputType="number"
+                                android:hint="Height"
                                 android:imeOptions="actionNext"
-                                android:id="@+id/dimensionTextheight"
-                                android:textAlignment="center"
+                                android:inputType="number"
                                 android:maxLength="4"
+                                android:padding="@dimen/_5sdp"
+                                android:textAlignment="center"
 
                                 android:textColor="@color/hintcolor"
-                                android:hint="Height"/>
+                                android:textColorHint="@color/hintcolor"
+                                android:fontFamily="@font/oxygen" />
 
                             <TextView
+                                style="@style/Base.TextAppearance.AppCompat.Subhead"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:hint="x"
+                                android:imeOptions="actionNext"
+                                android:inputType="number"
                                 android:paddingLeft="@dimen/_8sdp"
                                 android:paddingRight="@dimen/_8sdp"
-                                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                                android:textColorHint="@color/hintcolor"
-                                android:inputType="number"
-                                android:imeOptions="actionNext"
                                 android:textAlignment="center"
 
                                 android:textColor="@color/hintcolor"
-                                android:hint="x"/>
+                                android:textColorHint="@color/hintcolor"
+                                android:fontFamily="@font/oxygen" />
 
                             <EditText
+                                android:id="@+id/dimensionTextwidth"
+                                style="@style/Base.TextAppearance.AppCompat.Subhead"
                                 android:layout_width="@dimen/_80sdp"
                                 android:layout_height="wrap_content"
-                                android:padding="@dimen/_5sdp"
-                                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                                android:textColorHint="@color/hintcolor"
                                 android:background="@drawable/square_border"
-                                android:inputType="number"
+                                android:hint="Width"
                                 android:imeOptions="actionNext"
-                                android:id="@+id/dimensionTextwidth"
-                                android:textAlignment="center"
+                                android:inputType="number"
                                 android:maxLength="4"
+                                android:padding="@dimen/_5sdp"
+                                android:textAlignment="center"
 
                                 android:textColor="@color/hintcolor"
-                                android:hint="Width"/>
+                                android:textColorHint="@color/hintcolor"
+                                android:fontFamily="@font/oxygen"/>
                         </LinearLayout>
 
                         <!-- <View
@@ -147,51 +152,55 @@
                              android:layout_height="1dp"
                              android:background="@color/dividerColor" />-->
                         <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/remark"
+
                             android:textColor="@color/white"
+                            android:fontFamily="@font/oxygen"/>
 
-                            android:padding="@dimen/_5sdp"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
-
-                            android:text="@string/remark"/>
                         <EditText
+                            android:id="@+id/remarkText"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/_5sdp"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:textColorHint="@color/hintcolor"
                             android:background="@null"
-                            android:textColor="@color/hintcolor"
-                            android:id="@+id/remarkText"
+                            android:hint="Enter Remark"
                             android:imeOptions="actionDone"
+                            android:padding="@dimen/_5sdp"
+                            android:textColor="@color/hintcolor"
 
-                            android:hint="Enter Remark"/>
+                            android:textColorHint="@color/hintcolor"
+                            android:fontFamily="@font/oxygen" />
+
                         <View
-                            android:layout_marginTop="@dimen/_5sdp"
                             android:id="@+id/view1"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:background="@color/dividerColor" />
                     </LinearLayout>
 
                     <Button
-                        android:elevation="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:id="@+id/btnSave"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_35sdp"
-                        android:paddingRight="@dimen/_30sdp"
-                        android:paddingLeft="@dimen/_30sdp"
                         android:layout_below="@+id/detaillinear"
-                        android:layout_gravity="center"
-                        android:id="@+id/btnSave"
-                        android:layout_margin="@dimen/_15sdp"
                         android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/green_border_rounded"
+                        android:elevation="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_30sdp"
+                        android:paddingRight="@dimen/_30sdp"
                         android:text="@string/save"
                         android:textColor="@color/white"
-                         />
+                        android:fontFamily="@font/oxygen" />
 
                 </LinearLayout>
 
@@ -200,13 +209,6 @@
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>
-
-
-
-
-
-
-
 
 
     <!--

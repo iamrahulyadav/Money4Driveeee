@@ -33,7 +33,8 @@
             android:padding="@dimen/_10sdp"
             android:text="@string/app_version"
             android:textAlignment="center"
-            android:textColor="@color/hintcolor" />
+            android:textColor="@color/hintcolor"
+            android:fontFamily="@font/oxygen"/>
     </android.support.design.widget.NavigationView>
     <!--app:headerLayout="@layout/nav_header_dash_board"-->
 </android.support.v4.widget.DrawerLayout>

@@ -18,7 +18,8 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@style/ToolbarTitleTextAppearance">
 
             <ImageView
             android:id="@+id/imgBack"
@@ -35,7 +36,8 @@
                     android:layout_height="wrap_content"
                     android:text="Edit Photo"
                     android:textColor="@android:color/white"
-                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:fontFamily="@font/oxygen"/>
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -121,6 +123,7 @@
                         android:paddingRight="@dimen/_10sdp"
                         android:text="@string/addmore"
                         android:textColor="@color/green"
+                        android:fontFamily="@font/oxygen"
                          />
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -136,7 +139,8 @@
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/white"
 
-                            android:text="@string/dimentation"/>
+                            android:text="@string/dimentation"
+                            android:fontFamily="@font/oxygen"/>
 
                         <LinearLayout
                             android:layout_marginTop="@dimen/_5sdp"
@@ -157,7 +161,8 @@
                                 android:maxLength="4"
 
                                 android:textColor="@color/hintcolor"
-                                android:hint="Height"/>
+                                android:hint="Height"
+                                android:fontFamily="@font/oxygen"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -171,7 +176,8 @@
                                 android:textAlignment="center"
 
                                 android:textColor="@color/hintcolor"
-                                android:hint="x"/>
+                                android:hint="x"
+                                android:fontFamily="@font/oxygen"/>
 
                             <EditText
                                 android:layout_width="@dimen/_80sdp"
@@ -187,7 +193,8 @@
                                 android:maxLength="4"
 
                                 android:textColor="@color/hintcolor"
-                                android:hint="Width"/>
+                                android:hint="Width"
+                                android:fontFamily="@font/oxygen"/>
                         </LinearLayout>
 
                         <!-- <View
@@ -205,7 +212,8 @@
                             android:padding="@dimen/_5sdp"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
 
-                            android:text="@string/remark"/>
+                            android:text="@string/remark"
+                            android:fontFamily="@font/oxygen"/>
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -217,7 +225,8 @@
                             android:id="@+id/remarkText"
                             android:imeOptions="actionDone"
 
-                            android:hint="Enter Remark"/>
+                            android:hint="Enter Remark"
+                            android:fontFamily="@font/oxygen"/>
                         <View
                             android:layout_marginTop="@dimen/_5sdp"
                             android:id="@+id/view1"
@@ -241,6 +250,7 @@
                         android:background="@drawable/green_border_rounded"
                         android:text="@string/save"
                         android:textColor="@color/white"
+                        android:fontFamily="@font/oxygen"
                         />
 
                 </LinearLayout>

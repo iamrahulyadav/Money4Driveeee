@@ -14,6 +14,7 @@
         android:maxLength="10"
         style="@style/TextAppearance.AppCompat.Small"
         android:imeOptions="actionDone"
-        android:inputType="textCapCharacters" />
+        android:inputType="textCapCharacters"
+        android:fontFamily="@font/oxygen" />
 
 </FrameLayout>

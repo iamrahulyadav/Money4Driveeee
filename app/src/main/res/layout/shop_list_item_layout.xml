@@ -27,7 +27,8 @@
         android:text="Item1"
         android:padding="@dimen/_10sdp"
         android:textAllCaps="false"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:fontFamily="@font/oxygen"/>
     <View
         android:layout_below="@id/tvTitle"
         android:layout_width="match_parent"

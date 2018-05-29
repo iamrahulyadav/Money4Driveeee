@@ -34,6 +34,7 @@
             android:paddingBottom="@dimen/_3sdp"
             android:layout_centerHorizontal="true"
             style="@style/TextAppearance.AppCompat.Small"
+            android:fontFamily="@font/oxygen"
             />
 
 
@@ -56,7 +57,8 @@
         android:paddingRight="@dimen/_10sdp"
         android:paddingTop="@dimen/_5sdp"
         android:text="hi man, how are you?"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:fontFamily="@font/oxygen" />
 
     <TextView
         android:layout_alignParentRight="true"
@@ -68,5 +70,6 @@
         android:layout_below="@id/tvMsgText"
         android:layout_marginRight="10dp"
         android:text="11:40"
-        android:textColor="@color/hintcolor" />
+        android:textColor="@color/hintcolor"
+        android:fontFamily="@font/oxygen" />
 </RelativeLayout>
