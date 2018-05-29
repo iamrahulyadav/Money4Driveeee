@@ -124,7 +124,6 @@ public class WallDetailActivity extends AppCompatActivity implements View.OnClic
                 setCityAdapter();
             }
         });
-
     }
 
     private void setCityAdapter() {
@@ -159,8 +158,6 @@ public class WallDetailActivity extends AppCompatActivity implements View.OnClic
             Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
             e.printStackTrace();
         }
-
-
     }
 
     private void hideSoftKeyboard(View view) {
