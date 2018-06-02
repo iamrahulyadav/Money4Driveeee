@@ -3,7 +3,6 @@ package com.hvantage2.money4driveeee.activity.transit;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,7 +15,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
@@ -30,8 +28,6 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -54,7 +50,6 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
@@ -70,8 +65,9 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,18 +80,14 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
     private static final int PIC_CROP = REQUEST_LOAD_IMAGE + 1;
+    private static final String TAG = "AddTransitActivity";
     EditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etStartDate, etEndDate;
     Button btnConfirm, btnCancel;
     String driverName, driverContact, vehicle, regNo, address, startDate, endDate;
     ArrayList<String> listState = new ArrayList<String>();
     ArrayList<String> listCity = new ArrayList<String>();
     ArrayList<String> listGift = new ArrayList<String>();
-    private String TAG = "AddTransitActivity";
-    private ProgressDialog dialog;
-    private List<ShopActivity> bOptionList;
-    private String allBOptionIds = "";
     private String media_option_id = "";
-    private String start_date = "", end_date = "";
     private ProgressHUD progressHD;
     private AppCompatAutoCompleteTextView atvStates;
     private Context context;
@@ -107,11 +99,15 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     private int imgCounter = 1;
     private Bitmap bitmapImage1;
     private String base64image1 = "", base64image2 = "";
+    private String imgRemark1 = "", imgRemark2 = "";
     private TextView tvImgDoc1Remark, tvImgDoc2Remark;
     private TextView tvRequestOtp;
     private ProgressBar progressBar;
     private Spinner spinnerGift;
     private EditText etSelectGift;
+    private int total_days = 0;
+    private String vehicle_id = "0";
+    private String verify_status = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +117,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        bOptionList = new ArrayList<ShopActivity>();
         init();
         showSearchDialog();
         if (getIntent().hasExtra("media_option_id"))
@@ -131,13 +126,24 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             finish();
         }
 
-        if (getIntent().hasExtra("start_date"))
-            start_date = getIntent().getStringExtra("start_date");
-        if (getIntent().hasExtra("end_date"))
-            end_date = getIntent().getStringExtra("end_date");
+        if (getIntent().hasExtra("total_days"))
+            total_days = getIntent().getIntExtra("total_days", 0);
+        Log.e(TAG, "onCreate: total_days >> " + total_days);
+        if (total_days != 0)
+            calculateDate(total_days);
+    }
 
-        etStartDate.setText(start_date);
-        etEndDate.setText(end_date);
+    private void calculateDate(int days) {
+        Calendar c = Calendar.getInstance();
+        Log.e(TAG, "calculateDate: c.getTime() >> " + c.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        startDate = sdf.format(c.getTime());
+        c.add(Calendar.DATE, days);
+        endDate = sdf.format(c.getTime());
+        Log.e(TAG, "calculateDate: startDate >> " + startDate);
+        Log.e(TAG, "calculateDate: endDate >> " + endDate);
+        etStartDate.setText(startDate);
+        etEndDate.setText(endDate);
     }
 
     private void init() {
@@ -236,8 +242,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void setStateAdapter() {
-
-
         try {
             JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
             JSONArray jsonArray = jsonObject.getJSONArray("name");
@@ -252,8 +256,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
             e.printStackTrace();
         }
-
-
     }
 
     private void showSearchDialog() {
@@ -424,22 +426,16 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         final EditText etNo3 = (EditText) dialogView.findViewById(R.id.etNo3);
         final EditText etNo4 = (EditText) dialogView.findViewById(R.id.etNo4);
 
-        dialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("Send OTP", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String otp = etNo1.getText().toString() + etNo2.getText().toString() + etNo3.getText().toString() + etNo4.getText().toString();
                 Log.e(TAG, "showSearchDialog: onClick: Search: otp >> " + otp);
                 tvRequestOtp.setText("");
-                dialog.dismiss();
+                new OTPVerifyTask().execute(otp);
             }
         });
         dialog.setNegativeButton("Later", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                tvRequestOtp.setText("Send OTP");
-            }
-        });
-        dialog.setNeutralButton("Don't Have OTP?", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 tvRequestOtp.setText("Resend OTP");
@@ -550,21 +546,25 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 addTransit();
                 break;
             case R.id.tvRequestOtp:
-                if (etDriverContact.getText().toString().length() == 10) {
+                driverName = etDriverName.getText().toString();
+                driverContact = etDriverContact.getText().toString();
+                vehicle = etVehicle.getText().toString();
+                regNo = etRegNo.getText().toString();
+                if (TextUtils.isEmpty(driverName))
+                    etDriverName.setError("Enter driver name");
+                else if (TextUtils.isEmpty(driverContact))
+                    etDriverContact.setError("Enter driver contact no.");
+                else if (TextUtils.isEmpty(vehicle))
+                    etVehicle.setError("Enter vehicle name");
+                else if (TextUtils.isEmpty(regNo))
+                    etRegNo.setError("Enter vehicle no.");
+                else {
                     etDriverContact.clearFocus();
                     hideSoftKeyboard(view);
                     progressBar.setVisibility(View.VISIBLE);
                     tvRequestOtp.setText("Sending");
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            showOtpDialog();
-                            progressBar.setVisibility(View.GONE);
-                            tvRequestOtp.setText("");
-                        }
-                    }, 3000);
-                } else
-                    etDriverContact.setError("Enter valid contact no.");
+                    new AddTransitVerifyTask().execute();
+                }
                 break;
             case R.id.imgDoc1:
                 imgCounter = 1;
@@ -587,10 +587,9 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         final AlertDialog.Builder dialog = new AlertDialog.Builder(AddTransitActivity.this);
         dialog.setTitle("Message");
         dialog.setMessage(msg);
-        dialog.setPositiveButton("Go Back", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
             }
         });
 
@@ -598,20 +597,20 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         dialog.show();
     }
 
-    private void showErrorDialog500(String msg) {
+    private void showErrorDialog300(String msg) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(AddTransitActivity.this);
-        dialog.setTitle("This vehicle is already on another campagne.");
+        dialog.setTitle("Message");
         dialog.setMessage(msg);
-        dialog.setPositiveButton("View Details", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton("Go Back", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
             }
         });
-
-        dialog.setNegativeButton("Report", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("View Details", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(AddTransitActivity.this, ConfirmTransitActivity.class).putExtra("media_option_id", media_option_id).putExtra("vehicle_id", vehicle_id));
                 finish();
             }
         });
@@ -726,21 +725,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Camera"))
-                        cameraIntent();
-                    else if (userChoosenTask.equals("Gallery"))
-                        galleryIntent();
-                } else {
-                }
-                break;
-        }
-    }
-
     private void cameraIntent() {
         final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/m4d/";
         File newdir = new File(dir);
@@ -767,6 +751,23 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (userChoosenTask.equals("Camera"))
+                        cameraIntent();
+                    else if (userChoosenTask.equals("Gallery"))
+                        galleryIntent();
+                } else {
+                }
+                break;
+        }
+    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -871,9 +872,11 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                     if (imgCounter == 1) {
                         imgDoc1.setImageBitmap(bitmapImage1);
                         tvImgDoc1Remark.setText(remarkText.getText().toString());
+                        imgRemark1 = remarkText.getText().toString();
                     } else if (imgCounter == 2) {
                         imgDoc2.setImageBitmap(bitmapImage1);
                         tvImgDoc2Remark.setText(remarkText.getText().toString());
+                        imgRemark2 = remarkText.getText().toString();
                     }
                     new ImageTask().execute(bitmapImage1);
                 }
@@ -976,9 +979,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 }
             }
             if (status.equalsIgnoreCase("300")) {
-                //showErrorDialog300(msg);
-            } else if (status.equalsIgnoreCase("500")) {
-                showErrorDialog500(msg);
+                showErrorDialog300(msg);
             } else if (status.equalsIgnoreCase("400")) {
                 showErrorDialog400(msg);
             }
@@ -1008,10 +1009,16 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             jsonObject.addProperty("state", state);
             jsonObject.addProperty("city", city);
             jsonObject.addProperty("address", address);
-            /*jsonObject.addProperty("start_date", startDate);
-            jsonObject.addProperty("end_date", endDate);*/
+            jsonObject.addProperty("vehicle_id", vehicle_id);
+            jsonObject.addProperty("verify_status", verify_status);
+            jsonObject.addProperty("start_date", startDate);
+            jsonObject.addProperty("end_date", endDate);
+            jsonObject.addProperty("doc_img1", base64image1);
+            jsonObject.addProperty("doc_img2", base64image2);
+            jsonObject.addProperty("img1_remark", imgRemark1);
+            jsonObject.addProperty("img2_remark", imgRemark1);
 
-            Log.e(TAG, "Request ADD TRANSIT >> " + jsonObject.toString());
+            Log.e(TAG, "AddTransitTask: Request >> " + jsonObject.toString());
 
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
             Call<JsonObject> call = apiService.project_transit_detail_api(jsonObject);
@@ -1019,7 +1026,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 @SuppressLint("LongLogTag")
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    Log.e(TAG, "Response ADD TRANSIT >>" + response.body().toString());
+                    Log.e(TAG, "AddTransitTask: Response >>" + response.body().toString());
                     String resp = response.body().toString();
                     try {
                         JSONObject jsonObject = new JSONObject(resp);
@@ -1055,13 +1062,157 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             String status = values[0];
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {
-                AppPreference.setSelectedVehicleName(AddTransitActivity.this, etVehicle.getText().toString());
-                Intent intent = new Intent(AddTransitActivity.this, PerformTransitActivity.class);
-                intent.putExtra("media_option_id", media_option_id);
-                startActivity(intent);
+//                 AppPreference.setSelectedVehicleName(AddTransitActivity.this, etVehicle.getText().toString());
+//                Intent intent = new Intent(AddTransitActivity.this, PerformTransitActivity.class);
+//                intent.putExtra("media_option_id", media_option_id);
+//                startActivity(intent);
                 finish();
             } else if (status.equalsIgnoreCase("400")) {
                 Toast.makeText(AddTransitActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class AddTransitVerifyTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.ADD_VEHICLE_WITH_VERIFY);
+            jsonObject.addProperty("user_id", AppPreference.getUserId(AddTransitActivity.this));
+            jsonObject.addProperty("driver_name", driverName);
+            jsonObject.addProperty("driver_contact_no", driverContact);
+            jsonObject.addProperty("vehicle_model", vehicle);
+            jsonObject.addProperty("vehicle_regis_number", regNo);
+            Log.e(TAG, "AddTransitVerifyTask: Request >> " + jsonObject.toString());
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.project_transit_detail_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "AddTransitVerifyTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            JSONObject jsonObject1 = jsonObject.getJSONArray("result").getJSONObject(0);
+                            vehicle_id = jsonObject1.getString("vehicle_id");
+                            publishProgress("200", "");
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            String status = values[0];
+            String msg = values[1];
+            progressBar.setVisibility(View.GONE);
+            if (status.equalsIgnoreCase("200")) {
+                showOtpDialog();
+                tvRequestOtp.setText("");
+            } else if (status.equalsIgnoreCase("400")) {
+                tvRequestOtp.setText("Send OTP");
+                showErrorDialog400(msg);
+            }
+        }
+    }
+
+    private class OTPVerifyTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.VEHICLE_VERIFY_OTP);
+            jsonObject.addProperty("driver_contact_no", driverContact);
+            jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+            jsonObject.addProperty("otp", strings[0]);
+            Log.e(TAG, "OTPVerifyTask: Request >> " + jsonObject.toString());
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.project_transit_detail_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "OTPVerifyTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            JSONObject jsonObject1 = jsonObject.getJSONArray("result").getJSONObject(0);
+                            verify_status = jsonObject1.getString("verify_status");
+                            publishProgress("200", "");
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            hideProgressDialog();
+            String status = values[0];
+            String msg = values[1];
+            if (status.equalsIgnoreCase("200")) {
+                progressBar.setVisibility(View.GONE);
+                tvRequestOtp.setText("");
+                etDriverContact.setEnabled(false);
+            } else if (status.equalsIgnoreCase("400")) {
+                tvRequestOtp.setText("Try Again");
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(AddTransitActivity.this);
+                dialog.setTitle("Message");
+                dialog.setMessage(msg);
+                dialog.setPositiveButton("Re-Enter", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        showOtpDialog();
+                    }
+                });
+                dialog.setCancelable(false);
+                dialog.show();
             }
         }
     }

@@ -22,39 +22,39 @@
         android:orientation="vertical"
         android:padding="@dimen/_8sdp">
 
-        <TextView
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dimension :"
-            android:textColor="@color/colorAccent"
-            android:fontFamily="@font/oxygen" />
-
+        <!--   <TextView
+               style="@style/Base.TextAppearance.AppCompat.Subhead"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Dimension :"
+               android:textColor="@color/colorAccent"
+               android:fontFamily="@font/oxygen" />
+   -->
         <TextView
             android:id="@+id/tvDimen"
             style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="NA"
-            android:textColor="@color/white"
-            android:fontFamily="@font/oxygen" />
+            android:fontFamily="@font/oxygen"
+            android:text=""
+            android:textColor="@color/white" />
 
-        <TextView
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Remark :"
-            android:textColor="@color/colorAccent"
-            android:fontFamily="@font/oxygen" />
+        <!--    <TextView
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Remark :"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/oxygen" />-->
 
         <TextView
             android:id="@+id/tvRemark"
             style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="NA"
-            android:textColor="@color/white"
-            android:fontFamily="@font/oxygen" />
+            android:fontFamily="@font/oxygen"
+            android:text=""
+            android:textColor="@color/white" />
     </LinearLayout>
 </RelativeLayout>

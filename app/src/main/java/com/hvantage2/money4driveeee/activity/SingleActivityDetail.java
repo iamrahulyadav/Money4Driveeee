@@ -165,7 +165,7 @@ public class SingleActivityDetail extends AppCompatActivity {
         recycler_view.setLayoutManager(layoutManager);
         adapter = new UploadedImageAdapter(SingleActivityDetail.this, list, action);
         recycler_view.setAdapter(adapter);
-        recycler_view.addOnItemTouchListener(new RecyclerItemClickListener(SingleActivityDetail.this, recycler_view, new RecyclerItemClickListener.OnItemClickListener() {
+        /*recycler_view.addOnItemTouchListener(new RecyclerItemClickListener(SingleActivityDetail.this, recycler_view, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 showPreviewDialog(list.get(position));
@@ -174,7 +174,7 @@ public class SingleActivityDetail extends AppCompatActivity {
             @Override
             public void onItemLongClick(View view, int position) {
             }
-        }));
+        }));*/
         addmore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -522,30 +522,6 @@ public class SingleActivityDetail extends AppCompatActivity {
         progressHD.dismiss();
     }
 
-    private void showPreviewDialog(ImageUploadModel modal) {
-        dialog1 = new Dialog(SingleActivityDetail.this, R.style.image_preview_dialog);
-        dialog1.setContentView(R.layout.image_preview_layout);
-        Window window = dialog1.getWindow();
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog1.setCancelable(true);
-        dialog1.setCanceledOnTouchOutside(true);
-
-
-        TouchImageView imgPreview = (TouchImageView) dialog1.findViewById(R.id.imgPreview);
-        TextView tvDimen = (TextView) dialog1.findViewById(R.id.tvDimen);
-        TextView tvRemark = (TextView) dialog1.findViewById(R.id.tvRemark);
-        imgPreview.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-        if (!modal.getImage_url().equalsIgnoreCase(""))
-            Picasso.with(SingleActivityDetail.this)
-                    .load(modal.getImage_url())
-                    .placeholder(R.drawable.no_image_placeholder)
-                    .into(imgPreview);
-
-        tvDimen.setText(modal.getDimension());
-        tvRemark.setText(modal.getRemark());
-        dialog1.show();
-    }
 
     class ImageTask extends AsyncTask<Bitmap, String, Void> {
         @Override

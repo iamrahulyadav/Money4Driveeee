@@ -8,13 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hvantage2.money4driveeee.R;
-
 import com.hvantage2.money4driveeee.model.ProjectModel;
 
 import java.util.List;
 
 
-public class SelectProjectAdapter extends  RecyclerView.Adapter<SelectProjectAdapter.ViewHolder> {
+public class SelectProjectAdapter extends RecyclerView.Adapter<SelectProjectAdapter.ViewHolder> {
     Context context;
     List<ProjectModel> modalList;
 
@@ -25,19 +24,18 @@ public class SelectProjectAdapter extends  RecyclerView.Adapter<SelectProjectAda
 
     @Override
     public SelectProjectAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.select_project_single_item_layout,parent,false);
-        SelectProjectAdapter.ViewHolder viewHolder =new SelectProjectAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_project_single_item_layout, parent, false);
+        SelectProjectAdapter.ViewHolder viewHolder = new SelectProjectAdapter.ViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(SelectProjectAdapter.ViewHolder holder, int position) {
-     ProjectModel ProjectModel = modalList.get(position);
-     holder.tvTag.setText(ProjectModel.getProjectTitle().charAt(0)+"");
-     holder.tvProjectTitle.setText(ProjectModel.getProjectTitle());
-     holder.tvProjectSubtitle.setText(ProjectModel.getProjectDesc());
-     holder.tvProjectSubtitle.setSelected(true);
-
+        ProjectModel ProjectModel = modalList.get(position);
+        holder.tvTag.setText(ProjectModel.getProjectTitle().charAt(0) + "");
+        holder.tvProjectTitle.setText(ProjectModel.getProjectTitle());
+        holder.tvProjectSubtitle.setText(ProjectModel.getProjectDesc());
+        holder.tvProjectSubtitle.setSelected(true);
     }
 
     @Override
@@ -45,14 +43,14 @@ public class SelectProjectAdapter extends  RecyclerView.Adapter<SelectProjectAda
         return modalList.size();
     }
 
-     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView tvTag,tvProjectTitle,tvProjectSubtitle;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvTag, tvProjectTitle, tvProjectSubtitle;
 
-         public ViewHolder(View itemView) {
-             super(itemView);
-             tvTag = (TextView)itemView.findViewById(R.id.tvTag);
-             tvProjectTitle = (TextView)itemView.findViewById(R.id.tvProjectTitle);
-             tvProjectSubtitle = (TextView)itemView.findViewById(R.id.tvProjectSubtitle);
-         }
-     }
+        public ViewHolder(View itemView) {
+            super(itemView);
+            tvTag = (TextView) itemView.findViewById(R.id.tvTag);
+            tvProjectTitle = (TextView) itemView.findViewById(R.id.tvProjectTitle);
+            tvProjectSubtitle = (TextView) itemView.findViewById(R.id.tvProjectSubtitle);
+        }
+    }
 }

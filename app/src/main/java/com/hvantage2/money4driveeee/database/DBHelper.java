@@ -230,6 +230,19 @@ public class DBHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public boolean isProjectExist(String project_id) {
+        boolean isExist = false;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_PROJECTS + " WHERE " + KEY_PROJECT_ID + "=" + project_id;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor == null) {
+            isExist = false;
+        } else if (cursor.moveToFirst() && cursor.getCount() > 0) {
+            isExist = true;
+        }
+        return isExist;
+    }
+
     public int deleteMediaTypes(String project_id, String media_allo_id) {
         int rowCount = 0;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -292,5 +305,19 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROJECTS_MEDIA_OPTIONS);
         // Create tables again
         onCreate(db);
+    }
+
+    public void updateProjectStatus(String project_id, String status_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_PROJECT_TYPE, status_id);
+        Log.e(TAG, "updateProjectStatus: values >> " + values.toString());
+        boolean bb = db.update(TABLE_PROJECTS, values, KEY_PROJECT_ID + "=?", new String[]{project_id}) > 0;
+        if (bb) {
+            Log.e("updateProjectStatus : ", "updated");
+        } else {
+            Log.e("updateProjectStatus : ", "Not updated");
+        }
+        db.close();
     }
 }

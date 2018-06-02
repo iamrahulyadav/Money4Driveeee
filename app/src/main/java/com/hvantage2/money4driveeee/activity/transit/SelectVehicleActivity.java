@@ -25,7 +25,6 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.SourceAdapter;
-
 import com.hvantage2.money4driveeee.model.SourceModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -38,11 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,6 +57,7 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
     private String start_date = "", end_date = "";
     private ProgressHUD progressHD;
     private SwipeRefreshLayout refreshLayout;
+    private int total_days = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +71,6 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
         if (getIntent().hasExtra("media_option_id")) {
             media_option_id = getIntent().getStringExtra("media_option_id");
             Log.e(TAG, "onCreate: media_option_id >> " + media_option_id);
-
         } else {
             Toast.makeText(this, "Select media option", Toast.LENGTH_SHORT).show();
             finish();
@@ -91,7 +86,19 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.e(TAG, "onClick: total_quantity >> " + total_quantity);
+                    if (added_quantity < total_quantity) {
+                        Intent intent = new Intent(SelectVehicleActivity.this, AddTransitActivity.class);
+                        intent.putExtra("total_days", total_days);
+                        intent.putExtra("media_option_id", media_option_id);
+                        startActivity(intent);
+                    } else {
+                        Snackbar.make(view, "Branding limit is over, can't add new vehicle!", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                            }
+                        }).show();
+                    }
+                    /*Log.e(TAG, "onClick: total_quantity >> " + total_quantity);
                     Log.e(TAG, "onClick: added_quantity >> " + added_quantity);
                     if (added_quantity < total_quantity) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
@@ -122,7 +129,7 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
                             public void onClick(View view) {
                             }
                         }).show();
-                    }
+                    }*/
                 }
             });
         }
@@ -167,7 +174,7 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
                     startActivity(intent);
                 } else {
                     Log.e(TAG, "onItemClick: Clicked ");
-                    Intent intent1 = new Intent(SelectVehicleActivity.this, VehicleDetailActivity.class);
+                    Intent intent1 = new Intent(SelectVehicleActivity.this, ConfirmTransitActivity.class);
                     intent1.putExtra("media_option_id", media_option_id);
                     startActivity(intent1);
                 }
@@ -266,8 +273,7 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
                                 total_quantity = jsonObject11.getInt("total_quantity");
                                 added_quantity = jsonObject11.getInt("added_quantity");
-                                start_date = jsonObject11.getString("start_date");
-                                end_date = jsonObject11.getString("end_date");
+                                total_days = jsonObject11.getInt("total_days");
                             }
                             adapter.notifyDataSetChanged();
                             publishProgress("200", "");
@@ -277,8 +283,7 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
                                 total_quantity = jsonObject11.getInt("total_quantity");
                                 added_quantity = jsonObject11.getInt("added_quantity");
-                                start_date = jsonObject11.getString("start_date");
-                                end_date = jsonObject11.getString("end_date");
+                                total_days = jsonObject11.getInt("total_days");
                             }
                             String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
                             publishProgress("400", msg);

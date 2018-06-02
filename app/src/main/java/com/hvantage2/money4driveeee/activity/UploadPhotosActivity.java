@@ -155,7 +155,6 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         }
 
         setImageAdapter();
-
     }
 
     private void setImageAdapter() {

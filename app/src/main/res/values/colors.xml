@@ -22,4 +22,5 @@
     <color name="progress_dialog_text">#4d5266</color>
     <color name="colorRed">#ff0004</color>
     <color name="semiTransparent">#d5111111</color>
+    <color name="colorYellow">#ffea00</color>
 </resources>

@@ -118,7 +118,7 @@
             android:label="@string/title_activity_select_transit_media"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activity.transit.VehicleDetailActivity"
+            android:name=".activity.transit.ConfirmTransitActivity"
             android:label="@string/title_confirm_details"
             android:theme="@style/AppTheme" />
         <activity
@@ -140,7 +140,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
 
         <activity
             android:name=".activity.shop.SelectShopMediaTypeActivity"
@@ -221,9 +220,7 @@
         <activity
             android:name=".activity.wallpainting.AddWallActivity"
             android:label="@string/title_activity_add_wall"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".activity.wallpainting.PerformWallActivity"
             android:label="@string/title_activity_performed"
@@ -255,10 +252,14 @@
         <activity
             android:name=".activity.ChatActivity"
             android:label="@string/title_activity_chat"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.SelectProjectForChatActivity"
             android:label="@string/title_activity_select_project_for_chat"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.transit.TransitDetailActivity"
+            android:label="@string/title_activity_transit_detail"
             android:theme="@style/AppTheme"></activity>
     </application>
 

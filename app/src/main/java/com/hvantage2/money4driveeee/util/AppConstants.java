@@ -97,6 +97,8 @@ public class AppConstants {
         String USERALLPROJECTLISTDATA = "UserAllProjectListData";
         String GETPROJECTMSGS = "getProjectMsgs";
         String SENDMSGTOPROJECT = "sendMsgToProject";
+        String ADD_VEHICLE_WITH_VERIFY ="add_vehicle_with_verify" ;
+        String VEHICLE_VERIFY_OTP = "vehicle_verify_otp";
     }
 
     public class KEYS {
@@ -134,5 +136,10 @@ public class AppConstants {
     public class PROJECT_TYPE_IDS {
         public static final String PENDING_ID = "1";
         public static final String COMPLETED_ID = "2";
+    }
+
+    public class NOTIFICATION_KEY {
+        public static final String NEW_PROJECT_ASSIGNED = "new_project_assigned";
+        public static final String PROJECT_STATUS_CHANGED = "project_status_changed";
     }
 }

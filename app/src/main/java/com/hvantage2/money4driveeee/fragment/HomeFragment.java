@@ -40,8 +40,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.MessageAdapter;
-
-
 import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.DashboardModel;
 import com.hvantage2.money4driveeee.model.MessageModel;
@@ -106,6 +104,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
             getDashboardFromServer();
         }
+        getDashboardFromServer();
         return rootView;
     }
 
@@ -313,8 +312,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            refreshLayout.setRefreshing(false);
-            showProgressDialog();
         }
 
         @Override
@@ -362,7 +359,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
-            hideProgressDialog();
+            refreshLayout.setRefreshing(false);
             String status = values[0];
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {

@@ -118,12 +118,12 @@ public class WallDetailActivity extends AppCompatActivity implements View.OnClic
         setStateAdapter();
         setCityAdapter();
 
-        atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int p, long l) {
                 setCityAdapter();
             }
-        });
+        });*/
     }
 
     private void setCityAdapter() {
@@ -262,6 +262,7 @@ public class WallDetailActivity extends AppCompatActivity implements View.OnClic
                             atvStates.setText(state);
                             atvCities.setText(city);
                             etAddress.setText(address);
+
                             publishProgress("200", "");
                         } else {
                             String msg = jsonObject1.getJSONArray("result").getJSONObject(0).getString("msg");

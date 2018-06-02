@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,9 +16,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -29,11 +34,14 @@ import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
+import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,8 +52,6 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
     private static final String TAG = "MediaDetailActivity";
     private EditText etContName;
     private EditText etContNo;
-    private EditText etState;
-    private EditText etCity;
     private EditText etAddress;
     private Button btnCancel;
     private Button btnConfirm;
@@ -54,11 +60,19 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
     private String project_id;
     private String pmedia_id;
     private EditText etPMediaName;
+    private ImageView imgDoc1, imgDoc2;
+    private TextView tvImgDoc1Remark, tvImgDoc2Remark;
+    private AppCompatAutoCompleteTextView atvStates;
+    private AppCompatAutoCompleteTextView atvCities;
+    private MediaDetailActivity context;
+    ArrayList<String> listState = new ArrayList<String>();
+    ArrayList<String> listCity = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_detail);
+        context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -77,8 +91,6 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
 
         etContName = (EditText) findViewById(R.id.etContName);
         etContNo = (EditText) findViewById(R.id.etContNo);
-        etState = (EditText) findViewById(R.id.etState);
-        etCity = (EditText) findViewById(R.id.etCity);
         etAddress = (EditText) findViewById(R.id.etAddress);
 
         btnCancel = (Button) findViewById(R.id.btnCancel);
@@ -94,6 +106,62 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
                 return false;
             }
         });
+
+        imgDoc1 = (ImageView) findViewById(R.id.imgDoc1);
+        imgDoc2 = (ImageView) findViewById(R.id.imgDoc2);
+
+        tvImgDoc1Remark = (TextView) findViewById(R.id.tvImgDoc1Remark);
+        tvImgDoc2Remark = (TextView) findViewById(R.id.tvImgDoc2Remark);
+
+        atvStates = (AppCompatAutoCompleteTextView) findViewById(R.id.atvStates);
+        atvCities = (AppCompatAutoCompleteTextView) findViewById(R.id.atvCities);
+
+        atvStates.setThreshold(2);
+        atvCities.setThreshold(2);
+
+        setStateAdapter();
+        setCityAdapter();
+
+        atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int p, long l) {
+                setCityAdapter();
+            }
+        });
+    }
+
+    private void setCityAdapter() {
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_cities.json"));
+            JSONObject cityJObj = jsonObject.getJSONObject(atvStates.getText().toString());
+            JSONArray jsonArray = cityJObj.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listCity.add(state);
+            }
+            ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listCity);
+            atvCities.setAdapter(adapterCity);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setStateAdapter() {
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
+            JSONArray jsonArray = jsonObject.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listState.add(state);
+            }
+            ArrayAdapter<String> adapterState = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listState);
+            atvStates.setAdapter(adapterState);
+            Log.e(TAG, "setAdapter: listState >> " + listState);
+        } catch (JSONException e) {
+            Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void hideSoftKeyboard(View view) {
@@ -132,10 +200,10 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
                 etContName.setError("Enter contact person name");
             else if (TextUtils.isEmpty(etContNo.getText().toString()))
                 etContNo.setError("Enter contact person no");
-            else if (TextUtils.isEmpty(etState.getText().toString()))
-                etState.setError("Enter state");
-            else if (TextUtils.isEmpty(etCity.getText().toString()))
-                etCity.setError("Enter city");
+            else if (TextUtils.isEmpty(atvStates.getText().toString()))
+                atvStates.setError("Enter state");
+            else if (TextUtils.isEmpty(atvCities.getText().toString()))
+                atvCities.setError("Enter city");
             else if (TextUtils.isEmpty(etAddress.getText().toString()))
                 etAddress.setError("Enter address");
             else {
@@ -184,8 +252,8 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
 //                            etPMediaName.setText(print_name);
                             etContName.setText(shop_contact_per_name);
                             etContNo.setText(shop_contact_per_number);
-                            etState.setText(state);
-                            etCity.setText(city);
+                            atvStates.setText(state);
+                            atvCities.setText(city);
                             etAddress.setText(address);
                             publishProgress("200", "");
                         } else {
@@ -253,9 +321,9 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
             jsonObject.addProperty("print_id", AppPreference.getSelectedPMediaId(MediaDetailActivity.this));
             jsonObject.addProperty("shop_contact_per_name", etContName.getText().toString());
             jsonObject.addProperty("shop_contact_per_number", etContNo.getText().toString());
-            jsonObject.addProperty("state", etState.getText().toString());
+            jsonObject.addProperty("state", atvStates.getText().toString());
             jsonObject.addProperty("address", etAddress.getText().toString());
-            jsonObject.addProperty("city", etCity.getText().toString());
+            jsonObject.addProperty("city", atvCities.getText().toString());
             Log.e(TAG, "Request UPDATE DETAIL >> " + jsonObject);
 
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);

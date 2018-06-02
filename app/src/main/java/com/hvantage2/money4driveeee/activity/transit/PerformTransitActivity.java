@@ -163,7 +163,7 @@ public class PerformTransitActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.imagViewEdit) {
-            Intent intent = new Intent(PerformTransitActivity.this, VehicleDetailActivity.class);
+            Intent intent = new Intent(PerformTransitActivity.this, ConfirmTransitActivity.class);
             intent.putExtra("media_option_id", media_option_id);
             startActivity(intent);
             finish();

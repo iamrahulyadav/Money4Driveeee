@@ -15,7 +15,7 @@
 
     <style name="DrawerHamburgerStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
-        <item name="thickness">2dp</item>
+        <item name="thickness">1.5dp</item>
         <item name="gapBetweenBars">4dp</item>
     </style>
 

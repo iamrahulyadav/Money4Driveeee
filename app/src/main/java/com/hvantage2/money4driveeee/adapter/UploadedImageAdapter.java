@@ -1,16 +1,20 @@
 package com.hvantage2.money4driveeee.adapter;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,6 +29,7 @@ import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.Functions;
+import com.hvantage2.money4driveeee.util.TouchImageView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -107,6 +112,13 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
             }
 
         }
+
+        holder.item_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPreviewDialog(modal);
+            }
+        });
     }
 
     private void deleteDialog(final String update_id) {
@@ -146,15 +158,41 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
             progressDialog.dismiss();
     }
 
+    private void showPreviewDialog(ImageUploadModel modal) {
+        Dialog dialog1 = new Dialog(context, R.style.image_preview_dialog);
+        dialog1.setContentView(R.layout.image_preview_layout);
+        Window window = dialog1.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog1.setCancelable(true);
+        dialog1.setCanceledOnTouchOutside(true);
+
+        TouchImageView imgPreview = (TouchImageView) dialog1.findViewById(R.id.imgPreview);
+        TextView tvDimen = (TextView) dialog1.findViewById(R.id.tvDimen);
+        TextView tvRemark = (TextView) dialog1.findViewById(R.id.tvRemark);
+        imgPreview.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+        if (!modal.getImage_url().equalsIgnoreCase(""))
+            Picasso.with(context)
+                    .load(modal.getImage_url())
+                    .placeholder(R.drawable.no_image_placeholder)
+                    .into(imgPreview);
+
+        tvDimen.setText("Dimensions : " + modal.getDimension());
+        tvRemark.setText("Remark : " + modal.getRemark());
+        dialog1.show();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvRemark, tvDimen, tvDateTime;
         CircleImageView image;
         ImageView edit, delete;
         LinearLayout ll_edit;
         LinearLayout llDimen;
+        CardView item_view;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            item_view = (CardView) itemView.findViewById(R.id.item_view);
             llDimen = (LinearLayout) itemView.findViewById(R.id.llDimen);
             tvRemark = (TextView) itemView.findViewById(R.id.tvRemark);
             tvDimen = (TextView) itemView.findViewById(R.id.tvDimen);

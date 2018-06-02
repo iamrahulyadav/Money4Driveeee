@@ -1,5 +1,6 @@
 package com.hvantage2.money4driveeee.service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,7 +18,9 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.ProjectDetailsActivity;
+import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.MessageData;
+import com.hvantage2.money4driveeee.model.ProjectModel;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 
@@ -26,13 +29,16 @@ import org.json.JSONObject;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "FirebaseMessagingService";
+    private static final String TAG = "MyFirebaseMessagingService";
+    private DBHelper mydb;
 
+    @SuppressLint("LongLogTag")
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Log.e("Notification Data : ", remoteMessage.getData().toString());
         JSONObject jsonObject = null;
+        mydb = new DBHelper(MyFirebaseMessagingService.this);
         try {
             jsonObject = new JSONObject(remoteMessage.getData().toString());
             if (jsonObject.has("notification_data")) {
@@ -49,6 +55,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Intent intent = new Intent("get_msg");
                 intent.putExtra("new_msg", data);
                 LocalBroadcastManager.getInstance(MyFirebaseMessagingService.this).sendBroadcast(intent);
+            }
+
+            if (remoteMessage.getData().size() > 0) {
+                String NEW_PROJECT_ASSIGNED = remoteMessage.getData().get(AppConstants.NOTIFICATION_KEY.NEW_PROJECT_ASSIGNED);
+                String PROJECT_STATUS_CHANGED = remoteMessage.getData().get(AppConstants.NOTIFICATION_KEY.PROJECT_STATUS_CHANGED);
+                if (NEW_PROJECT_ASSIGNED != null) {
+                    ProjectModel projectModel = new Gson().fromJson(NEW_PROJECT_ASSIGNED, ProjectModel.class);
+                    sendNotification("New Project Assigned", projectModel.getProjectTitle(), projectModel.getProjectId());
+                    Log.e(TAG, "onMessageReceived: projectModel >> " + projectModel);
+                    if (!mydb.isProjectExist(projectModel.getProjectId())) {
+                        mydb.saveProject(projectModel, AppConstants.PROJECT_TYPE_IDS.PENDING_ID);
+                    } else
+                        Log.e(TAG, "onMessageReceived: project already exists");
+                } else if (PROJECT_STATUS_CHANGED != null) {
+                    JSONObject jsonObject1 = null;
+                    jsonObject1 = new JSONObject(PROJECT_STATUS_CHANGED);
+                    String project_id = jsonObject1.getString("project_id");
+                    String project_title = jsonObject1.getString("project_title");
+                    String status_id = jsonObject1.getString("status");
+                    if (status_id.equalsIgnoreCase("1"))
+                        sendNotification("Status Changed: Pending", project_title, project_id);
+                    else if (status_id.equalsIgnoreCase("2"))
+                        sendNotification("Status Changed: Completed", project_title, project_id);
+                    mydb.updateProjectStatus(project_id, status_id);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -84,6 +115,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e("Notification Ex", e.getMessage());
         }
     }
-
-
 }
