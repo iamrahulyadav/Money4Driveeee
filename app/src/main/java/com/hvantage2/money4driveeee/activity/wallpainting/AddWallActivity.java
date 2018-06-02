@@ -4,13 +4,11 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -69,6 +67,8 @@ import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.UtilClass;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +77,9 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -89,12 +91,9 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final int REQUEST_STORAGE = 0;
-    private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
-    private static final int PIC_CROP = REQUEST_LOAD_IMAGE + 1;
     private static final String TAG = "AddWallActivity";
-    String wallName, contName, contNo, state, city, address, startDate, endDate;
     ArrayList<String> listState = new ArrayList<String>();
     ArrayList<String> listCity = new ArrayList<String>();
     private Button btnCancel, btnConfirm;
@@ -107,13 +106,14 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
     private AppCompatAutoCompleteTextView atvStates;
     private AppCompatAutoCompleteTextView atvCities;
     private String userChoosenTask;
-    private Bitmap bitmapImage1;
     private String base64image1 = "", base64image2 = "";
     private ImageView imgDoc1, imgDoc2;
     private int imgCounter = 1;
     private TextView tvImgDoc1Remark, tvImgDoc2Remark;
     private TextView tvRequestOtp;
     private ProgressBar progressBar;
+    private int total_days;
+    private String imgRemark1 = "", imgRemark2 = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,12 +133,25 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(this, "Select Media Option", Toast.LENGTH_SHORT).show();
             finish();
         }
-        if (getIntent().hasExtra("start_date"))
-            start_date = getIntent().getStringExtra("start_date");
-        if (getIntent().hasExtra("end_date"))
-            end_date = getIntent().getStringExtra("end_date");
-        etStartDate.setText(start_date);
-        etEndDate.setText(end_date);
+        if (getIntent().hasExtra("total_days"))
+            total_days = getIntent().getIntExtra("total_days", 0);
+        Log.e(TAG, "onCreate: total_days >> " + total_days);
+        if (total_days != 0)
+            calculateDate(total_days);
+    }
+
+
+    private void calculateDate(int days) {
+        Calendar c = Calendar.getInstance();
+        Log.e(TAG, "calculateDate: c.getTime() >> " + c.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = sdf.format(c.getTime());
+        c.add(Calendar.DATE, days);
+        String endDate = sdf.format(c.getTime());
+        Log.e(TAG, "calculateDate: startDate >> " + startDate);
+        Log.e(TAG, "calculateDate: endDate >> " + endDate);
+        etStartDate.setText(startDate);
+        etEndDate.setText(endDate);
     }
 
     @Override
@@ -219,7 +232,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     private void setUpFused() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -263,8 +275,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         etEndDate = (EditText) findViewById(R.id.etEndDate);
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
         btnCancel = (Button) findViewById(R.id.btnCancel);
-
-
 
 
         btnCancel.setOnClickListener(this);
@@ -323,8 +333,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setStateAdapter() {
-
-
         try {
             JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
             JSONArray jsonArray = jsonObject.getJSONArray("name");
@@ -362,13 +370,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
             progressHD.dismiss();
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.product_menu, menu);
-        return true;
-    }*/
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -383,7 +384,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onClick(View view) {
@@ -422,201 +422,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private void selectImage() {
-        final CharSequence[] items = {"Camera", "Gallery", "Cancel"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Upload Document");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result = UtilClass.checkPermission(context);
-                if (items[item].equals("Camera")) {
-                    userChoosenTask = "Camera";
-                    if (result)
-                        cameraIntent();
-                } else if (items[item].equals("Gallery")) {
-                    userChoosenTask = "Gallery";
-                    if (result)
-                        galleryIntent();
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    private void cameraIntent() {
-        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/m4d/";
-        File newdir = new File(dir);
-        newdir.mkdirs();
-
-        String file = dir + "activity_image.jpg";
-        Log.d("imagesss cam11", file);
-        File newfile = new File(file);
-        try {
-            newfile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //final Uri outputFileUri = Uri.fromFile(newfile);
-        final Uri outputFileUri;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            outputFileUri = FileProvider.getUriForFile(context,
-                    BuildConfig.APPLICATION_ID + ".provider", newfile);
-        } else {
-            outputFileUri = Uri.fromFile(newfile);
-        }
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivityForResult(intent, REQUEST_CAMERA);
-    }
-
-    private void galleryIntent() {
-        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
-    }
-
-    @Nullable
-    private Intent createPickIntent() {
-        Intent picImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        if (picImageIntent.resolveActivity(getPackageManager()) != null) {
-            return picImageIntent;
-        } else {
-            return null;
-        }
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        File croppedImageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                + "/m4d/" + "activity_image.jpg");
-        if (resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = null;
-            if (requestCode == REQUEST_LOAD_IMAGE && data != null) {
-                selectedImage = data.getData();
-                try {
-                    performCrop(selectedImage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                File croppedImageFile1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                        + "/m4d/" + "activity_image1.jpg");
-                final Uri originalFileUri, outputFileUri;
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-                    outputFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
-                    originalFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile);
-                } else {
-                    outputFileUri = Uri.fromFile(croppedImageFile1);
-                    originalFileUri = Uri.fromFile(croppedImageFile);
-                }
-                Log.v(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
-                try {
-                    performCrop(originalFileUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (requestCode == PIC_CROP) {
-                Log.e("img uri ", data.getData() + "");
-                showPreviewDialog();
-            }
-        }
-    }
-
-    private void performCrop(Uri picUri) throws IOException {
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), picUri);
-        Log.e(TAG, "performCrop: bitmap height >> " + bitmap.getHeight());
-        Log.e(TAG, "performCrop: bitmap width >> " + bitmap.getWidth());
-
-        String path1 = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "activity_image", "activity_image.jpg");
-        File f = new File(Environment.getExternalStorageDirectory(), "/activity_image.jpg");
-        try {
-            f.createNewFile();
-        } catch (IOException ex) {
-            Log.e("io", ex.getMessage());
-        }
-
-        Uri uri = Uri.fromFile(f);
-
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(Uri.parse(path1), "image/*");
-            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            cropIntent.putExtra("crop", "true");
-            cropIntent.putExtra("aspectX", 4);
-            cropIntent.putExtra("aspectY", 3);
-            cropIntent.putExtra("outputX", 800);
-            cropIntent.putExtra("outputY", 600);
-            cropIntent.putExtra("return-data", true);
-            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            startActivityForResult(cropIntent, PIC_CROP);
-        } catch (ActivityNotFoundException anfe) {
-            anfe.printStackTrace();
-            String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void showPreviewDialog() {
-        final Dialog dialog1 = new Dialog(context, R.style.image_preview_dialog);
-        dialog1.setContentView(R.layout.image_doc_setup_layout);
-        Window window = dialog1.getWindow();
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog1.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        dialog1.setCancelable(true);
-        dialog1.setCanceledOnTouchOutside(false);
-
-        ImageView imageView = (ImageView) dialog1.findViewById(R.id.img_circle);
-        ScrollView container = (ScrollView) dialog1.findViewById(R.id.container);
-
-        ImageView imgBack = (ImageView) dialog1.findViewById(R.id.imgBack);
-        Button btnSave = (Button) dialog1.findViewById(R.id.btnSave);
-        final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
-
-        String croppedfilePath = Environment.getExternalStorageDirectory() + "/activity_image.jpg";
-        bitmapImage1 = BitmapFactory.decodeFile(croppedfilePath);
-        imageView.setImageBitmap(bitmapImage1);
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TextUtils.isEmpty(remarkText.getText().toString())) {
-                    remarkText.setError("Enter a remark");
-                } else {
-                    dialog1.dismiss();
-                    if (imgCounter == 1) {
-                        imgDoc1.setImageBitmap(bitmapImage1);
-                        tvImgDoc1Remark.setText(remarkText.getText().toString());
-                    } else if (imgCounter == 2) {
-                        imgDoc2.setImageBitmap(bitmapImage1);
-                        tvImgDoc2Remark.setText(remarkText.getText().toString());
-                    }
-                    new ImageTask().execute(bitmapImage1);
-                }
-            }
-        });
-
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog1.dismiss();
-            }
-        });
-        dialog1.show();
-
-        container.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                return false;
-            }
-        });
-    }
-
     private void showErrorDialog400(String msg) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(AddWallActivity.this);
         dialog.setTitle("Message");
@@ -633,31 +438,20 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void addWall() {
-        wallName = etWallName.getText().toString();
-        contName = etContName.getText().toString();
-        contNo = etContNo.getText().toString();
-        state = atvStates.getText().toString();
-        city = atvCities.getText().toString();
-        address = etAddress.getText().toString();
-        startDate = etStartDate.getText().toString();
-        endDate = etEndDate.getText().toString();
-
-
-        if (TextUtils.isEmpty(wallName))
+        if (TextUtils.isEmpty(etWallName.getText().toString()))
             etWallName.setError("Enter wall name");
-        else if (TextUtils.isEmpty(contName))
+        else if (TextUtils.isEmpty(etContName.getText().toString()))
             etContName.setError("Enter contact person name");
-        else if (TextUtils.isEmpty(contNo))
+        else if (TextUtils.isEmpty(etContNo.getText().toString()))
             etContNo.setError("Enter contact person no.");
-        else if (TextUtils.isEmpty(state))
+        else if (TextUtils.isEmpty(atvStates.getText().toString()))
             atvStates.setError("Enter state");
-        else if (TextUtils.isEmpty(city))
+        else if (TextUtils.isEmpty(atvCities.getText().toString()))
             atvCities.setError("Enter city");
-        else if (TextUtils.isEmpty(address))
+        else if (TextUtils.isEmpty(etAddress.getText().toString()))
             etAddress.setError("Enter address");
         else
             new AddWallActivity.AddWallTask().execute();
-
     }
 
     private void getLocationAddress(Location result) throws IOException {
@@ -676,10 +470,8 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         atvCities.setText(city);
     }
 
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 
     private void showOtpDialog() {
@@ -809,6 +601,201 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    private void selectImage() {
+        final CharSequence[] items = {"Camera", "Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Upload Document");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result = UtilClass.checkPermission(context);
+                if (items[item].equals("Camera")) {
+                    userChoosenTask = "Camera";
+                    if (result)
+                        cameraIntent();
+                } else if (items[item].equals("Gallery")) {
+                    userChoosenTask = "Gallery";
+                    if (result)
+                        galleryIntent();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Nullable
+    private Intent createPickIntent() {
+        Intent picImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (picImageIntent.resolveActivity(getPackageManager()) != null) {
+            return picImageIntent;
+        } else {
+            return null;
+        }
+    }
+
+    private void cameraIntent() {
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/M4D/";
+        File newdir = new File(dir);
+        newdir.mkdirs();
+        String file = dir + "report_img.jpg";
+        Log.e("imagesss cam11", file);
+        File newfile = new File(file);
+        try {
+            newfile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final Uri outputFileUri;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            outputFileUri = FileProvider.getUriForFile(AddWallActivity.this,
+                    BuildConfig.APPLICATION_ID + ".provider", newfile);
+        } else {
+            outputFileUri = Uri.fromFile(newfile);
+        }
+        Log.e(TAG, "cameraIntent: outputFileUri >> " + outputFileUri);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    private void galleryIntent() {
+        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_LOAD_IMAGE && data != null) {
+                startCropImageActivity(data.getData());
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                File croppedImageFile1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        + "/M4D/" + "report_img.jpg");
+                final Uri outputFileUri;
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    outputFileUri = FileProvider.getUriForFile(AddWallActivity.this, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
+                } else {
+                    outputFileUri = Uri.fromFile(croppedImageFile1);
+                }
+                Log.e(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
+                startCropImageActivity(outputFileUri);
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    showPreviewDialog(bitmap);
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1, 1)
+                .setRequestedSize(300, 300)
+                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .start(this);
+    }
+
+    private void showPreviewDialog(final Bitmap bitmap) {
+        final Dialog dialog1 = new Dialog(context, R.style.image_preview_dialog);
+        dialog1.setContentView(R.layout.image_doc_setup_layout);
+        Window window = dialog1.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog1.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog1.setCancelable(true);
+        dialog1.setCanceledOnTouchOutside(false);
+
+        ImageView imageView = (ImageView) dialog1.findViewById(R.id.img_circle);
+        ScrollView container = (ScrollView) dialog1.findViewById(R.id.container);
+
+        ImageView imgBack = (ImageView) dialog1.findViewById(R.id.imgBack);
+        Button btnSave = (Button) dialog1.findViewById(R.id.btnSave);
+        final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
+
+        imageView.setImageBitmap(bitmap);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TextUtils.isEmpty(remarkText.getText().toString())) {
+                    remarkText.setError("Enter a remark");
+                } else {
+                    dialog1.dismiss();
+                    if (imgCounter == 1) {
+                        imgDoc1.setImageBitmap(bitmap);
+                        tvImgDoc1Remark.setText(remarkText.getText().toString());
+                        imgRemark1 = remarkText.getText().toString();
+                    } else if (imgCounter == 2) {
+                        imgDoc2.setImageBitmap(bitmap);
+                        tvImgDoc2Remark.setText(remarkText.getText().toString());
+                        imgRemark2 = remarkText.getText().toString();
+                    }
+                    new ImageTask().execute(bitmap);
+                }
+            }
+        });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
+        });
+        dialog1.show();
+
+        container.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                return false;
+            }
+        });
+    }
+
+    class ImageTask extends AsyncTask<Bitmap, String, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Bitmap... bitmaps) {
+            Bitmap bitmapImage = bitmaps[0];
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            if (imgCounter == 1)
+                base64image1 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            else if (imgCounter == 2)
+                base64image2 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            Log.e(TAG, "ImageTask: doInBackground: base64image1 >>" + base64image1);
+            Log.e(TAG, "ImageTask: doInBackground: base64image2 >>" + base64image2);
+            publishProgress("");
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            hideProgressDialog();
+        }
+    }
+
     private class AddWallTask extends AsyncTask<String, String, Void> {
 
         @Override
@@ -823,14 +810,20 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
             jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.ADDWALLDETAIL);
             jsonObject.addProperty("user_id", AppPreference.getUserId(AddWallActivity.this));
             jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddWallActivity.this));
-            jsonObject.addProperty("contact_per_number", contNo);
-            jsonObject.addProperty("contact_per_name", contName);
+            jsonObject.addProperty("contact_per_number", etContNo.getText().toString());
+            jsonObject.addProperty("contact_per_name", etContName.getText().toString());
             jsonObject.addProperty("branding_id", AppPreference.getSelectedAlloMediaId(AddWallActivity.this));
             jsonObject.addProperty("media_option_id", media_option_id);
-            jsonObject.addProperty("wall_name", wallName);
-            jsonObject.addProperty("state", state);
-            jsonObject.addProperty("city", city);
-            jsonObject.addProperty("address", address);
+            jsonObject.addProperty("wall_name", etWallName.getText().toString());
+            jsonObject.addProperty("state", atvStates.getText().toString());
+            jsonObject.addProperty("city", atvCities.getText().toString());
+            jsonObject.addProperty("address", etAddress.getText().toString());
+            jsonObject.addProperty("start_date", etStartDate.getText().toString());
+            jsonObject.addProperty("end_date", etEndDate.getText().toString());
+            jsonObject.addProperty("doc_img1", base64image1);
+            jsonObject.addProperty("doc_img2", base64image2);
+            jsonObject.addProperty("img1_remark", imgRemark1);
+            jsonObject.addProperty("img2_remark", imgRemark2);
 
             Log.e(TAG, "Request ADD WALL >> " + jsonObject.toString());
 
@@ -882,41 +875,10 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent);
                 finish();
             } else if (status.equalsIgnoreCase("400")) {
-                Toast.makeText(AddWallActivity.this, msg, Toast.LENGTH_SHORT).show();
+                showErrorDialog400(msg);
             }
         }
     }
-
-    class ImageTask extends AsyncTask<Bitmap, String, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgressDialog();
-        }
-
-        @Override
-        protected Void doInBackground(Bitmap... bitmaps) {
-            Bitmap bitmapImage = bitmaps[0];
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream.toByteArray();
-            if (imgCounter == 1)
-                base64image1 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            else if (imgCounter == 2)
-                base64image2 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            Log.e(TAG, "ImageTask: doInBackground: base64image1 >>" + base64image1);
-            Log.e(TAG, "ImageTask: doInBackground: base64image2 >>" + base64image2);
-            publishProgress("");
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-            hideProgressDialog();
-        }
-    }
-
 
 }
 

@@ -261,6 +261,11 @@
             android:name=".activity.transit.TransitDetailActivity"
             android:label="@string/title_activity_transit_detail"
             android:theme="@style/AppTheme"></activity>
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/AppTheme.DarkActionBar"></activity>
+
     </application>
 
 </manifest>

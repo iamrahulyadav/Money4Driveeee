@@ -175,6 +175,7 @@ public class SelectVehicleActivity extends AppCompatActivity implements View.OnC
                 } else {
                     Log.e(TAG, "onItemClick: Clicked ");
                     Intent intent1 = new Intent(SelectVehicleActivity.this, ConfirmTransitActivity.class);
+                    intent1.setAction("edit");
                     intent1.putExtra("media_option_id", media_option_id);
                     startActivity(intent1);
                 }

@@ -70,10 +70,10 @@
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_4sdp"
                             android:text="@string/remark"
-                            android:textColor="@color/white"
-                            android:fontFamily="@font/oxygen"/>
+                            android:textColor="@color/white" />
 
                         <EditText
                             android:id="@+id/remarkText"
@@ -81,13 +81,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
+                            android:fontFamily="@font/oxygen"
                             android:hint="Enter Remark"
                             android:imeOptions="actionDone"
+                            android:inputType="textCapWords"
                             android:maxLength="50"
                             android:padding="@dimen/_4sdp"
                             android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor"
-                            android:fontFamily="@font/oxygen" />
+                            android:textColorHint="@color/hintcolor" />
 
                         <View
                             android:id="@+id/view1"
@@ -107,11 +108,11 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/green_border_rounded"
                         android:elevation="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
                         android:paddingLeft="@dimen/_30sdp"
                         android:paddingRight="@dimen/_30sdp"
                         android:text="Add"
-                        android:textColor="@color/white"
-                        android:fontFamily="@font/oxygen"/>
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 

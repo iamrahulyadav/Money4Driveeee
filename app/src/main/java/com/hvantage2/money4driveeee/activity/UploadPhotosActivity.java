@@ -3,13 +3,11 @@ package com.hvantage2.money4driveeee.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -56,6 +54,8 @@ import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.UtilClass;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,10 +71,8 @@ import retrofit2.Response;
 
 public class UploadPhotosActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_STORAGE = 0;
-    private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
-    private static final int PIC_CROP = REQUEST_LOAD_IMAGE + 1;
 
     private static final String TAG = "UploadPhotosActivity";
     ArrayList<ImageUploadModel> imageList;
@@ -84,21 +82,19 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
     private RecyclerView recycler_view;
     private UploadedImageAdapter adapter;
     private Dialog dialog;
-    private Bitmap bitmapImage1;
     private JsonObject jsonObjectImages;
     private String tempDimen = "", tempRemark = "";
-    private Uri originalImageUri;
     private Button takepicture;
     private ProgressHUD progressHD;
     private String media_option_id;
-    private String hoarding_name;
     private String media_option_name;
-
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_photos);
+        context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -213,60 +209,143 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+    private void showProgressDialog() {
+        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // TODO Auto-generated method stub
+            }
+        });
+    }
+
+    private void hideProgressDialog() {
+        if (progressHD != null && progressHD.isShowing())
+            progressHD.dismiss();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (userChoosenTask.equals("Camera"))
+                        cameraIntent();
+                    else if (userChoosenTask.equals("Gallery"))
+                        galleryIntent();
+                } else {
+                }
+                break;
+        }
+    }
+
+    private void selectImage() {
+        final CharSequence[] items = {"Camera", "Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Add Photo");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result = UtilClass.checkPermission(context);
+                if (items[item].equals("Camera")) {
+                    userChoosenTask = "Camera";
+                    if (result)
+                        cameraIntent();
+                } else if (items[item].equals("Gallery")) {
+                    userChoosenTask = "Gallery";
+                    if (result)
+                        galleryIntent();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Nullable
+    private Intent createPickIntent() {
+        Intent picImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (picImageIntent.resolveActivity(getPackageManager()) != null) {
+            return picImageIntent;
+        } else {
+            return null;
+        }
+    }
+
+    private void cameraIntent() {
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/M4D/";
+        File newdir = new File(dir);
+        newdir.mkdirs();
+        String file = dir + "report_img.jpg";
+        Log.e("imagesss cam11", file);
+        File newfile = new File(file);
+        try {
+            newfile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final Uri outputFileUri;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            outputFileUri = FileProvider.getUriForFile(context,
+                    BuildConfig.APPLICATION_ID + ".provider", newfile);
+        } else {
+            outputFileUri = Uri.fromFile(newfile);
+        }
+        Log.e(TAG, "cameraIntent: outputFileUri >> " + outputFileUri);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    private void galleryIntent() {
+        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        File croppedImageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                + "/m4d/" + "activity_image.jpg");
         if (resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = null;
             if (requestCode == REQUEST_LOAD_IMAGE && data != null) {
-                selectedImage = data.getData();
-                originalImageUri = data.getData();
-                try {
-                    performCrop(selectedImage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                startCropImageActivity(data.getData());
             } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 File croppedImageFile1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                        + "/m4d/" + "activity_image1.jpg");
-                final Uri originalFileUri, outputFileUri;
+                        + "/M4D/" + "report_img.jpg");
+                final Uri outputFileUri;
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-                    outputFileUri = FileProvider.getUriForFile(UploadPhotosActivity.this, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
-                    originalFileUri = FileProvider.getUriForFile(UploadPhotosActivity.this, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile);
+                    outputFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
                 } else {
                     outputFileUri = Uri.fromFile(croppedImageFile1);
-                    originalFileUri = Uri.fromFile(croppedImageFile);
                 }
-                Log.v(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
-                originalImageUri = originalFileUri;
-                try {
-                    performCrop(originalFileUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (requestCode == PIC_CROP) {
-                Log.e("img uri ", data.getData() + "");
-                showPreviewDialog();
-
-                //Bitmap bitmapImage = data.getExtras().getParcelable("data");
-              /*  if (data.getData() != null) {
+                Log.e(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
+                startCropImageActivity(outputFileUri);
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Bitmap bitmap = null;
                     try {
-                        bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
                     } catch (IOException e) {
                         e.printStackTrace();
-                        FirebaseCrash.report(e);
                     }
-                } else {
-                    bitmapImage = (Bitmap) data.getExtras().get("data");
-                }*/
-                // MediaStore.Images.Media.insertImage(getContentResolver(), bitmapImage, "report_img", "report_img_cropped.jpg");
+                    showPreviewDialog(bitmap);
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
 
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1, 1)
+                .setRequestedSize(300, 300)
+                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .start(this);
+    }
 
-    private void showPreviewDialog() {
+    private void showPreviewDialog(final Bitmap bitmap) {
         dialog = new Dialog(UploadPhotosActivity.this, R.style.image_preview_dialog);
         dialog.setContentView(R.layout.image_setup_layout);
         Window window = dialog.getWindow();
@@ -286,9 +365,9 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         final EditText width = (EditText) dialog.findViewById(R.id.dimensionTextwidth);
         final EditText remarkText = (EditText) dialog.findViewById(R.id.remarkText);
 
-        String croppedfilePath = Environment.getExternalStorageDirectory() + "/activity_image.jpg";
-        bitmapImage1 = BitmapFactory.decodeFile(croppedfilePath);
-        imageView.setImageBitmap(bitmapImage1);
+        if (action.equalsIgnoreCase("wall"))
+            tvDimenUnit.setText("Dimension (inches)");
+        imageView.setImageBitmap(bitmap);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -303,11 +382,11 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
                     tempDimen = height.getText().toString() + "x" + width.getText().toString();
                     Log.e(TAG, "tempDimen: " + tempDimen);
                     tempRemark = remarkText.getText().toString();
-                    ImageUploadModel model = new ImageUploadModel(bitmapImage1, tempDimen, tempRemark);
+                    ImageUploadModel model = new ImageUploadModel(bitmap, tempDimen, tempRemark);
                     imageList.add(model);
                     adapter.notifyDataSetChanged();
                     dialog.dismiss();
-                    new ImageTask().execute(bitmapImage1);
+                    new ImageTask().execute(bitmap);
                 }
             }
         });
@@ -328,135 +407,6 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
                 return false;
             }
         });
-    }
-
-    private void showProgressDialog() {
-        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-
-    private void hideProgressDialog() {
-        if (progressHD != null && progressHD.isShowing())
-            progressHD.dismiss();
-    }
-
-    private void performCrop(Uri picUri) throws IOException {
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), picUri);
-        Log.e(TAG, "performCrop: bitmap height >> " + bitmap.getHeight());
-        Log.e(TAG, "performCrop: bitmap width >> " + bitmap.getWidth());
-
-        String path1 = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "activity_image", "activity_image.jpg");
-        File f = new File(Environment.getExternalStorageDirectory(), "/activity_image.jpg");
-        try {
-            f.createNewFile();
-        } catch (IOException ex) {
-            Log.e("io", ex.getMessage());
-        }
-
-        Uri uri = Uri.fromFile(f);
-
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(Uri.parse(path1), "image/*");
-            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            cropIntent.putExtra("crop", "true");
-            cropIntent.putExtra("aspectX", 4);
-            cropIntent.putExtra("aspectY", 3);
-            cropIntent.putExtra("outputX", 800);
-            cropIntent.putExtra("outputY", 600);
-            cropIntent.putExtra("return-data", true);
-            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            startActivityForResult(cropIntent, PIC_CROP);
-        } catch (ActivityNotFoundException anfe) {
-            anfe.printStackTrace();
-            String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast.makeText(UploadPhotosActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void selectImage() {
-        final CharSequence[] items = {"Camera", "Gallery", "Cancel"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(UploadPhotosActivity.this);
-        builder.setTitle("Add Photo");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result = UtilClass.checkPermission(UploadPhotosActivity.this);
-                if (items[item].equals("Camera")) {
-                    userChoosenTask = "Camera";
-                    if (result)
-                        dispatchTakePictureIntent();
-                } else if (items[item].equals("Gallery")) {
-                    userChoosenTask = "Gallery";
-                    if (result)
-                        galleryIntent();
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    private void galleryIntent() {
-        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
-    }
-
-    @Nullable
-    private Intent createPickIntent() {
-        Intent picImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        if (picImageIntent.resolveActivity(getPackageManager()) != null) {
-            return picImageIntent;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Camera"))
-                        dispatchTakePictureIntent();
-                    else if (userChoosenTask.equals("Gallery"))
-                        galleryIntent();
-                } else {
-                }
-                break;
-        }
-    }
-
-    private void dispatchTakePictureIntent() {
-        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/m4d/";
-        File newdir = new File(dir);
-        newdir.mkdirs();
-
-        String file = dir + "activity_image.jpg";
-        Log.d("imagesss cam11", file);
-        File newfile = new File(file);
-        try {
-            newfile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //final Uri outputFileUri = Uri.fromFile(newfile);
-        final Uri outputFileUri;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            outputFileUri = FileProvider.getUriForFile(UploadPhotosActivity.this,
-                    BuildConfig.APPLICATION_ID + ".provider", newfile);
-        } else {
-            outputFileUri = Uri.fromFile(newfile);
-        }
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivityForResult(intent, REQUEST_CAMERA);
     }
 
     class ImageTask extends AsyncTask<Bitmap, Void, Void> {

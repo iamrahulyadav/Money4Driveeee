@@ -13,6 +13,18 @@
         <item name="android:navigationBarColor" tools:targetApi="21">@color/background</item>
     </style>
 
+    <style name="AppTheme.DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/oxygen</item>
+        <item name="fontFamily">@font/oxygen</item>
+        <item name="drawerArrowStyle">@style/DrawerHamburgerStyle</item>
+        <item name="alertDialogTheme">@style/MyAlertDialogTheme</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/background</item>
+    </style>
+
     <style name="DrawerHamburgerStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="thickness">1.5dp</item>

@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -176,8 +175,12 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
                     .load(modal.getImage_url())
                     .placeholder(R.drawable.no_image_placeholder)
                     .into(imgPreview);
+        else if (modal.getImage() != null)
+            imgPreview.setImageBitmap(modal.getImage());
 
-        tvDimen.setText("Dimensions : " + modal.getDimension());
+
+        if (!modal.getDimension().equalsIgnoreCase(""))
+            tvDimen.setText("Dimensions : " + modal.getDimension());
         tvRemark.setText("Remark : " + modal.getRemark());
         dialog1.show();
     }

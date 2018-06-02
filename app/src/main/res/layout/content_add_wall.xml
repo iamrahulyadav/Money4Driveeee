@@ -39,10 +39,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Wall Title/Name"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/oxygen" />
+                    android:textColor="@color/white" />
 
                 <EditText
                     android:id="@+id/etWallName"
@@ -50,14 +50,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Enter Wall Title/Name"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences|textNoSuggestions"
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    android:fontFamily="@font/oxygen"/>
+                    android:textColorHint="@color/hintcolor" />
 
                 <View
                     android:layout_width="match_parent"
@@ -70,10 +70,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="@string/contact_name"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/oxygen" />
+                    android:textColor="@color/white" />
 
                 <EditText
                     android:id="@+id/etContName"
@@ -81,16 +81,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Enter Contact Person Name"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences|textPersonName|textNoSuggestions"
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
 
-                    android:fontFamily="@font/oxygen"
-                    />
+                    android:textColorHint="@color/hintcolor" />
 
                 <View
                     android:layout_width="match_parent"
@@ -104,10 +103,10 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="@string/contact_no"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/oxygen"/>
+                    android:textColor="@color/white" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -120,14 +119,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/_80sdp"
                         android:background="@null"
+                        android:fontFamily="@font/oxygen"
                         android:hint="Enter Contact Person No."
                         android:inputType="number"
                         android:maxLength="10"
                         android:padding="@dimen/_4sdp"
                         android:singleLine="true"
                         android:textColor="@color/hintcolor"
-                        android:textColorHint="@color/hintcolor"
-                        android:fontFamily="@font/oxygen"/>
+                        android:textColorHint="@color/hintcolor" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -144,10 +143,11 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:clickable="true"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_4sdp"
                             android:text="Send OTP"
                             android:textColor="@color/colorAccent"
-                            android:fontFamily="@font/oxygen"/>
+                            android:visibility="gone" />
 
                         <ProgressBar
                             android:id="@+id/progressBar"
@@ -181,10 +181,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_4sdp"
                             android:text="State"
-                            android:textColor="@color/white"
-                            android:fontFamily="@font/oxygen" />
+                            android:textColor="@color/white" />
 
 
                         <android.support.v7.widget.AppCompatAutoCompleteTextView
@@ -220,10 +220,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_4sdp"
                             android:text="City"
-                            android:textColor="@color/white"
-                            android:fontFamily="@font/oxygen" />
+                            android:textColor="@color/white" />
 
                         <android.support.v7.widget.AppCompatAutoCompleteTextView
                             android:id="@+id/atvCities"
@@ -252,10 +252,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="@string/address"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/oxygen" />
+                    android:textColor="@color/white" />
 
                 <EditText
                     android:id="@+id/etAddress"
@@ -263,14 +263,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Enter Address"
                     android:imeOptions="actionDone"
                     android:inputType="textCapSentences|textMultiLine|textNoSuggestions"
                     android:maxLines="3"
                     android:padding="@dimen/_4sdp"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    android:fontFamily="@font/oxygen" />
+                    android:textColorHint="@color/hintcolor" />
 
                 <View
                     android:layout_width="match_parent"
@@ -283,10 +283,10 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Start Date"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/oxygen" />
+                    android:textColor="@color/white" />
 
                 <EditText
                     android:id="@+id/etStartDate"
@@ -297,6 +297,7 @@
                     android:editable="false"
                     android:enabled="false"
                     android:focusableInTouchMode="false"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Select Start Date"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine|textNoSuggestions"
@@ -304,7 +305,6 @@
                     android:singleLine="false"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor"
-                    android:fontFamily="@font/oxygen"
 
                     />
 
@@ -318,10 +318,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="End Date"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/oxygen" />
+                    android:textColor="@color/white" />
 
                 <EditText
                     android:id="@+id/etEndDate"
@@ -332,14 +332,14 @@
                     android:editable="false"
                     android:enabled="false"
                     android:focusableInTouchMode="false"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Select End Date"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine|textNoSuggestions"
                     android:padding="@dimen/_4sdp"
                     android:singleLine="false"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    android:fontFamily="@font/oxygen" />
+                    android:textColorHint="@color/hintcolor" />
 
                 <View
                     android:layout_width="match_parent"
@@ -352,10 +352,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_4sdp"
                     android:text="Upload Documents (Max. 2)"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/oxygen" />
+                    android:textColor="@color/white" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -384,11 +384,11 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/imgDoc1"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/oxygen"
                             android:maxLines="1"
                             android:singleLine="true"
                             android:text=""
-                            android:textColor="@color/hintcolor"
-                            android:fontFamily="@font/oxygen" />
+                            android:textColor="@color/hintcolor" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -411,11 +411,11 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/imgDoc2"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/oxygen"
                             android:maxLines="1"
                             android:singleLine="true"
                             android:text=""
-                            android:textColor="@color/hintcolor"
-                            android:fontFamily="@font/oxygen"/>
+                            android:textColor="@color/hintcolor" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -439,11 +439,11 @@
                         android:layout_margin="@dimen/_10sdp"
                         android:layout_weight="0.5"
                         android:background="@drawable/green_plan_border"
+                        android:fontFamily="@font/oxygen"
                         android:gravity="center"
                         android:padding="@dimen/_1sdp"
                         android:text="@string/Cancel"
-                        android:textColor="@color/green"
-                        android:fontFamily="@font/oxygen" />
+                        android:textColor="@color/green" />
 
                     <Button
                         android:id="@+id/btnConfirm"
@@ -452,11 +452,11 @@
                         android:layout_margin="@dimen/_10sdp"
                         android:layout_weight="0.5"
                         android:background="@drawable/green_border_rounded"
+                        android:fontFamily="@font/oxygen"
                         android:gravity="center"
                         android:padding="@dimen/_1sdp"
                         android:text="Add"
-                        android:textColor="@color/white"
-                        android:fontFamily="@font/oxygen"/>
+                        android:textColor="@color/white" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

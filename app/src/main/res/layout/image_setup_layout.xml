@@ -64,12 +64,12 @@
                         android:layout_height="@dimen/_30sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@drawable/green_plan_border"
+                        android:fontFamily="@font/oxygen"
                         android:paddingLeft="@dimen/_10sdp"
                         android:paddingRight="@dimen/_10sdp"
                         android:text="@string/addmore"
                         android:textColor="@color/green"
-                        android:visibility="gone"
-                        android:fontFamily="@font/oxygen" />
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/detaillinear"
@@ -84,10 +84,10 @@
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_5sdp"
                             android:text="Dimension(feets)"
-                            android:textColor="@color/white"
-                            android:fontFamily="@font/oxygen"/>
+                            android:textColor="@color/white" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -101,31 +101,31 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_5sdp"
                                 android:background="@drawable/square_border"
+                                android:fontFamily="@font/oxygen"
                                 android:hint="Height"
                                 android:imeOptions="actionNext"
                                 android:inputType="number"
                                 android:maxLength="4"
                                 android:padding="@dimen/_5sdp"
-                                android:textAlignment="center"
 
+                                android:textAlignment="center"
                                 android:textColor="@color/hintcolor"
-                                android:textColorHint="@color/hintcolor"
-                                android:fontFamily="@font/oxygen" />
+                                android:textColorHint="@color/hintcolor" />
 
                             <TextView
                                 style="@style/Base.TextAppearance.AppCompat.Subhead"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/oxygen"
                                 android:hint="x"
                                 android:imeOptions="actionNext"
                                 android:inputType="number"
                                 android:paddingLeft="@dimen/_8sdp"
                                 android:paddingRight="@dimen/_8sdp"
-                                android:textAlignment="center"
 
+                                android:textAlignment="center"
                                 android:textColor="@color/hintcolor"
-                                android:textColorHint="@color/hintcolor"
-                                android:fontFamily="@font/oxygen" />
+                                android:textColorHint="@color/hintcolor" />
 
                             <EditText
                                 android:id="@+id/dimensionTextwidth"
@@ -133,16 +133,16 @@
                                 android:layout_width="@dimen/_80sdp"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/square_border"
+                                android:fontFamily="@font/oxygen"
                                 android:hint="Width"
                                 android:imeOptions="actionNext"
                                 android:inputType="number"
                                 android:maxLength="4"
                                 android:padding="@dimen/_5sdp"
-                                android:textAlignment="center"
 
+                                android:textAlignment="center"
                                 android:textColor="@color/hintcolor"
-                                android:textColorHint="@color/hintcolor"
-                                android:fontFamily="@font/oxygen"/>
+                                android:textColorHint="@color/hintcolor" />
                         </LinearLayout>
 
                         <!-- <View
@@ -157,11 +157,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
 
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_5sdp"
-                            android:text="@string/remark"
 
-                            android:textColor="@color/white"
-                            android:fontFamily="@font/oxygen"/>
+                            android:text="@string/remark"
+                            android:textColor="@color/white" />
 
                         <EditText
                             android:id="@+id/remarkText"
@@ -169,13 +169,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
+                            android:fontFamily="@font/oxygen"
                             android:hint="Enter Remark"
                             android:imeOptions="actionDone"
+                            android:inputType="textCapWords|textNoSuggestions"
                             android:padding="@dimen/_5sdp"
                             android:textColor="@color/hintcolor"
-
-                            android:textColorHint="@color/hintcolor"
-                            android:fontFamily="@font/oxygen" />
+                            android:textColorHint="@color/hintcolor" />
 
                         <View
                             android:id="@+id/view1"
@@ -196,11 +196,11 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/green_border_rounded"
                         android:elevation="@dimen/_5sdp"
+                        android:fontFamily="@font/oxygen"
                         android:paddingLeft="@dimen/_30sdp"
                         android:paddingRight="@dimen/_30sdp"
                         android:text="@string/save"
-                        android:textColor="@color/white"
-                        android:fontFamily="@font/oxygen" />
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 

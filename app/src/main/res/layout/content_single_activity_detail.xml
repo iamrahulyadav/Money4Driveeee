@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="?attr/actionBarSize"
             android:overScrollMode="never"
-            android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+            android:scrollbars="vertical" />
 
         <LinearLayout
             android:id="@+id/llBottom"
@@ -27,42 +27,42 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/_5sdp"
-            android:orientation="vertical"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/takepicture"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginRight="@dimen/_2sdp"
                 android:layout_weight="1"
                 android:background="@drawable/green_border_rounded"
                 android:drawableLeft="@drawable/ic_camera_alt_white_24dp"
+                android:fontFamily="@font/oxygen"
                 android:maxLines="1"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingRight="@dimen/_10sdp"
                 android:singleLine="true"
-                android:text="Add More Pictures"
-                android:textColor="@color/white"
-                android:fontFamily="@font/oxygen" />
+                android:text="Add Pictures"
+                android:textColor="@color/white" />
 
             <Button
-                android:visibility="gone"
                 android:id="@+id/btnAddDoc"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_2sdp"
                 android:layout_weight="1"
                 android:background="@drawable/green_border_rounded"
                 android:drawableLeft="@drawable/ic_camera_alt_white_24dp"
+                android:fontFamily="@font/oxygen"
                 android:maxLines="1"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingRight="@dimen/_10sdp"
                 android:singleLine="true"
                 android:text="Add Documents"
                 android:textColor="@color/white"
-                android:fontFamily="@font/oxygen" />
+                android:visibility="visible" />
 
         </LinearLayout>
     </RelativeLayout>

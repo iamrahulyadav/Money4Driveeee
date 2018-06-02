@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/footerimg"/>
+            android:background="@drawable/footerimg" />
 
         <ScrollView
             android:id="@+id/container"
@@ -53,7 +53,7 @@
                     android:background="@null"
                     android:fontFamily="@font/oxygen"
                     android:hint="NA"
-                    android:inputType="textCapSentences|textAutoCorrect|textPersonName"
+                    android:inputType="textCapWords|textPersonName|textNoSuggestions"
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
@@ -62,8 +62,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/dividerColor">
-                </View>
+                    android:background="@color/dividerColor"></View>
 
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
@@ -93,7 +92,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/dividerColor"/>
+                    android:background="@color/dividerColor" />
 
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
@@ -121,7 +120,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/dividerColor"/>
+                    android:background="@color/dividerColor" />
 
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
@@ -172,7 +171,7 @@
                     android:background="@null"
                     android:fontFamily="@font/oxygen"
                     android:hint="NA"
-                    android:inputType="textCapSentences"
+                    android:inputType="textCapSentences|textNoSuggestions"
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
@@ -183,6 +182,99 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/dividerColor" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
+                            android:padding="@dimen/_4sdp"
+                            android:text="Start Date"
+                            android:textColor="@color/white" />
+
+                        <EditText
+                            android:id="@+id/etStartDate"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="@font/oxygen"
+                            android:hint="Select Start Date"
+                            android:imeOptions="actionDone"
+                            android:inputType="textMultiLine|textNoSuggestions"
+                            android:padding="@dimen/_4sdp"
+                            android:singleLine="false"
+                            android:textColor="@color/hintcolor"
+
+                            android:textColorHint="@color/hintcolor" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
+                            android:padding="@dimen/_4sdp"
+                            android:text="End Date"
+                            android:textColor="@color/white" />
+
+                        <EditText
+                            android:id="@+id/etEndDate"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="@font/oxygen"
+                            android:hint="Select End Date"
+                            android:imeOptions="actionDone"
+                            android:inputType="textMultiLine|textNoSuggestions"
+                            android:padding="@dimen/_4sdp"
+                            android:singleLine="false"
+                            android:textColor="@color/hintcolor"
+                            android:textColorHint="@color/hintcolor"
+
+                            />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+                    </LinearLayout>
+                </LinearLayout>
+
 
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Subhead"

@@ -25,7 +25,6 @@ import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.activity.SingleActivityDetail;
 import com.hvantage2.money4driveeee.activity.UploadPhotosActivity;
 import com.hvantage2.money4driveeee.adapter.ActivityAdapter;
-
 import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -164,6 +163,7 @@ public class PerformTransitActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         if (view.getId() == R.id.imagViewEdit) {
             Intent intent = new Intent(PerformTransitActivity.this, ConfirmTransitActivity.class);
+            intent.setAction("edit");
             intent.putExtra("media_option_id", media_option_id);
             startActivity(intent);
             finish();

@@ -127,9 +127,7 @@
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-
-                    />
+                    android:textColorHint="@color/hintcolor" />
 
                 <View
                     android:layout_width="match_parent"
@@ -188,8 +186,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:enabled="false"
                     android:fontFamily="@font/oxygen"
-
                     android:hint="NA"
                     android:inputType="textCapSentences"
 
@@ -584,6 +582,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/llUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -591,6 +590,7 @@
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:weightSum="1">
 
                     <Button
@@ -617,6 +617,46 @@
                         android:gravity="center"
                         android:padding="@dimen/_1sdp"
                         android:text="@string/Confirm"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llReport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/linearmain"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="1">
+
+                    <Button
+                        android:id="@+id/btnRepaste"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/green_plan_border"
+                        android:fontFamily="@font/oxygen"
+                        android:gravity="center"
+                        android:padding="@dimen/_1sdp"
+                        android:text="Repaste"
+                        android:textColor="@color/green" />
+
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/green_border_rounded"
+                        android:fontFamily="@font/oxygen"
+                        android:gravity="center"
+                        android:padding="@dimen/_1sdp"
+                        android:text="Report"
                         android:textColor="@color/white" />
 
                 </LinearLayout>

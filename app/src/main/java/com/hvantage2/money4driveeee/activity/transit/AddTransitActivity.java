@@ -3,13 +3,11 @@ package com.hvantage2.money4driveeee.activity.transit;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -57,6 +55,8 @@ import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.UtilClass;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,14 +76,11 @@ import retrofit2.Response;
 public class AddTransitActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_STORAGE = 0;
-    private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
-    private static final int PIC_CROP = REQUEST_LOAD_IMAGE + 1;
     private static final String TAG = "AddTransitActivity";
     EditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etStartDate, etEndDate;
     Button btnConfirm, btnCancel;
-    String driverName, driverContact, vehicle, regNo, address, startDate, endDate;
     ArrayList<String> listState = new ArrayList<String>();
     ArrayList<String> listCity = new ArrayList<String>();
     ArrayList<String> listGift = new ArrayList<String>();
@@ -92,14 +89,10 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     private AppCompatAutoCompleteTextView atvStates;
     private Context context;
     private AppCompatAutoCompleteTextView atvCities;
-    private String state = "";
-    private String city = "";
     private ImageView imgDoc1, imgDoc2;
     private String userChoosenTask;
     private int imgCounter = 1;
-    private Bitmap bitmapImage1;
     private String base64image1 = "", base64image2 = "";
-    private String imgRemark1 = "", imgRemark2 = "";
     private TextView tvImgDoc1Remark, tvImgDoc2Remark;
     private TextView tvRequestOtp;
     private ProgressBar progressBar;
@@ -137,9 +130,9 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         Calendar c = Calendar.getInstance();
         Log.e(TAG, "calculateDate: c.getTime() >> " + c.getTime());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        startDate = sdf.format(c.getTime());
+        String startDate = sdf.format(c.getTime());
         c.add(Calendar.DATE, days);
-        endDate = sdf.format(c.getTime());
+        String endDate = sdf.format(c.getTime());
         Log.e(TAG, "calculateDate: startDate >> " + startDate);
         Log.e(TAG, "calculateDate: endDate >> " + endDate);
         etStartDate.setText(startDate);
@@ -546,17 +539,13 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 addTransit();
                 break;
             case R.id.tvRequestOtp:
-                driverName = etDriverName.getText().toString();
-                driverContact = etDriverContact.getText().toString();
-                vehicle = etVehicle.getText().toString();
-                regNo = etRegNo.getText().toString();
-                if (TextUtils.isEmpty(driverName))
+                if (TextUtils.isEmpty(etDriverName.getText().toString()))
                     etDriverName.setError("Enter driver name");
-                else if (TextUtils.isEmpty(driverContact))
+                else if (TextUtils.isEmpty(etDriverContact.getText().toString()))
                     etDriverContact.setError("Enter driver contact no.");
-                else if (TextUtils.isEmpty(vehicle))
+                else if (TextUtils.isEmpty(etVehicle.getText().toString()))
                     etVehicle.setError("Enter vehicle name");
-                else if (TextUtils.isEmpty(regNo))
+                else if (TextUtils.isEmpty(etRegNo.getText().toString()))
                     etRegNo.setError("Enter vehicle no.");
                 else {
                     etDriverContact.clearFocus();
@@ -601,6 +590,12 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         final AlertDialog.Builder dialog = new AlertDialog.Builder(AddTransitActivity.this);
         dialog.setTitle("Message");
         dialog.setMessage(msg);
+        dialog.setNeutralButton("Repaste", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
         dialog.setNegativeButton("Go Back", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -610,7 +605,12 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         dialog.setPositiveButton("View Details", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                startActivity(new Intent(AddTransitActivity.this, ConfirmTransitActivity.class).putExtra("media_option_id", media_option_id).putExtra("vehicle_id", vehicle_id));
+
+                Intent intent = new Intent(AddTransitActivity.this, ConfirmTransitActivity.class);
+                intent.setAction("view");
+                intent.putExtra("media_option_id", media_option_id);
+                intent.putExtra("vehicle_id", vehicle_id);
+                startActivity(intent);
                 finish();
             }
         });
@@ -633,13 +633,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             progressHD.dismiss();
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.product_menu, menu);
-        return true;
-    }*/
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -656,29 +649,19 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void addTransit() {
-        driverName = etDriverName.getText().toString();
-        driverContact = etDriverContact.getText().toString();
-        vehicle = etVehicle.getText().toString();
-        regNo = etRegNo.getText().toString();
-        state = atvStates.getText().toString();
-        city = atvCities.getText().toString();
-        address = etDriverAddress.getText().toString();
-        startDate = etStartDate.getText().toString();
-        endDate = etEndDate.getText().toString();
-
-        if (TextUtils.isEmpty(driverName))
+        if (TextUtils.isEmpty(etDriverName.getText().toString()))
             etDriverName.setError("Enter driver name");
-        else if (TextUtils.isEmpty(driverContact))
+        else if (TextUtils.isEmpty(etDriverContact.getText().toString()))
             etDriverContact.setError("Enter driver contact no.");
-        else if (TextUtils.isEmpty(vehicle))
+        else if (TextUtils.isEmpty(etVehicle.getText().toString()))
             etVehicle.setError("Enter vehicle name");
-        else if (TextUtils.isEmpty(regNo))
+        else if (TextUtils.isEmpty(etRegNo.getText().toString()))
             etRegNo.setError("Enter vehicle no.");
-        else if (TextUtils.isEmpty(state))
+        else if (TextUtils.isEmpty(atvStates.getText().toString()))
             atvStates.setError("Enter state");
-        else if (TextUtils.isEmpty(city))
+        else if (TextUtils.isEmpty(atvCities.getText().toString()))
             atvCities.setError("Enter city");
-        else if (TextUtils.isEmpty(address))
+        else if (TextUtils.isEmpty(etDriverAddress.getText().toString()))
             etDriverAddress.setError("Enter address");
         else if (TextUtils.isEmpty(media_option_id))
             Toast.makeText(this, "Please select transit media", Toast.LENGTH_SHORT).show();
@@ -687,8 +670,22 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (userChoosenTask.equals("Camera"))
+                        cameraIntent();
+                    else if (userChoosenTask.equals("Gallery"))
+                        galleryIntent();
+                }
+                break;
+        }
+    }
+
     private void selectImage() {
-        final CharSequence[] items = {"Camera", "Gallery", "Cancel"};
+        final CharSequence[] items = {"Camera", "Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Upload Document");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -703,16 +700,10 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                     userChoosenTask = "Gallery";
                     if (result)
                         galleryIntent();
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
                 }
             }
         });
         builder.show();
-    }
-
-    private void galleryIntent() {
-        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
     }
 
     @Nullable
@@ -726,122 +717,81 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void cameraIntent() {
-        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/m4d/";
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/M4D/";
         File newdir = new File(dir);
         newdir.mkdirs();
-
-        String file = dir + "activity_image.jpg";
-        Log.d("imagesss cam11", file);
+        String file = dir + "report_img.jpg";
+        Log.e("imagesss cam11", file);
         File newfile = new File(file);
         try {
             newfile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //final Uri outputFileUri = Uri.fromFile(newfile);
         final Uri outputFileUri;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            outputFileUri = FileProvider.getUriForFile(context,
+            outputFileUri = FileProvider.getUriForFile(AddTransitActivity.this,
                     BuildConfig.APPLICATION_ID + ".provider", newfile);
         } else {
             outputFileUri = Uri.fromFile(newfile);
         }
+        Log.e(TAG, "cameraIntent: outputFileUri >> " + outputFileUri);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivityForResult(intent, REQUEST_CAMERA);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
+    private void galleryIntent() {
+        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
+    }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Camera"))
-                        cameraIntent();
-                    else if (userChoosenTask.equals("Gallery"))
-                        galleryIntent();
-                } else {
-                }
-                break;
-        }
-    }
-
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        File croppedImageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                + "/m4d/" + "activity_image.jpg");
         if (resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = null;
             if (requestCode == REQUEST_LOAD_IMAGE && data != null) {
-                selectedImage = data.getData();
-                try {
-                    performCrop(selectedImage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                startCropImageActivity(data.getData());
             } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 File croppedImageFile1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                        + "/m4d/" + "activity_image1.jpg");
-                final Uri originalFileUri, outputFileUri;
+                        + "/M4D/" + "report_img.jpg");
+                final Uri outputFileUri;
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-                    outputFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
-                    originalFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile);
+                    outputFileUri = FileProvider.getUriForFile(AddTransitActivity.this, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
                 } else {
                     outputFileUri = Uri.fromFile(croppedImageFile1);
-                    originalFileUri = Uri.fromFile(croppedImageFile);
                 }
-                Log.v(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
-                try {
-                    performCrop(originalFileUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                Log.e(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
+                startCropImageActivity(outputFileUri);
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    showPreviewDialog(bitmap);
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
                 }
-            } else if (requestCode == PIC_CROP) {
-                Log.e("img uri ", data.getData() + "");
-                showPreviewDialog();
             }
         }
     }
 
-    private void performCrop(Uri picUri) throws IOException {
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), picUri);
-        Log.e(TAG, "performCrop: bitmap height >> " + bitmap.getHeight());
-        Log.e(TAG, "performCrop: bitmap width >> " + bitmap.getWidth());
-
-        String path1 = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "activity_image", "activity_image.jpg");
-        File f = new File(Environment.getExternalStorageDirectory(), "/activity_image.jpg");
-        try {
-            f.createNewFile();
-        } catch (IOException ex) {
-            Log.e("io", ex.getMessage());
-        }
-
-        Uri uri = Uri.fromFile(f);
-
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(Uri.parse(path1), "image/*");
-            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            cropIntent.putExtra("crop", "true");
-            cropIntent.putExtra("aspectX", 4);
-            cropIntent.putExtra("aspectY", 3);
-            cropIntent.putExtra("outputX", 800);
-            cropIntent.putExtra("outputY", 600);
-            cropIntent.putExtra("return-data", true);
-            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            startActivityForResult(cropIntent, PIC_CROP);
-        } catch (ActivityNotFoundException anfe) {
-            anfe.printStackTrace();
-            String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
-        }
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1, 1)
+                .setRequestedSize(300, 300)
+                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .start(this);
     }
 
-    private void showPreviewDialog() {
+    private void showPreviewDialog(final Bitmap bitmap) {
         final Dialog dialog1 = new Dialog(context, R.style.image_preview_dialog);
         dialog1.setContentView(R.layout.image_doc_setup_layout);
         Window window = dialog1.getWindow();
@@ -858,9 +808,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         Button btnSave = (Button) dialog1.findViewById(R.id.btnSave);
         final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
 
-        String croppedfilePath = Environment.getExternalStorageDirectory() + "/activity_image.jpg";
-        bitmapImage1 = BitmapFactory.decodeFile(croppedfilePath);
-        imageView.setImageBitmap(bitmapImage1);
+        imageView.setImageBitmap(bitmap);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -870,15 +818,13 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 } else {
                     dialog1.dismiss();
                     if (imgCounter == 1) {
-                        imgDoc1.setImageBitmap(bitmapImage1);
+                        imgDoc1.setImageBitmap(bitmap);
                         tvImgDoc1Remark.setText(remarkText.getText().toString());
-                        imgRemark1 = remarkText.getText().toString();
                     } else if (imgCounter == 2) {
-                        imgDoc2.setImageBitmap(bitmapImage1);
+                        imgDoc2.setImageBitmap(bitmap);
                         tvImgDoc2Remark.setText(remarkText.getText().toString());
-                        imgRemark2 = remarkText.getText().toString();
                     }
-                    new ImageTask().execute(bitmapImage1);
+                    new ImageTask().execute(bitmap);
                 }
             }
         });
@@ -934,6 +880,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                             publishProgress("200", resp);
                         } else if (jsonObject.getString("status").equalsIgnoreCase("300")) {
                             String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            vehicle_id = jsonObject.getJSONArray("result").getJSONObject(0).getString("vehicle_id");
                             publishProgress("300", msg);
                         } else {
                             String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
@@ -961,8 +908,8 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             hideProgressDialog();
             String status = values[0];
             String msg = values[1];
+            JSONObject jsonObject = null;
             if (status.equalsIgnoreCase("200")) {
-                JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(msg);
                     JSONArray jsonArray = jsonObject.getJSONArray("result");
@@ -1000,26 +947,24 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.ADDTRANSITDETAIL);
             jsonObject.addProperty("user_id", AppPreference.getUserId(AddTransitActivity.this));
             jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddTransitActivity.this));
-            jsonObject.addProperty("driver_name", driverName);
-            jsonObject.addProperty("driver_contact_no", driverContact);
+            jsonObject.addProperty("driver_name", etDriverName.getText().toString());
+            jsonObject.addProperty("driver_contact_no", etDriverContact.getText().toString());
             jsonObject.addProperty("branding_id", AppPreference.getSelectedAlloMediaId(AddTransitActivity.this));
             jsonObject.addProperty("media_option_id", media_option_id);
-            jsonObject.addProperty("vehicle_model", vehicle);
-            jsonObject.addProperty("vehicle_regis_number", regNo);
-            jsonObject.addProperty("state", state);
-            jsonObject.addProperty("city", city);
-            jsonObject.addProperty("address", address);
+            jsonObject.addProperty("vehicle_model", etVehicle.getText().toString());
+            jsonObject.addProperty("vehicle_regis_number", etRegNo.getText().toString());
+            jsonObject.addProperty("state", atvStates.getText().toString());
+            jsonObject.addProperty("city", atvCities.getText().toString());
+            jsonObject.addProperty("address", etDriverAddress.getText().toString());
             jsonObject.addProperty("vehicle_id", vehicle_id);
             jsonObject.addProperty("verify_status", verify_status);
-            jsonObject.addProperty("start_date", startDate);
-            jsonObject.addProperty("end_date", endDate);
+            jsonObject.addProperty("start_date", etStartDate.getText().toString());
+            jsonObject.addProperty("end_date", etEndDate.getText().toString());
             jsonObject.addProperty("doc_img1", base64image1);
             jsonObject.addProperty("doc_img2", base64image2);
-            jsonObject.addProperty("img1_remark", imgRemark1);
-            jsonObject.addProperty("img2_remark", imgRemark1);
-
+            jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
+            jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
             Log.e(TAG, "AddTransitTask: Request >> " + jsonObject.toString());
-
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
             Call<JsonObject> call = apiService.project_transit_detail_api(jsonObject);
             call.enqueue(new Callback<JsonObject>() {
@@ -1062,13 +1007,13 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             String status = values[0];
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {
-//                 AppPreference.setSelectedVehicleName(AddTransitActivity.this, etVehicle.getText().toString());
-//                Intent intent = new Intent(AddTransitActivity.this, PerformTransitActivity.class);
-//                intent.putExtra("media_option_id", media_option_id);
-//                startActivity(intent);
+                AppPreference.setSelectedVehicleName(AddTransitActivity.this, etVehicle.getText().toString());
+                Intent intent = new Intent(AddTransitActivity.this, PerformTransitActivity.class);
+                intent.putExtra("media_option_id", media_option_id);
+                startActivity(intent);
                 finish();
             } else if (status.equalsIgnoreCase("400")) {
-                Toast.makeText(AddTransitActivity.this, msg, Toast.LENGTH_SHORT).show();
+                showErrorDialog400(msg);
             }
         }
     }
@@ -1085,10 +1030,10 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.ADD_VEHICLE_WITH_VERIFY);
             jsonObject.addProperty("user_id", AppPreference.getUserId(AddTransitActivity.this));
-            jsonObject.addProperty("driver_name", driverName);
-            jsonObject.addProperty("driver_contact_no", driverContact);
-            jsonObject.addProperty("vehicle_model", vehicle);
-            jsonObject.addProperty("vehicle_regis_number", regNo);
+            jsonObject.addProperty("driver_name", etDriverName.getText().toString());
+            jsonObject.addProperty("driver_contact_no", etDriverContact.getText().toString());
+            jsonObject.addProperty("vehicle_model", etVehicle.getText().toString());
+            jsonObject.addProperty("vehicle_regis_number", etRegNo.getText().toString());
             Log.e(TAG, "AddTransitVerifyTask: Request >> " + jsonObject.toString());
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
             Call<JsonObject> call = apiService.project_transit_detail_api(jsonObject);
@@ -1152,7 +1097,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         protected Void doInBackground(String... strings) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.VEHICLE_VERIFY_OTP);
-            jsonObject.addProperty("driver_contact_no", driverContact);
+            jsonObject.addProperty("driver_contact_no", etDriverContact.getText().toString());
             jsonObject.addProperty("user_id", AppPreference.getUserId(context));
             jsonObject.addProperty("otp", strings[0]);
             Log.e(TAG, "OTPVerifyTask: Request >> " + jsonObject.toString());

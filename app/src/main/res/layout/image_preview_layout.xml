@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:padding="@dimen/_8sdp">
+        android:padding="@dimen/_12sdp">
 
         <!--   <TextView
                style="@style/Base.TextAppearance.AppCompat.Subhead"
@@ -32,7 +32,7 @@
    -->
         <TextView
             android:id="@+id/tvDimen"
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            style="@style/Base.TextAppearance.AppCompat.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/oxygen"
@@ -50,7 +50,7 @@
 
         <TextView
             android:id="@+id/tvRemark"
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            style="@style/Base.TextAppearance.AppCompat.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/oxygen"
