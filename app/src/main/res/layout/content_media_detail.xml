@@ -145,7 +145,6 @@
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor" />
 
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

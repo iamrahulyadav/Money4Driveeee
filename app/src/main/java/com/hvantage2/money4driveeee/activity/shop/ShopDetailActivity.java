@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -15,19 +16,23 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
+import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 
 import org.json.JSONArray;
@@ -43,13 +48,25 @@ import retrofit2.Response;
 public class ShopDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "ShopDetailActivity";
+    private static final int REQUEST_STORAGE = 0;
+    private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
+    private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
+    ArrayList<String> listState = new ArrayList<String>();
+    ArrayList<String> listCity = new ArrayList<String>();
     String project_id = "", shop_id = "";
-    ArrayList<ShopActivity> activityList;
     ProgressDialog dialog;
-    private EditText etname, etMobile, etShopID, etAddress, etCity;
+    private EditText etname, etMobile, etShopID, etAddress;
+    private AppCompatAutoCompleteTextView atvStates;
+    private AppCompatAutoCompleteTextView atvCities;
     private String shop_name = "";
     private String media_option_id = "";
     private ProgressHUD progressHD;
+    private ImageView imgDoc1, imgDoc2;
+    private TextView tvImgDoc1Remark, tvImgDoc2Remark;
+    private Context context;
+    private int imgCounter = 1;
+    private String userChoosenTask = "";
+    private String base64image1 = "", base64image2 = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +76,6 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
-        activityList = new ArrayList<ShopActivity>();
         shop_id = AppPreference.getSelectedShopid(ShopDetailActivity.this);
         project_id = AppPreference.getSelectedProjectId(ShopDetailActivity.this);
         if (getIntent().hasExtra("media_option_id"))
@@ -88,7 +104,6 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
         etMobile = (EditText) findViewById(R.id.etMobile);
         etShopID = (EditText) findViewById(R.id.etShopID);
         etAddress = (EditText) findViewById(R.id.etAddress);
-        etCity = (EditText) findViewById(R.id.etCity);
         ((Button) findViewById(R.id.btnConfirm)).setOnClickListener(this);
         ((Button) findViewById(R.id.btnCancel)).setOnClickListener(this);
 
@@ -99,6 +114,63 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
                 return false;
             }
         });
+
+        imgDoc1 = (ImageView) findViewById(R.id.imgDoc1);
+        imgDoc2 = (ImageView) findViewById(R.id.imgDoc2);
+
+        tvImgDoc1Remark = (TextView) findViewById(R.id.tvImgDoc1Remark);
+        tvImgDoc2Remark = (TextView) findViewById(R.id.tvImgDoc2Remark);
+
+        atvStates = (AppCompatAutoCompleteTextView) findViewById(R.id.atvStates);
+        atvCities = (AppCompatAutoCompleteTextView) findViewById(R.id.atvCities);
+
+        imgDoc1.setOnClickListener(this);
+        imgDoc2.setOnClickListener(this);
+
+        atvStates.setThreshold(2);
+        atvCities.setThreshold(2);
+        setStateAdapter();
+        setCityAdapter();
+        atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int p, long l) {
+                setCityAdapter();
+            }
+        });
+    }
+
+    private void setCityAdapter() {
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_cities.json"));
+            JSONObject cityJObj = jsonObject.getJSONObject(atvStates.getText().toString());
+            JSONArray jsonArray = cityJObj.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listCity.add(state);
+            }
+            ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listCity);
+            atvCities.setAdapter(adapterCity);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setStateAdapter() {
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
+            JSONArray jsonArray = jsonObject.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listState.add(state);
+            }
+            ArrayAdapter<String> adapterState = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listState);
+            atvStates.setAdapter(adapterState);
+            Log.e(TAG, "setAdapter: listState >> " + listState);
+        } catch (JSONException e) {
+            Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void hideSoftKeyboard(View view) {
@@ -168,28 +240,22 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
                         if (jsonObject1.getString("status").equalsIgnoreCase("200")) {
                             JSONArray jsonArray = jsonObject1.getJSONArray("result");
                             JSONObject jsonObject11 = jsonArray.getJSONObject(0);
-                            String shop_contact_per_name = jsonObject11.getString("shop_contact_per_name");
-                            String shop_contact_per_number = jsonObject11.getString("shop_contact_per_number");
-                            String shop_id = jsonObject11.getString("shop_id");
-                            String address = jsonObject11.getString("address");
-                            String city = jsonObject11.getString("city");
                             shop_name = jsonObject11.getString("shop_name");
-
-                            etname.setText(shop_contact_per_name);
-                            etMobile.setText(shop_contact_per_number);
-                            etShopID.setText(shop_id);
-                            etAddress.setText(address);
-                            etCity.setText(city);
-                            JSONArray jsonArrayActivity = jsonObject11.getJSONArray("shop_activities");
-                            for (int i = 0; i < jsonArrayActivity.length(); i++) {
+                            etname.setText(jsonObject11.getString("shop_contact_per_name"));
+                            etMobile.setText(jsonObject11.getString("shop_contact_per_number"));
+                            etShopID.setText(jsonObject11.getString("shop_id"));
+                            etAddress.setText(jsonObject11.getString("address"));
+                            atvCities.setText(jsonObject11.getString("city"));
+                            atvStates.setText(jsonObject11.getString("state"));
+                            //JSONArray jsonArrayActivity = jsonObject11.getJSONArray("shop_activities");
+                            /*for (int i = 0; i < jsonArrayActivity.length(); i++) {
                                 JSONObject jsonObjectActivity = jsonArrayActivity.getJSONObject(i);
                                 int activity_status = jsonObjectActivity.getInt("activity_status");
                                 String activity_name = jsonObjectActivity.getString("activity_name");
                                 String activity_id = jsonObjectActivity.getString("activity_id");
                                 ShopActivity model = new ShopActivity(activity_id, activity_name, activity_status);
                                 activityList.add(model);
-                            }
-                            Log.e(TAG, "onResponse: activityList >> " + activityList);
+                            }*/
                             publishProgress("200", "");
                         } else {
                             String msg = jsonObject1.getJSONArray("result").getJSONObject(0).getString("msg");
@@ -243,7 +309,12 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
             jsonObject.addProperty("shop_contact_per_name", etname.getText().toString());
             jsonObject.addProperty("shop_contact_per_number", etMobile.getText().toString());
             jsonObject.addProperty("address", etAddress.getText().toString());
-            jsonObject.addProperty("city", etCity.getText().toString());
+            jsonObject.addProperty("state", atvStates.getText().toString());
+            jsonObject.addProperty("city", atvCities.getText().toString());
+            jsonObject.addProperty("doc_img1", base64image1);
+            jsonObject.addProperty("doc_img2", base64image2);
+            jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
+            jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
             Log.e(TAG, "Request UPDATE DETAIL >> " + jsonObject);
 
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
