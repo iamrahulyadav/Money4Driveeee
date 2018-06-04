@@ -116,7 +116,6 @@
                 android:fontFamily="@font/oxygen"
                 android:hint="Enter Contact Person No."
                 android:inputType="textCapWords|textNoSuggestions"
-                android:maxLength="10"
                 android:padding="@dimen/_4sdp"
                 android:singleLine="true"
                 android:textColor="@color/hintcolor"
@@ -126,14 +125,11 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/dividerColor">
-
-            </View>
+                android:background="@color/dividerColor"/>
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/oxygen"
@@ -180,7 +176,8 @@
                         android:fontFamily="@font/oxygen"
                         android:padding="@dimen/_4sdp"
                         android:text="Send OTP"
-                        android:textColor="@color/colorAccent" />
+                        android:textColor="@color/colorAccent"
+                        android:visibility="gone" />
 
                     <ProgressBar
                         android:id="@+id/progressBar"
@@ -232,7 +229,6 @@
                         android:singleLine="true"
                         android:textColor="@color/hintcolor"
                         android:textColorHint="@color/hintcolor" />
-
 
                     <View
                         android:layout_width="match_parent"
@@ -304,7 +300,6 @@
                 android:singleLine="true"
                 android:textColor="@color/hintcolor"
                 android:textColorHint="@color/hintcolor"
-
                 />
 
             <View

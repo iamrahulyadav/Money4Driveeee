@@ -105,6 +105,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
     private Bitmap bitmapImage1;
     private String userChoosenTask;
     private int total_days = 0;
+    private String shop_unique_id = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -719,6 +720,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                     jsonObject = new JSONObject(msg);
                     JSONArray jsonArray = jsonObject.getJSONArray("result");
                     JSONObject object = jsonArray.getJSONObject(0);
+                    shop_unique_id = object.getString("shop_unique_id");
                     etShopName.setText(object.getString("shop_name"));
                     etShopID.setText(object.getString("shop_number"));
                     atvStates.setText(object.getString("state"));
@@ -728,6 +730,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                     etContNo.setText(object.getString("shop_contact_per_number"));
                     etContNo.setEnabled(false);
                     tvRequestOtp.setVisibility(View.GONE);
+                    Log.e(TAG, "onProgressUpdate: shop_unique_id >> " + shop_unique_id);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -735,7 +738,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
             if (status.equalsIgnoreCase("300")) {
                 // showErrorDialog300(msg);
             } else if (status.equalsIgnoreCase("400")) {
-                showErrorDialog400(msg);
+               // showErrorDialog400(msg);
             }
         }
     }
@@ -769,6 +772,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
             jsonObject.addProperty("doc_img2", base64image2);
             jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
             jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
+            jsonObject.addProperty("shop_unique_id", shop_unique_id);
 
             Log.e(TAG, "Request ADD SHOP >> " + jsonObject.toString());
 
