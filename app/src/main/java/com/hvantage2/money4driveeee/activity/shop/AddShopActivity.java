@@ -4,12 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -50,7 +48,6 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-import com.hvantage2.money4driveeee.adapter.DialogMultipleChoiceAdapter;
 import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -59,6 +56,8 @@ import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.UtilClass;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,7 +66,9 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,7 +82,6 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
     private static final int PIC_CROP = REQUEST_LOAD_IMAGE + 1;
-    String shop_id, shopName, contName, contNo, state, city, address, startDate, endDate;
     ArrayList<String> listState = new ArrayList<String>();
     ArrayList<String> listCity = new ArrayList<String>();
     private Button btnCancel, btnConfirm;
@@ -104,6 +104,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tvImgDoc1Remark, tvImgDoc2Remark;
     private Bitmap bitmapImage1;
     private String userChoosenTask;
+    private int total_days = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,14 +123,27 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(this, "Select Media Option", Toast.LENGTH_SHORT).show();
             finish();
         }
-        if (getIntent().hasExtra("start_date"))
-            start_date = getIntent().getStringExtra("start_date");
-        if (getIntent().hasExtra("end_date"))
-            end_date = getIntent().getStringExtra("end_date");
-        etStartDate.setText(start_date);
-        etEndDate.setText(end_date);
+        if (getIntent().hasExtra("total_days"))
+            total_days = getIntent().getIntExtra("total_days", 0);
+        Log.e(TAG, "onCreate: total_days >> " + total_days);
+        if (total_days != 0)
+            calculateDate(total_days);
         showDialog();
     }
+
+    private void calculateDate(int days) {
+        Calendar c = Calendar.getInstance();
+        Log.e(TAG, "calculateDate: c.getTime() >> " + c.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = sdf.format(c.getTime());
+        c.add(Calendar.DATE, days);
+        String endDate = sdf.format(c.getTime());
+        Log.e(TAG, "calculateDate: startDate >> " + startDate);
+        Log.e(TAG, "calculateDate: endDate >> " + endDate);
+        etStartDate.setText(startDate);
+        etEndDate.setText(endDate);
+    }
+
 
     private void init() {
         etShopID = (EditText) findViewById(R.id.etShopID);
@@ -137,8 +151,6 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         etContName = (EditText) findViewById(R.id.etContName);
         etContNo = (EditText) findViewById(R.id.etContNo);
         etAddress = (EditText) findViewById(R.id.etAddress);
-        /*etBType = (EditText) findViewById(R.id.etBType);
-        etBOptions = (EditText) findViewById(R.id.etBOptions);*/
         etStartDate = (EditText) findViewById(R.id.etStartDate);
         etEndDate = (EditText) findViewById(R.id.etEndDate);
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
@@ -201,8 +213,6 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setStateAdapter() {
-
-
         try {
             JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
             JSONArray jsonArray = jsonObject.getJSONArray("name");
@@ -217,8 +227,6 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
             Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
             e.printStackTrace();
         }
-
-
     }
 
     private void hideSoftKeyboard(View view) {
@@ -239,13 +247,6 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         if (progressHD != null && progressHD.isShowing())
             progressHD.dismiss();
     }
-
- /*   @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.product_menu, menu);
-        return true;
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -270,12 +271,11 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         final EditText input = (EditText) viewInflated.findViewById(R.id.input);
         builder.setView(viewInflated);
 
-        builder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String contact_no = input.getText().toString();
                 Log.e(TAG, "onClick: contact_no >> " + contact_no.length());
-
                 dialog.dismiss();
                 etContNo.setText(contact_no);
                 new CheckNoTask().execute(contact_no);
@@ -455,64 +455,6 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    public void showBrandingTypeDialog() {
-        if (bTypeList != null && !bTypeList.isEmpty()) {
-            final DialogMultipleChoiceAdapter adapter = new DialogMultipleChoiceAdapter(AddShopActivity.this, bTypeList);
-            new AlertDialog.Builder(AddShopActivity.this).setTitle("Select Branding Type")
-                    .setAdapter(adapter, null)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            allBTypeIds = TextUtils.join(",", adapter.getSelectedActivitiesIds());
-                            String allNames = TextUtils.join("\n", adapter.getSelectedActivitiesNames());
-                            Log.e(TAG, "onClick: allBTypeIds >> " + allBTypeIds);
-                            Log.e(TAG, "onClick: allNames >> " + allNames);
-//                            etBType.setText(allNames);
-
-                            bOptionList.clear();
-                            bOptionList.add(new ShopActivity("00", "Test Option 1", 0));
-                            bOptionList.add(new ShopActivity("00", "Test Option 2", 0));
-                            bOptionList.add(new ShopActivity("00", "Test Option 3", 0));
-                            bOptionList.add(new ShopActivity("00", "Test Option 4", 0));
-                        }
-                    })
-                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    })
-                    .show();
-        } else {
-            Toast.makeText(this, "No activities found", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void showBrandingOptionDialog() {
-        if (bOptionList != null && !bOptionList.isEmpty()) {
-            final DialogMultipleChoiceAdapter adapter = new DialogMultipleChoiceAdapter(AddShopActivity.this, bOptionList);
-            new AlertDialog.Builder(AddShopActivity.this).setTitle("Select Branding Options")
-                    .setAdapter(adapter, null)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            allBOptionIds = TextUtils.join(",", adapter.getSelectedActivitiesIds());
-                            String allNames = TextUtils.join("\n", adapter.getSelectedActivitiesNames());
-                            Log.e(TAG, "onClick: allBOptionIds >> " + allBOptionIds);
-                            Log.e(TAG, "onClick: allNames >> " + allNames);
-//                            etBOptions.setText(allNames);
-                        }
-                    })
-                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    })
-                    .show();
-        } else {
-            Toast.makeText(this, "No branding options found", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void showErrorDialog400(String msg) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(AddShopActivity.this);
         dialog.setTitle("Message");
@@ -529,37 +471,26 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void addShop() {
-        shop_id = etShopID.getText().toString();
-        shopName = etShopName.getText().toString();
-        contName = etContName.getText().toString();
-        contNo = etContNo.getText().toString();
-        address = etAddress.getText().toString();
-        startDate = etStartDate.getText().toString();
-        endDate = etEndDate.getText().toString();
-
-        if (TextUtils.isEmpty(shop_id))
+        if (TextUtils.isEmpty(etShopID.getText().toString()))
             etShopID.setError("Enter shop id");
-        else if (TextUtils.isEmpty(shopName))
+        else if (TextUtils.isEmpty(etShopName.getText().toString()))
             etShopName.setError("Enter shop name");
-        else if (TextUtils.isEmpty(contName))
+        else if (TextUtils.isEmpty(etContName.getText().toString()))
             etContName.setError("Enter contact person name");
-        else if (TextUtils.isEmpty(contNo))
+        else if (TextUtils.isEmpty(etContNo.getText().toString()))
             etContNo.setError("Enter contact person no.");
-        else if (TextUtils.isEmpty(state))
+        else if (TextUtils.isEmpty(atvStates.getText().toString()))
             atvStates.setError("Enter state");
-        else if (TextUtils.isEmpty(city))
+        else if (TextUtils.isEmpty(atvCities.getText().toString()))
             atvCities.setError("Enter city");
-        else if (TextUtils.isEmpty(address))
+        else if (TextUtils.isEmpty(etAddress.getText().toString()))
             etAddress.setError("Enter address");
-        /*else if (TextUtils.isEmpty(allBTypeIds))
-            etBType.setError("Select Branding Types");*/
         else
             new AddShopTask().execute();
-
     }
 
     private void selectImage() {
-        final CharSequence[] items = {"Camera", "Gallery", "Cancel"};
+        final CharSequence[] items = {"Camera", "Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Upload Document");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -574,43 +505,10 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                     userChoosenTask = "Gallery";
                     if (result)
                         galleryIntent();
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
                 }
             }
         });
         builder.show();
-    }
-
-    private void cameraIntent() {
-        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/m4d/";
-        File newdir = new File(dir);
-        newdir.mkdirs();
-
-        String file = dir + "activity_image.jpg";
-        Log.d("imagesss cam11", file);
-        File newfile = new File(file);
-        try {
-            newfile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //final Uri outputFileUri = Uri.fromFile(newfile);
-        final Uri outputFileUri;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            outputFileUri = FileProvider.getUriForFile(context,
-                    BuildConfig.APPLICATION_ID + ".provider", newfile);
-        } else {
-            outputFileUri = Uri.fromFile(newfile);
-        }
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivityForResult(intent, REQUEST_CAMERA);
-    }
-
-    private void galleryIntent() {
-        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
     }
 
     @Nullable
@@ -623,79 +521,82 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    private void cameraIntent() {
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/M4D/";
+        File newdir = new File(dir);
+        newdir.mkdirs();
+        String file = dir + "report_img.jpg";
+        Log.e("imagesss cam11", file);
+        File newfile = new File(file);
+        try {
+            newfile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final Uri outputFileUri;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            outputFileUri = FileProvider.getUriForFile(AddShopActivity.this,
+                    BuildConfig.APPLICATION_ID + ".provider", newfile);
+        } else {
+            outputFileUri = Uri.fromFile(newfile);
+        }
+        Log.e(TAG, "cameraIntent: outputFileUri >> " + outputFileUri);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    private void galleryIntent() {
+        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        File croppedImageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                + "/m4d/" + "activity_image.jpg");
         if (resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = null;
             if (requestCode == REQUEST_LOAD_IMAGE && data != null) {
-                selectedImage = data.getData();
-                try {
-                    performCrop(selectedImage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                startCropImageActivity(data.getData());
             } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 File croppedImageFile1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                        + "/m4d/" + "activity_image1.jpg");
-                final Uri originalFileUri, outputFileUri;
+                        + "/M4D/" + "report_img.jpg");
+                final Uri outputFileUri;
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-                    outputFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
-                    originalFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile);
+                    outputFileUri = FileProvider.getUriForFile(AddShopActivity.this, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
                 } else {
                     outputFileUri = Uri.fromFile(croppedImageFile1);
-                    originalFileUri = Uri.fromFile(croppedImageFile);
                 }
-                Log.v(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
-                try {
-                    performCrop(originalFileUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                Log.e(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
+                startCropImageActivity(outputFileUri);
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    showPreviewDialog(bitmap);
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
                 }
-            } else if (requestCode == PIC_CROP) {
-                Log.e("img uri ", data.getData() + "");
-                showPreviewDialog();
             }
         }
     }
 
-    private void performCrop(Uri picUri) throws IOException {
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), picUri);
-        Log.e(TAG, "performCrop: bitmap height >> " + bitmap.getHeight());
-        Log.e(TAG, "performCrop: bitmap width >> " + bitmap.getWidth());
-
-        String path1 = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "activity_image", "activity_image.jpg");
-        File f = new File(Environment.getExternalStorageDirectory(), "/activity_image.jpg");
-        try {
-            f.createNewFile();
-        } catch (IOException ex) {
-            Log.e("io", ex.getMessage());
-        }
-
-        Uri uri = Uri.fromFile(f);
-
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(Uri.parse(path1), "image/*");
-            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            cropIntent.putExtra("crop", "true");
-            cropIntent.putExtra("aspectX", 4);
-            cropIntent.putExtra("aspectY", 3);
-            cropIntent.putExtra("outputX", 800);
-            cropIntent.putExtra("outputY", 600);
-            cropIntent.putExtra("return-data", true);
-            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            startActivityForResult(cropIntent, PIC_CROP);
-        } catch (ActivityNotFoundException anfe) {
-            anfe.printStackTrace();
-            String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
-        }
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1, 1)
+                .setRequestedSize(300, 300)
+                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .start(this);
     }
 
-    private void showPreviewDialog() {
+    private void showPreviewDialog(final Bitmap bitmap) {
         final Dialog dialog1 = new Dialog(context, R.style.image_preview_dialog);
         dialog1.setContentView(R.layout.image_doc_setup_layout);
         Window window = dialog1.getWindow();
@@ -712,9 +613,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         Button btnSave = (Button) dialog1.findViewById(R.id.btnSave);
         final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
 
-        String croppedfilePath = Environment.getExternalStorageDirectory() + "/activity_image.jpg";
-        bitmapImage1 = BitmapFactory.decodeFile(croppedfilePath);
-        imageView.setImageBitmap(bitmapImage1);
+        imageView.setImageBitmap(bitmap);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -724,13 +623,13 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                 } else {
                     dialog1.dismiss();
                     if (imgCounter == 1) {
-                        imgDoc1.setImageBitmap(bitmapImage1);
+                        imgDoc1.setImageBitmap(bitmap);
                         tvImgDoc1Remark.setText(remarkText.getText().toString());
                     } else if (imgCounter == 2) {
-                        imgDoc2.setImageBitmap(bitmapImage1);
+                        imgDoc2.setImageBitmap(bitmap);
                         tvImgDoc2Remark.setText(remarkText.getText().toString());
                     }
-                    new ImageTask().execute(bitmapImage1);
+                    new ImageTask().execute(bitmap);
                 }
             }
         });
@@ -827,7 +726,8 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                     etAddress.setText(object.getString("address"));
                     etContName.setText(object.getString("shop_contact_per_name"));
                     etContNo.setText(object.getString("shop_contact_per_number"));
-
+                    etContNo.setEnabled(false);
+                    tvRequestOtp.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -854,17 +754,21 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
             jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.ADDSHOPDETAIL);
             jsonObject.addProperty("user_id", AppPreference.getUserId(AddShopActivity.this));
             jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddShopActivity.this));
-            jsonObject.addProperty("shop_contact_per_number", contNo);
-            jsonObject.addProperty("shop_contact_per_name", contName);
+            jsonObject.addProperty("shop_contact_per_number", etContNo.getText().toString());
+            jsonObject.addProperty("shop_contact_per_name", etContName.getText().toString());
             jsonObject.addProperty("branding_id", AppPreference.getSelectedAlloMediaId(AddShopActivity.this));
             jsonObject.addProperty("media_option_id", media_option_id);
-            jsonObject.addProperty("shop_name", shopName);
-            jsonObject.addProperty("shop_id", shop_id);
-            jsonObject.addProperty("state", state);
-            jsonObject.addProperty("city", city);
-            jsonObject.addProperty("address", address);
-            /*jsonObject.addProperty("start_date", startDate);
-            jsonObject.addProperty("end_date", endDate);*/
+            jsonObject.addProperty("shop_name", etShopName.getText().toString());
+            jsonObject.addProperty("shop_id", etShopID.getText().toString());
+            jsonObject.addProperty("state", atvStates.getText().toString());
+            jsonObject.addProperty("city", atvCities.getText().toString());
+            jsonObject.addProperty("address", etAddress.getText().toString());
+            jsonObject.addProperty("start_date", etStartDate.getText().toString());
+            jsonObject.addProperty("end_date", etEndDate.getText().toString());
+            jsonObject.addProperty("doc_img1", base64image1);
+            jsonObject.addProperty("doc_img2", base64image2);
+            jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
+            jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
 
             Log.e(TAG, "Request ADD SHOP >> " + jsonObject.toString());
 
@@ -915,76 +819,6 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra("media_option_id", media_option_id);
                 startActivity(intent);
                 finish();
-            } else if (status.equalsIgnoreCase("400")) {
-                Toast.makeText(AddShopActivity.this, msg, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private class GetBOptionsTasks extends AsyncTask<String, String, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgressDialog();
-        }
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty(AppConstants.KEYS.METHOD, AppConstants.FEILDEXECUTATIVE.PROJECTACTIVIYLISTS);
-            jsonObject.addProperty(AppConstants.KEYS.USER_ID, AppPreference.getUserId(AddShopActivity.this));
-            jsonObject.addProperty(AppConstants.KEYS.PROJECT_ID, AppPreference.getSelectedProjectId(AddShopActivity.this));
-            jsonObject.addProperty(AppConstants.KEYS.BRANDING_ID, AppPreference.getSelectedAlloMediaId(AddShopActivity.this));
-            Log.e(TAG, "Request GET ACTIVITY LIST >> " + jsonObject);
-
-            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
-            Call<JsonObject> call = apiService.project_shop_detail_api(jsonObject);
-            call.enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    Log.e(TAG, "Response GET ACTIVITY LIST >> " + response.body().toString());
-                    String str = response.body().toString();
-                    bTypeList.clear();
-                    try {
-                        JSONObject jsonObject1 = new JSONObject(str);
-                        if (jsonObject1.getString("status").equalsIgnoreCase("200")) {
-                            JSONArray jsonArray = jsonObject1.getJSONArray("result");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject11 = jsonArray.getJSONObject(i);
-                                ShopActivity model = new ShopActivity();
-                                model.setActivity_id(jsonObject11.getString("branding_type_id"));
-                                model.setActivity_name(jsonObject11.getString("branding_name"));
-                                model.setActivity_status(0);
-                                bTypeList.add(model);
-                            }
-                            publishProgress("200", "");
-                        } else {
-                            String msg = jsonObject1.getJSONArray("result").getJSONObject(0).getString("msg");
-                            publishProgress("400", msg);
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e(TAG, "onResponse: " + e.getMessage());
-                        publishProgress("400", getResources().getString(R.string.api_error_msg));
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    Log.e(TAG, "onFailure: " + t.getMessage());
-                    publishProgress("400", getResources().getString(R.string.api_error_msg));
-                }
-            });
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-            String status = values[0];
-            String msg = values[1];
-            if (status.equalsIgnoreCase("200")) {
             } else if (status.equalsIgnoreCase("400")) {
                 Toast.makeText(AddShopActivity.this, msg, Toast.LENGTH_SHORT).show();
             }

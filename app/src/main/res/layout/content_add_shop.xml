@@ -54,8 +54,6 @@
                 android:inputType="textCapSentences"
                 android:padding="@dimen/_4sdp"
                 android:singleLine="true"
-
-
                 android:textColor="@color/hintcolor"
                 android:textColorHint="@color/hintcolor" />
 
@@ -115,15 +113,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_80sdp"
                 android:background="@null"
+                android:fontFamily="@font/oxygen"
                 android:hint="Enter Contact Person No."
-                android:inputType="number"
+                android:inputType="textCapWords|textNoSuggestions"
                 android:maxLength="10"
                 android:padding="@dimen/_4sdp"
                 android:singleLine="true"
                 android:textColor="@color/hintcolor"
-                android:textColorHint="@color/hintcolor"
-                android:fontFamily="@font/oxygen"/>
-
+                android:textColorHint="@color/hintcolor" />
 
 
             <View
@@ -155,14 +152,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/_80sdp"
                     android:background="@null"
+                    android:enabled="false"
+                    android:fontFamily="@font/oxygen"
                     android:hint="Enter Contact Person No."
                     android:inputType="number"
                     android:maxLength="10"
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    android:fontFamily="@font/oxygen"/>
+                    android:textColorHint="@color/hintcolor" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -179,10 +177,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:clickable="true"
+                        android:fontFamily="@font/oxygen"
                         android:padding="@dimen/_4sdp"
                         android:text="Send OTP"
-                        android:textColor="@color/colorAccent"
-                        android:fontFamily="@font/oxygen"/>
+                        android:textColor="@color/colorAccent" />
 
                     <ProgressBar
                         android:id="@+id/progressBar"
@@ -279,7 +277,6 @@
 
                 </LinearLayout>
             </LinearLayout>
-
 
 
             <TextView
@@ -477,11 +474,11 @@
                     android:layout_margin="@dimen/_10sdp"
                     android:layout_weight="0.5"
                     android:background="@drawable/green_plan_border"
+                    android:fontFamily="@font/oxygen"
                     android:gravity="center"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/Cancel"
-                    android:textColor="@color/green"
-                    android:fontFamily="@font/oxygen" />
+                    android:textColor="@color/green" />
 
                 <Button
                     android:id="@+id/btnConfirm"
@@ -490,11 +487,11 @@
                     android:layout_margin="@dimen/_10sdp"
                     android:layout_weight="0.5"
                     android:background="@drawable/green_border_rounded"
+                    android:fontFamily="@font/oxygen"
                     android:gravity="center"
                     android:padding="@dimen/_1sdp"
                     android:text="Add"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/oxygen"/>
+                    android:textColor="@color/white" />
             </LinearLayout>
 
         </LinearLayout>

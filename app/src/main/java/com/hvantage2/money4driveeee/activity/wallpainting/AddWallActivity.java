@@ -113,7 +113,6 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tvRequestOtp;
     private ProgressBar progressBar;
     private int total_days;
-    private String imgRemark1 = "", imgRemark2 = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -737,11 +736,9 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
                     if (imgCounter == 1) {
                         imgDoc1.setImageBitmap(bitmap);
                         tvImgDoc1Remark.setText(remarkText.getText().toString());
-                        imgRemark1 = remarkText.getText().toString();
                     } else if (imgCounter == 2) {
                         imgDoc2.setImageBitmap(bitmap);
                         tvImgDoc2Remark.setText(remarkText.getText().toString());
-                        imgRemark2 = remarkText.getText().toString();
                     }
                     new ImageTask().execute(bitmap);
                 }
@@ -822,8 +819,8 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
             jsonObject.addProperty("end_date", etEndDate.getText().toString());
             jsonObject.addProperty("doc_img1", base64image1);
             jsonObject.addProperty("doc_img2", base64image2);
-            jsonObject.addProperty("img1_remark", imgRemark1);
-            jsonObject.addProperty("img2_remark", imgRemark2);
+            jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
+            jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
 
             Log.e(TAG, "Request ADD WALL >> " + jsonObject.toString());
 

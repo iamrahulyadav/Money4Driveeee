@@ -24,7 +24,6 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.SourceAdapter;
-
 import com.hvantage2.money4driveeee.model.SourceModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -37,11 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,6 +56,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
     private FloatingActionButton fab;
     private ProgressHUD progressHD;
     private SwipeRefreshLayout refreshLayout;
+    private int total_days = 0;
 
 
     @Override
@@ -78,7 +74,6 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(this, "Select Media Option", Toast.LENGTH_SHORT).show();
             finish();
         }
-
         setFAB();
     }
 
@@ -92,6 +87,18 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
                     Log.e(TAG, "onClick: total_quantity >> " + total_quantity);
                     Log.e(TAG, "onClick: added_quantity >> " + added_quantity);
                     if (added_quantity < total_quantity) {
+                        Intent intent = new Intent(SelectShopActivity.this, AddShopActivity.class);
+                        intent.putExtra("total_days", total_days);
+                        intent.putExtra("media_option_id", media_option_id);
+                        startActivity(intent);
+                    } else {
+                        Snackbar.make(view, "Branding limit is over, can't add new vehicle!", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                            }
+                        }).show();
+                    }
+                    /*if (added_quantity < total_quantity) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
                         try {
                             Date today_date = Calendar.getInstance().getTime();
@@ -106,8 +113,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
                                 }).show();
                             else {
                                 Intent intent = new Intent(SelectShopActivity.this, AddShopActivity.class);
-                                intent.putExtra("start_date", start_date);
-                                intent.putExtra("end_date", end_date);
+                                intent.putExtra("total_days", total_days);
                                 intent.putExtra("media_option_id", media_option_id);
                                 startActivity(intent);
                             }
@@ -120,7 +126,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
                             public void onClick(View view) {
                             }
                         }).show();
-                    }
+                    }*/
                 }
             });
         }
@@ -262,8 +268,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
                                 total_quantity = jsonObject11.getInt("total_quantity");
                                 added_quantity = jsonObject11.getInt("added_quantity");
-                                start_date = jsonObject11.getString("start_date");
-                                end_date = jsonObject11.getString("end_date");
+                                total_days = jsonObject11.getInt("total_days");
                             }
                             adapter.notifyDataSetChanged();
                             publishProgress("200", "");
@@ -274,8 +279,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
                                 total_quantity = jsonObject11.getInt("total_quantity");
                                 added_quantity = jsonObject11.getInt("added_quantity");
-                                start_date = jsonObject11.getString("start_date");
-                                end_date = jsonObject11.getString("end_date");
+                                total_days = jsonObject11.getInt("total_days");
                             }
                             publishProgress("400", msg);
                         }
