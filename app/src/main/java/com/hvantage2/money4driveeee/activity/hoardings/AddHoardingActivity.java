@@ -1,40 +1,84 @@
 package com.hvantage2.money4driveeee.activity.hoardings;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.JsonObject;
+import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
+import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
-import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-
-
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
+import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
+import com.hvantage2.money4driveeee.util.UtilClass;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,22 +86,41 @@ import retrofit2.Response;
 
 public class AddHoardingActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final String TAG = "AddHoardingActivity";
-    String  hoardingName, contName, contNo, state, city, address, startDate, endDate;
+    private static final int REQUEST_STORAGE = 0;
+    private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
+    private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
+    ArrayList<String> listState = new ArrayList<String>();
+    ArrayList<String> listCity = new ArrayList<String>();
     private Button btnCancel, btnConfirm;
-    private EditText etHoardingName, etContName, etContNo, etState, etCity, etAddress, etStartDate, etEndDate;
-    private String start_date = "", end_date = "";
+    private EditText etHoardingName, etContName, etContNo, etAddress, etStartDate, etEndDate;
     private String media_option_id = "";
     private ProgressHUD progressHD;
+    private AppCompatAutoCompleteTextView atvStates;
+    private AppCompatAutoCompleteTextView atvCities;
+    private String userChoosenTask;
+    private String base64image1 = "", base64image2 = "";
+    private ImageView imgDoc1, imgDoc2;
+    private int imgCounter = 1;
+    private TextView tvImgDoc1Remark, tvImgDoc2Remark;
+    private int total_days;
+    private Context context;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private double curr_long = 0.0;
+    private double curr_lat = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_hoarding);
+        context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (checkLocationPermission()) {
+            setUpFused();
+        }
         init();
         if (getIntent().hasExtra("media_option_id"))
             media_option_id = getIntent().getStringExtra("media_option_id");
@@ -65,20 +128,160 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
             Toast.makeText(this, "Select media option", Toast.LENGTH_SHORT).show();
             finish();
         }
-        if (getIntent().hasExtra("start_date"))
-            start_date = getIntent().getStringExtra("start_date");
-        if (getIntent().hasExtra("end_date"))
-            end_date = getIntent().getStringExtra("end_date");
-        etStartDate.setText(start_date);
-        etEndDate.setText(end_date);
+        if (getIntent().hasExtra("total_days"))
+            total_days = getIntent().getIntExtra("total_days", 0);
+        Log.e(TAG, "onCreate: total_days >> " + total_days);
+        if (total_days != 0)
+            calculateDate(total_days);
+    }
+
+    private void calculateDate(int days) {
+        Calendar c = Calendar.getInstance();
+        Log.e(TAG, "calculateDate: c.getTime() >> " + c.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = sdf.format(c.getTime());
+        c.add(Calendar.DATE, days);
+        String endDate = sdf.format(c.getTime());
+        Log.e(TAG, "calculateDate: startDate >> " + startDate);
+        Log.e(TAG, "calculateDate: endDate >> " + endDate);
+        etStartDate.setText(startDate);
+        etEndDate.setText(endDate);
+    }
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(AddHoardingActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        //Request location updates:
+                        setUpFused();
+                    }
+
+                } else {
+                    checkLocationPermission();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    /*Toast.makeText(context, "Please grant location permission", Toast.LENGTH_SHORT).show();
+                    finish();*/
+                }
+                return;
+            }
+        }
+    }
+
+    private void setUpFused() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            return;
+        }
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+
+                        if (location != null) {
+                            Log.e(TAG, "setUpFused: onSuccess: location >> " + location);
+                            try {
+                                getLocationAddress(location);
+                            } catch (IOException e) {
+                                showLocationErrorDialog();
+                                e.printStackTrace();
+                                Log.e(TAG, "setUpFused: onSuccess: Exc >> " + e.getMessage());
+                            }
+                        }
+                    }
+                }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                hideProgressDialog();
+                showLocationErrorDialog();
+                Log.e(TAG, "setUpFused: onFailure: Exc >> " + e.getMessage());
+            }
+        });
+    }
+
+
+    private void getLocationAddress(Location result) throws IOException {
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+        curr_lat = result.getLatitude();
+        curr_long = result.getLongitude();
+        addresses = geocoder.getFromLocation(result.getLatitude(), result.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+        String city = addresses.get(0).getLocality();
+        String state = addresses.get(0).getAdminArea();
+        String country = addresses.get(0).getCountryName();
+        String postalCode = addresses.get(0).getPostalCode();
+        String knownName = addresses.get(0).getFeatureName();
+        etAddress.setText(address);
+        atvStates.setText(state);
+        atvCities.setText(city);
+    }
+
+    private void checkGps() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            Functions.showSettingsAlert(this);
+        else {
+            if (checkLocationPermission()) {
+                setUpFused();
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkGps();
+    }
+
+    private void showLocationErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Location Not Found");
+        builder.setMessage("We are unable to get your current location please try again.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setUpFused();
+
+            }
+        }).setNegativeButton("Set Manually", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        })
+                .show();
     }
 
     private void init() {
         etHoardingName = (EditText) findViewById(R.id.etHoardingName);
         etContName = (EditText) findViewById(R.id.etContName);
         etContNo = (EditText) findViewById(R.id.etContNo);
-        etState = (EditText) findViewById(R.id.etState);
-        etCity = (EditText) findViewById(R.id.etCity);
+
         etAddress = (EditText) findViewById(R.id.etAddress);
         etStartDate = (EditText) findViewById(R.id.etStartDate);
         etEndDate = (EditText) findViewById(R.id.etEndDate);
@@ -88,6 +291,15 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
         btnCancel.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
 
+        imgDoc1 = (ImageView) findViewById(R.id.imgDoc1);
+        imgDoc2 = (ImageView) findViewById(R.id.imgDoc2);
+        tvImgDoc1Remark = (TextView) findViewById(R.id.tvImgDoc1Remark);
+        tvImgDoc2Remark = (TextView) findViewById(R.id.tvImgDoc2Remark);
+
+        imgDoc1.setOnClickListener(this);
+        imgDoc2.setOnClickListener(this);
+
+
         ((ScrollView) findViewById(R.id.container)).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -95,6 +307,56 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
                 return false;
             }
         });
+
+        atvStates = (AppCompatAutoCompleteTextView) findViewById(R.id.atvStates);
+        atvCities = (AppCompatAutoCompleteTextView) findViewById(R.id.atvCities);
+        atvStates.setThreshold(2);
+        atvCities.setThreshold(2);
+        setStateAdapter();
+        setCityAdapter();
+        atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int p, long l) {
+                setCityAdapter();
+            }
+        });
+    }
+
+    private void setCityAdapter() {
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_cities.json"));
+            JSONObject cityJObj = jsonObject.getJSONObject(atvStates.getText().toString());
+            JSONArray jsonArray = cityJObj.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listCity.add(state);
+            }
+            ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listCity);
+            atvCities.setAdapter(adapterCity);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setStateAdapter() {
+        try {
+            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
+            JSONArray jsonArray = jsonObject.getJSONArray("name");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String state = jsonArray.getString(i);
+                listState.add(state);
+            }
+            ArrayAdapter<String> adapterState = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listState);
+            atvStates.setAdapter(adapterState);
+            Log.e(TAG, "setAdapter: listState >> " + listState);
+        } catch (JSONException e) {
+            Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
     }
 
     private void hideSoftKeyboard(View view) {
@@ -138,12 +400,19 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnConfirm:
                 addHoarding();
+                break;
+            case R.id.imgDoc1:
+                imgCounter = 1;
+                selectImage();
+                break;
+            case R.id.imgDoc2:
+                imgCounter = 2;
+                selectImage();
                 break;
             case R.id.btnCancel:
                 onBackPressed();
@@ -151,6 +420,168 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void selectImage() {
+        final CharSequence[] items = {"Camera", "Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Upload Document");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result = UtilClass.checkPermission(context);
+                if (items[item].equals("Camera")) {
+                    userChoosenTask = "Camera";
+                    if (result)
+                        cameraIntent();
+                } else if (items[item].equals("Gallery")) {
+                    userChoosenTask = "Gallery";
+                    if (result)
+                        galleryIntent();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Nullable
+    private Intent createPickIntent() {
+        Intent picImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (picImageIntent.resolveActivity(getPackageManager()) != null) {
+            return picImageIntent;
+        } else {
+            return null;
+        }
+    }
+
+    private void cameraIntent() {
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/M4D/";
+        File newdir = new File(dir);
+        newdir.mkdirs();
+        String file = dir + "report_img.jpg";
+        Log.e("imagesss cam11", file);
+        File newfile = new File(file);
+        try {
+            newfile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final Uri outputFileUri;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            outputFileUri = FileProvider.getUriForFile(context,
+                    BuildConfig.APPLICATION_ID + ".provider", newfile);
+        } else {
+            outputFileUri = Uri.fromFile(newfile);
+        }
+        Log.e(TAG, "cameraIntent: outputFileUri >> " + outputFileUri);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    private void galleryIntent() {
+        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_LOAD_IMAGE && data != null) {
+                startCropImageActivity(data.getData());
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                File croppedImageFile1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        + "/M4D/" + "report_img.jpg");
+                final Uri outputFileUri;
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    outputFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
+                } else {
+                    outputFileUri = Uri.fromFile(croppedImageFile1);
+                }
+                Log.e(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
+                startCropImageActivity(outputFileUri);
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    showPreviewDialog(bitmap);
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1, 1)
+                .setRequestedSize(300, 300)
+                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .start(this);
+    }
+
+    private void showPreviewDialog(final Bitmap bitmap) {
+        final Dialog dialog1 = new Dialog(context, R.style.image_preview_dialog);
+        dialog1.setContentView(R.layout.image_doc_setup_layout);
+        Window window = dialog1.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog1.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog1.setCancelable(true);
+        dialog1.setCanceledOnTouchOutside(false);
+
+        ImageView imageView = (ImageView) dialog1.findViewById(R.id.img_circle);
+        ScrollView container = (ScrollView) dialog1.findViewById(R.id.container);
+
+        ImageView imgBack = (ImageView) dialog1.findViewById(R.id.imgBack);
+        Button btnSave = (Button) dialog1.findViewById(R.id.btnSave);
+        final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
+
+        imageView.setImageBitmap(bitmap);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TextUtils.isEmpty(remarkText.getText().toString())) {
+                    remarkText.setError("Enter a remark");
+                } else {
+                    dialog1.dismiss();
+                    if (imgCounter == 1) {
+                        imgDoc1.setImageBitmap(bitmap);
+                        tvImgDoc1Remark.setText(remarkText.getText().toString());
+                    } else if (imgCounter == 2) {
+                        imgDoc2.setImageBitmap(bitmap);
+                        tvImgDoc2Remark.setText(remarkText.getText().toString());
+                    }
+                    new ImageTask().execute(bitmap);
+                }
+            }
+        });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
+        });
+        dialog1.show();
+
+        container.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                return false;
+            }
+        });
+    }
 
     private void showErrorDialog400(String msg) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(AddHoardingActivity.this);
@@ -168,33 +599,85 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void addHoarding() {
-        hoardingName = etHoardingName.getText().toString();
-        contName = etContName.getText().toString();
-        contNo = etContNo.getText().toString();
-        state = etState.getText().toString();
-        city = etCity.getText().toString();
-        address = etAddress.getText().toString();
-        startDate = etStartDate.getText().toString();
-        endDate = etEndDate.getText().toString();
 
-
-        if (TextUtils.isEmpty(hoardingName))
+        if (TextUtils.isEmpty(etHoardingName.getText().toString()))
             etHoardingName.setError("Enter hoarding name");
-        else if (TextUtils.isEmpty(contName))
+        else if (TextUtils.isEmpty(etContName.getText().toString()))
             etContName.setError("Enter contact person name");
-        else if (TextUtils.isEmpty(contNo))
+        else if (TextUtils.isEmpty(etContNo.getText().toString()))
             etContNo.setError("Enter contact person no.");
-        else if (TextUtils.isEmpty(state))
-            etState.setError("Enter state");
-        else if (TextUtils.isEmpty(city))
-            etCity.setError("Enter city");
-        else if (TextUtils.isEmpty(address))
+        else if (TextUtils.isEmpty(atvStates.getText().toString()))
+            atvStates.setError("Enter state");
+        else if (TextUtils.isEmpty(atvCities.getText().toString()))
+            atvCities.setError("Enter city");
+        else if (TextUtils.isEmpty(etAddress.getText().toString()))
             etAddress.setError("Enter address");
         else
             new AddHoardingTask().execute();
 
     }
 
+    private void showErrorDialog300(String msg) {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(AddHoardingActivity.this);
+        dialog.setTitle("Message");
+        dialog.setMessage(msg);
+        dialog.setNeutralButton("Repaste", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        dialog.setNegativeButton("Go Back", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        dialog.setPositiveButton("View Details", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                /*Intent intent = new Intent(AddHoardingActivity.this, ConfirmTransitActivity.class);
+                intent.setAction("view");
+                intent.putExtra("media_option_id", media_option_id);
+                intent.putExtra("vehicle_id", vehicle_id);
+                startActivity(intent);
+                finish();*/
+            }
+        });
+
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    class ImageTask extends AsyncTask<Bitmap, String, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Bitmap... bitmaps) {
+            Bitmap bitmapImage = bitmaps[0];
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            if (imgCounter == 1)
+                base64image1 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            else if (imgCounter == 2)
+                base64image2 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            Log.e(TAG, "ImageTask: doInBackground: base64image1 >>" + base64image1);
+            Log.e(TAG, "ImageTask: doInBackground: base64image2 >>" + base64image2);
+            publishProgress("");
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            hideProgressDialog();
+        }
+    }
 
     private class AddHoardingTask extends AsyncTask<String, String, Void> {
 
@@ -210,14 +693,24 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
             jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.ADDHOARDINGDETAIL);
             jsonObject.addProperty("user_id", AppPreference.getUserId(AddHoardingActivity.this));
             jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddHoardingActivity.this));
-            jsonObject.addProperty("contact_per_number", contNo);
-            jsonObject.addProperty("contact_per_name", contName);
+            jsonObject.addProperty("contact_per_number", etContNo.getText().toString());
+            jsonObject.addProperty("contact_per_name", etContName.getText().toString());
             jsonObject.addProperty("branding_id", AppPreference.getSelectedAlloMediaId(AddHoardingActivity.this));
             jsonObject.addProperty("media_option_id", media_option_id);
-            jsonObject.addProperty("hoarding_name", hoardingName);
-            jsonObject.addProperty("state", state);
-            jsonObject.addProperty("city", city);
-            jsonObject.addProperty("address", address);
+            jsonObject.addProperty("hoarding_name", etHoardingName.getText().toString());
+            jsonObject.addProperty("state", atvStates.getText().toString());
+            jsonObject.addProperty("city", atvCities.getText().toString());
+            jsonObject.addProperty("address", etAddress.getText().toString());
+            jsonObject.addProperty("start_date", etStartDate.getText().toString());
+            jsonObject.addProperty("end_date", etEndDate.getText().toString());
+            jsonObject.addProperty("doc_img1", base64image1);
+            jsonObject.addProperty("doc_img2", base64image2);
+            jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
+            jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
+            jsonObject.addProperty("curr_lat", String.valueOf(curr_lat));
+            jsonObject.addProperty("curr_long", String.valueOf(curr_long));
+            /*jsonObject.addProperty("curr_lat", String.valueOf(22.55555665));
+            jsonObject.addProperty("curr_long", String.valueOf(25.555565));*/
 
             Log.e(TAG, "Request ADD HOARDING >> " + jsonObject.toString());
 
@@ -233,9 +726,12 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
                         JSONObject jsonObject = new JSONObject(resp);
                         if (jsonObject.getString("status").equalsIgnoreCase("200")) {
                             JSONObject jsonObject1 = jsonObject.getJSONArray("result").getJSONObject(0);
-                            Log.e(TAG, "onResponse: inserted hoarding_id >> " + jsonObject1.getString("id"));
-                            AppPreference.setSelectedHoardingId(AddHoardingActivity.this, jsonObject1.getString("id"));
+                            Log.e(TAG, "onResponse: inserted hoarding_id >> " + jsonObject1.getString("hoardingid"));
+                            AppPreference.setSelectedHoardingId(AddHoardingActivity.this, jsonObject1.getString("hoardingid"));
                             publishProgress("200", resp);
+                        } else if (jsonObject.getString("status").equalsIgnoreCase("300")) {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("300", msg);
                         } else {
                             String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
                             publishProgress("400", msg);
@@ -268,6 +764,8 @@ public class AddHoardingActivity extends AppCompatActivity implements View.OnCli
                 intent.putExtra("media_option_id", media_option_id);
                 startActivity(intent);
                 finish();
+            } else if (status.equalsIgnoreCase("300")) {
+                showErrorDialog300(msg);
             } else if (status.equalsIgnoreCase("400")) {
                 Toast.makeText(AddHoardingActivity.this, msg, Toast.LENGTH_SHORT).show();
             }

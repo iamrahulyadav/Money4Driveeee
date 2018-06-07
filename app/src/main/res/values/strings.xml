@@ -134,7 +134,7 @@
     <string name="select_option">Select Media Option</string>
     <string name="select_hoarding">Select Hoarding</string>
     <string name="title_activity_emedia_detail">E-Media Details</string>
-    <string name="title_confirm_details">Confirm Details</string>
+    <string name="title_confirm_details">Shop Details</string>
     <string name="title_activity_perform_pmedia">PerformPMediaActivity</string>
     <string name="title_activity_perform_emedia">PerformEMediaActivity</string>
     <string name="title_activity_add_hoarding">Add Hoarding</string>

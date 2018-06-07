@@ -196,8 +196,6 @@ public class SelectWallActivity extends AppCompatActivity implements View.OnClic
                 onResume();
             }
         });
-
-
     }
 
     @Override

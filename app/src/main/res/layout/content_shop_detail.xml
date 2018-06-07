@@ -44,18 +44,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-
                 android:enabled="false"
                 android:fontFamily="@font/oxygen"
                 android:hint="NA"
                 android:inputType="textCapSentences"
-
                 android:padding="@dimen/_4sdp"
                 android:singleLine="true"
                 android:textColor="@color/hintcolor"
                 android:textColorHint="@color/hintcolor"
 
                 />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor" />
+
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/oxygen"
+                android:padding="@dimen/_4sdp"
+                android:text="Shop Name"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/etShopName"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:fontFamily="@font/oxygen"
+                android:hint="NA"
+                android:inputType="textCapSentences|textAutoCorrect|textPersonName"
+                android:padding="@dimen/_4sdp"
+                android:singleLine="true"
+                android:textColor="@color/hintcolor"
+                android:textColorHint="@color/hintcolor" />
 
             <View
                 android:layout_width="match_parent"
@@ -109,6 +136,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:enabled="false"
                 android:fontFamily="@font/oxygen"
                 android:hint="NA"
                 android:inputType="number"

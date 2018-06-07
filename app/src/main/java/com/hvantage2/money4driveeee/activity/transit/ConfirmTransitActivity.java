@@ -661,5 +661,4 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             }
         }
     }
-
 }

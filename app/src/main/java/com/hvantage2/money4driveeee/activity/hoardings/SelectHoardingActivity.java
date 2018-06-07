@@ -35,11 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +54,7 @@ public class SelectHoardingActivity extends AppCompatActivity implements View.On
     private ProgressHUD progressHD;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refreshLayout;
+    private int total_days = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +83,21 @@ public class SelectHoardingActivity extends AppCompatActivity implements View.On
                 public void onClick(View view) {
                     Log.e(TAG, "onClick: total_quantity >> " + total_quantity);
                     Log.e(TAG, "onClick: added_quantity >> " + added_quantity);
+
                     if (added_quantity < total_quantity) {
+                        Intent intent = new Intent(SelectHoardingActivity.this, AddHoardingActivity
+                                .class);
+                        intent.putExtra("total_days", total_days);
+                        intent.putExtra("media_option_id", media_option_id);
+                        startActivity(intent);
+                    } else {
+                        Snackbar.make(view, "Branding limit is over, can't add new vehicle!", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                            }
+                        }).show();
+                    }
+                    /*if (added_quantity < total_quantity) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
                         try {
                             Date today_date = Calendar.getInstance().getTime();
@@ -115,7 +126,7 @@ public class SelectHoardingActivity extends AppCompatActivity implements View.On
                             public void onClick(View view) {
                             }
                         }).show();
-                    }
+                    }*/
                 }
             });
         }
@@ -216,6 +227,7 @@ public class SelectHoardingActivity extends AppCompatActivity implements View.On
         protected void onPreExecute() {
             super.onPreExecute();
             showProgressDialog();
+            refreshLayout.setRefreshing(false);
             tvEmpty.setVisibility(View.GONE);
             list.clear();
         }
@@ -253,8 +265,7 @@ public class SelectHoardingActivity extends AppCompatActivity implements View.On
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
                                 total_quantity = jsonObject11.getInt("total_quantity");
                                 added_quantity = jsonObject11.getInt("added_quantity");
-                                start_date = jsonObject11.getString("start_date");
-                                end_date = jsonObject11.getString("end_date");
+                                total_days = jsonObject11.getInt("total_days");
                             }
                             adapter.notifyDataSetChanged();
                             publishProgress("200", "");
@@ -265,8 +276,7 @@ public class SelectHoardingActivity extends AppCompatActivity implements View.On
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
                                 total_quantity = jsonObject11.getInt("total_quantity");
                                 added_quantity = jsonObject11.getInt("added_quantity");
-                                start_date = jsonObject11.getString("start_date");
-                                end_date = jsonObject11.getString("end_date");
+                                total_days = jsonObject11.getInt("total_days");
                             }
                             publishProgress("400", msg);
                         }
