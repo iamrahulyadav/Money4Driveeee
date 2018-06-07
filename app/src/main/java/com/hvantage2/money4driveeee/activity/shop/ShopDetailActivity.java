@@ -72,6 +72,7 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail);
+        context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -150,7 +151,6 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
             }
             ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listCity);
             atvCities.setAdapter(adapterCity);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
