@@ -161,8 +161,8 @@ public class EditPhotoActivity extends AppCompatActivity {
                     Toast.makeText(EditPhotoActivity.this, "Enter height", Toast.LENGTH_SHORT).show();
                 else if (etwidth.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(EditPhotoActivity.this, "Enter width", Toast.LENGTH_SHORT).show();
-                else if (etremarkText.getText().toString().equalsIgnoreCase(""))
-                    Toast.makeText(EditPhotoActivity.this, "Enter remark", Toast.LENGTH_SHORT).show();
+                /*else if (etremarkText.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(EditPhotoActivity.this, "Enter remark", Toast.LENGTH_SHORT).show();*/
                 else {
                     new_dimen = etheight.getText().toString() + "x" + etwidth.getText().toString();
                     new_remark = etremarkText.getText().toString();

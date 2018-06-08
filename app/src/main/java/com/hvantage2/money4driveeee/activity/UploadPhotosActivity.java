@@ -338,9 +338,9 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
     private void startCropImageActivity(Uri imageUri) {
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setMultiTouchEnabled(true)
-                .setAspectRatio(1, 1)
-                .setRequestedSize(300, 300)
+                .setMultiTouchEnabled(false)
+                .setAspectRatio(3, 4)
+                .setRequestedSize(320, 240)
                 .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
                 .start(this);
     }
@@ -365,7 +365,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         final EditText width = (EditText) dialog.findViewById(R.id.dimensionTextwidth);
         final EditText remarkText = (EditText) dialog.findViewById(R.id.remarkText);
 
-        if (action.equalsIgnoreCase("wall"))
+        if (action.equalsIgnoreCase("wall") || action.equalsIgnoreCase("shop"))
             tvDimenUnit.setText("Dimension (inches)");
         imageView.setImageBitmap(bitmap);
 
@@ -376,8 +376,8 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
                     Toast.makeText(UploadPhotosActivity.this, "Enter height", Toast.LENGTH_SHORT).show();
                 else if (width.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(UploadPhotosActivity.this, "Enter width", Toast.LENGTH_SHORT).show();
-                else if (remarkText.getText().toString().equalsIgnoreCase(""))
-                    Toast.makeText(UploadPhotosActivity.this, "Enter remark", Toast.LENGTH_SHORT).show();
+                /*else if (remarkText.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(UploadPhotosActivity.this, "Enter remark", Toast.LENGTH_SHORT).show();*/
                 else {
                     tempDimen = height.getText().toString() + "x" + width.getText().toString();
                     Log.e(TAG, "tempDimen: " + tempDimen);

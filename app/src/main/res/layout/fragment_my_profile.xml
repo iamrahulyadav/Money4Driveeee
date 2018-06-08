@@ -47,7 +47,7 @@
                     android:background="@null"
                     android:fontFamily="@font/oxygen"
                     android:hint="NA"
-                    android:inputType="textCapSentences|textAutoCorrect|textPersonName"
+                    android:inputType="textCapWords|textAutoCorrect|textPersonName"
                     android:padding="@dimen/_4sdp"
                     android:textColor="@color/hintcolor"
                     android:textColorHint="@color/hintcolor" />

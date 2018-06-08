@@ -266,7 +266,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
 
     private void showDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Shop Contact No.");
+        builder.setTitle("Shop Contact No.");
         builder.setCancelable(false);
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_contact_no, (ViewGroup) findViewById(android.R.id.content), false);
         final EditText input = (EditText) viewInflated.findViewById(R.id.input);
@@ -590,9 +590,9 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
     private void startCropImageActivity(Uri imageUri) {
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setMultiTouchEnabled(true)
-                .setAspectRatio(1, 1)
-                .setRequestedSize(300, 300)
+                .setMultiTouchEnabled(false)
+                .setAspectRatio(3, 4)
+                .setRequestedSize(320, 240)
                 .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
                 .start(this);
     }
@@ -738,7 +738,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
             if (status.equalsIgnoreCase("300")) {
                 // showErrorDialog300(msg);
             } else if (status.equalsIgnoreCase("400")) {
-               // showErrorDialog400(msg);
+                // showErrorDialog400(msg);
             }
         }
     }

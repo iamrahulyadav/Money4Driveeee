@@ -6,11 +6,22 @@
     android:padding="@dimen/_20sdp">
 
 
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/atvSearch"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_shape_bg_input"
+        android:hint="Search here..."
+        android:padding="@dimen/_5sdp" />
+
     <LinearLayout
         android:id="@+id/llTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/atvSearch"
         android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal">
 
         <!--android:background="@drawable/rectangle_shape_bg_input"-->
@@ -21,21 +32,21 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/rectangle_shape_bg_input"
+            android:fontFamily="@font/oxygen"
             android:gravity="center"
             android:hint="AA"
             android:inputType="textCapCharacters|textNoSuggestions"
             android:maxLength="2"
-            android:padding="8dp"
-            android:fontFamily="@font/oxygen" />
+            android:padding="8dp" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/oxygen"
             android:padding="8dp"
             android:text="-"
-            android:textColor="@color/hintcolor"
-            android:fontFamily="@font/oxygen" />
+            android:textColor="@color/hintcolor" />
 
         <EditText
             android:id="@+id/etDistrictCode"
@@ -43,21 +54,21 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/rectangle_shape_bg_input"
+            android:fontFamily="@font/oxygen"
             android:gravity="center"
             android:hint="00"
             android:inputType="number"
             android:maxLength="2"
-            android:padding="8dp"
-            android:fontFamily="@font/oxygen"/>
+            android:padding="8dp" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/oxygen"
             android:padding="8dp"
             android:text="-"
-            android:textColor="@color/hintcolor"
-            android:fontFamily="@font/oxygen" />
+            android:textColor="@color/hintcolor" />
 
         <EditText
             android:id="@+id/etSeries"
@@ -65,22 +76,22 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/rectangle_shape_bg_input"
+            android:fontFamily="@font/oxygen"
             android:gravity="center"
             android:hint="AA"
             android:inputType="textCapCharacters|textNoSuggestions"
             android:maxLength="2"
             android:padding="8dp"
-            android:textAllCaps="true"
-            android:fontFamily="@font/oxygen" />
+            android:textAllCaps="true" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/oxygen"
             android:padding="8dp"
             android:text="-"
-            android:textColor="@color/hintcolor"
-            android:fontFamily="@font/oxygen" />
+            android:textColor="@color/hintcolor" />
 
         <EditText
             android:id="@+id/etVehNo"
@@ -88,12 +99,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/rectangle_shape_bg_input"
+            android:fontFamily="@font/oxygen"
             android:gravity="center"
             android:hint="0000"
             android:inputType="number"
             android:maxLength="4"
-            android:padding="8dp"
-            android:fontFamily="@font/oxygen" />
+            android:padding="8dp" />
 
         <ImageView
             android:id="@+id/imgRight"

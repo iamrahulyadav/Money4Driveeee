@@ -23,6 +23,7 @@ public class AppConstants {
         String PROJECT_WALL_API = "Project_Wall_Api.php";
         String PROJECT_EMEDIA_API = "Project_EMedia_Api.php";
         String USER_CHAT_API = "User_Chat_Api.php";
+        String NEW_PROJECT_API = "New_Project_Api.php";
     }
 
     public interface FEILDEXECUTATIVE {
@@ -97,8 +98,10 @@ public class AppConstants {
         String USERALLPROJECTLISTDATA = "UserAllProjectListData";
         String GETPROJECTMSGS = "getProjectMsgs";
         String SENDMSGTOPROJECT = "sendMsgToProject";
-        String ADD_VEHICLE_WITH_VERIFY ="add_vehicle_with_verify" ;
+        String ADD_VEHICLE_WITH_VERIFY = "add_vehicle_with_verify";
         String VEHICLE_VERIFY_OTP = "vehicle_verify_otp";
+        String GETPROJECTSTATES = "getProjectStates";
+        String GETPROJECTCITIES = "getProjectCities";
     }
 
     public class KEYS {

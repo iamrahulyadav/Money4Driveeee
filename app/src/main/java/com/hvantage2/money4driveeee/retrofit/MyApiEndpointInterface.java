@@ -51,5 +51,8 @@ public interface MyApiEndpointInterface {
     @POST(AppConstants.ENDPOINT.USER_CHAT_API)
     Call<JsonObject> user_chat_api(@Body JsonObject jsonObject);
 
+    @POST(AppConstants.ENDPOINT.NEW_PROJECT_API)
+    Call<JsonObject> new_project_api(@Body JsonObject jsonObject);
+
 
 }

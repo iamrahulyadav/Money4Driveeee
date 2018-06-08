@@ -700,9 +700,9 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
     private void startCropImageActivity(Uri imageUri) {
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setMultiTouchEnabled(true)
-                .setAspectRatio(1, 1)
-                .setRequestedSize(300, 300)
+                .setMultiTouchEnabled(false)
+                .setAspectRatio(3, 4)
+                .setRequestedSize(320, 240)
                 .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
                 .start(this);
     }

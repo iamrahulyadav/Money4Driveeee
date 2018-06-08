@@ -51,7 +51,7 @@
                 android:fontFamily="@font/oxygen"
                 android:hint="Enter Shop Id"
                 android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
+                android:inputType="textCapWords"
                 android:padding="@dimen/_4sdp"
                 android:singleLine="true"
                 android:textColor="@color/hintcolor"
@@ -81,12 +81,10 @@
                 android:fontFamily="@font/oxygen"
                 android:hint="Enter Shop Name"
                 android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
-
+                android:inputType="textCapWords|textNoSuggestions"
                 android:padding="@dimen/_4sdp"
                 android:singleLine="true"
                 android:textColor="@color/hintcolor"
-
                 android:textColorHint="@color/hintcolor" />
 
             <View
@@ -125,7 +123,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/dividerColor"/>
+                android:background="@color/dividerColor" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Subhead"
@@ -224,7 +222,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:hint="Enter State"
-                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:inputType="textCapWords|textNoSuggestions"
                         android:padding="@dimen/_4sdp"
                         android:singleLine="true"
                         android:textColor="@color/hintcolor"
@@ -260,7 +258,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:hint="Enter City"
-                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:inputType="textCapWords|textNoSuggestions"
                         android:padding="@dimen/_4sdp"
                         android:singleLine="true"
                         android:textColor="@color/hintcolor"
@@ -294,18 +292,18 @@
                 android:fontFamily="@font/oxygen"
                 android:hint="Enter Address"
                 android:imeOptions="actionDone"
-                android:inputType="textCapSentences|textNoSuggestions"
+                android:inputType="textCapWords|textNoSuggestions"
                 android:maxLines="2"
                 android:padding="@dimen/_4sdp"
                 android:singleLine="true"
                 android:textColor="@color/hintcolor"
-                android:textColorHint="@color/hintcolor"
-                />
+                android:textColorHint="@color/hintcolor" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/dividerColor"></View>
+                android:background="@color/dividerColor"
+                android:visibility="gone"></View>
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Subhead"
@@ -315,7 +313,8 @@
                 android:fontFamily="@font/oxygen"
                 android:padding="@dimen/_4sdp"
                 android:text="Start Date"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/etStartDate"
@@ -334,6 +333,7 @@
                 android:singleLine="false"
                 android:textColor="@color/hintcolor"
                 android:textColorHint="@color/hintcolor"
+                android:visibility="gone"
 
                 />
 
@@ -350,7 +350,8 @@
                 android:fontFamily="@font/oxygen"
                 android:padding="@dimen/_4sdp"
                 android:text="End Date"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/etEndDate"
@@ -369,6 +370,7 @@
                 android:singleLine="false"
                 android:textColor="@color/hintcolor"
                 android:textColorHint="@color/hintcolor"
+                android:visibility="gone"
 
                 />
 

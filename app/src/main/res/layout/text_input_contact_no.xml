@@ -3,18 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-        <EditText
-            android:layout_marginLeft="@dimen/_17sdp"
-            android:layout_marginRight="@dimen/_17sdp"
-            android:id="@+id/input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Contact No."
-            android:paddingBottom="@dimen/_12sdp"
-            android:maxLength="10"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:fontFamily="@font/oxygen"/>
+    <EditText
+        android:id="@+id/input"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_17sdp"
+        android:layout_marginRight="@dimen/_17sdp"
+        android:fontFamily="@font/oxygen"
+        android:hint="Enter Contact No."
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:maxLength="10"
+        android:paddingBottom="@dimen/_12sdp" />
 
 </FrameLayout>

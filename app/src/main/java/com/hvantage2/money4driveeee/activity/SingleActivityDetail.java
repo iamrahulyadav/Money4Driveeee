@@ -288,7 +288,7 @@ public class SingleActivityDetail extends AppCompatActivity {
         final EditText width = (EditText) dialog1.findViewById(R.id.dimensionTextwidth);
         final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
 
-        if (action.equalsIgnoreCase("wall"))
+        if (action.equalsIgnoreCase("wall") || action.equalsIgnoreCase("shop"))
             tvDimenUnit.setText("Dimension (inches)");
 
         imageView.setImageBitmap(bitmap);
@@ -301,8 +301,8 @@ public class SingleActivityDetail extends AppCompatActivity {
                     Toast.makeText(SingleActivityDetail.this, "Enter height", Toast.LENGTH_SHORT).show();
                 else if (width.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(SingleActivityDetail.this, "Enter width", Toast.LENGTH_SHORT).show();
-                else if (remarkText.getText().toString().equalsIgnoreCase(""))
-                    Toast.makeText(SingleActivityDetail.this, "Enter remark", Toast.LENGTH_SHORT).show();
+                /*else if (remarkText.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(SingleActivityDetail.this, "Enter remark", Toast.LENGTH_SHORT).show();*/
                 else {
                     tempDimen = height.getText().toString() + "x" + width.getText().toString();
                     Log.e(TAG, "tempDimen: " + tempDimen);
@@ -413,10 +413,14 @@ public class SingleActivityDetail extends AppCompatActivity {
     private void startCropImageActivity(Uri imageUri) {
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setMultiTouchEnabled(true)
-                .setAspectRatio(1, 1)
-                .setRequestedSize(300, 300)
+                .setMultiTouchEnabled(false)
+                .setAspectRatio(3, 4)
+                .setRequestedSize(320, 240)
                 .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                /*  .setBorderCornerThickness(5)
+                  .setBorderCornerColor(getResources().getColor(R.color.colorAccent))
+                  .setBorderLineColor(getResources().getColor(R.color.white))
+                  .setBorderLineThickness(3)*/
                 .start(this);
     }
 

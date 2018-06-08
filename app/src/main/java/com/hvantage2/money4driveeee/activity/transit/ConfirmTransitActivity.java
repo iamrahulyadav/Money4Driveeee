@@ -1,5 +1,6 @@
 package com.hvantage2.money4driveeee.activity.transit;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -32,24 +32,26 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
+import com.hvantage2.money4driveeee.adapter.StateCityAdapter;
+import com.hvantage2.money4driveeee.model.StateCityModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
-import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.UtilClass;
 import com.squareup.picasso.Picasso;
@@ -75,8 +77,8 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
     private static final int REQUEST_STORAGE = 0;
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
-    ArrayList<String> listState = new ArrayList<String>();
-    ArrayList<String> listCity = new ArrayList<String>();
+    ArrayList<StateCityModel> listState = new ArrayList<StateCityModel>();
+    ArrayList<StateCityModel> listCity = new ArrayList<StateCityModel>();
     private Button btnConfirm;
     private EditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etDriverBookFor, etStartDate, etEndDate;
     private Button btnCancel;
@@ -84,8 +86,6 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
     private ProgressHUD progressHD;
     private ImageView imgDoc1, imgDoc2;
     private TextView tvImgDoc1Remark, tvImgDoc2Remark;
-    private AppCompatAutoCompleteTextView atvStates;
-    private AppCompatAutoCompleteTextView atvCities;
     private Context context;
     private String vehicle_id = "";
     private int imgCounter = 1;
@@ -94,6 +94,10 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
     private String base64image1 = "", base64image2 = "";
     private String imgRemark1 = "", imgRemark2 = "";
     private LinearLayout llUpdate, llReport;
+    private Spinner spinnerState, spinnerCity;
+    private StateCityAdapter adapterState, adapterCity;
+    private String selectedStateId = "0", selectedCityId = "0";
+    private EditText etState, etCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        new GetStateTask().execute();
         init();
         if (getIntent().hasExtra("media_option_id"))
             media_option_id = getIntent().getStringExtra("media_option_id");
@@ -115,6 +120,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             llUpdate.setVisibility(View.VISIBLE);
             llReport.setVisibility(View.GONE);
         }
+
         new getTransitDetail().execute();
 
         Log.e(TAG, "onCreate: media_option_id >> " + media_option_id);
@@ -124,8 +130,8 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
     private void setEnabled(boolean b) {
         etDriverName.setEnabled(b);
         etVehicle.setEnabled(b);
-        atvStates.setEnabled(b);
-        atvCities.setEnabled(b);
+        spinnerCity.setEnabled(b);
+        spinnerState.setEnabled(b);
         etDriverAddress.setEnabled(b);
         imgDoc1.setEnabled(b);
         imgDoc2.setEnabled(b);
@@ -147,6 +153,12 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         etStartDate = (EditText) findViewById(R.id.etStartDate);
         etEndDate = (EditText) findViewById(R.id.etEndDate);
 
+        etState = (EditText) findViewById(R.id.etState);
+        etCity = (EditText) findViewById(R.id.etCity);
+
+        etState.setOnClickListener(this);
+        etCity.setOnClickListener(this);
+
         imgDoc1 = (ImageView) findViewById(R.id.imgDoc1);
         imgDoc2 = (ImageView) findViewById(R.id.imgDoc2);
         tvImgDoc1Remark = (TextView) findViewById(R.id.tvImgDoc1Remark);
@@ -161,6 +173,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                 new updateTransitTask().execute();
             }
         });
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,54 +192,47 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         imgDoc1.setOnClickListener(this);
         imgDoc2.setOnClickListener(this);
 
-        atvStates = (AppCompatAutoCompleteTextView) findViewById(R.id.atvStates);
-        atvCities = (AppCompatAutoCompleteTextView) findViewById(R.id.atvCities);
-        atvStates.setThreshold(2);
-        atvCities.setThreshold(2);
         setStateAdapter();
         setCityAdapter();
-        atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int p, long l) {
-                setCityAdapter();
-            }
-        });
-
-    }
-
-    private void setCityAdapter() {
-        try {
-            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_cities.json"));
-            JSONObject cityJObj = jsonObject.getJSONObject(atvStates.getText().toString());
-            JSONArray jsonArray = cityJObj.getJSONArray("name");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String state = jsonArray.getString(i);
-                listCity.add(state);
-            }
-            ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listCity);
-            atvCities.setAdapter(adapterCity);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
 
     private void setStateAdapter() {
-        try {
-            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
-            JSONArray jsonArray = jsonObject.getJSONArray("name");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String state = jsonArray.getString(i);
-                listState.add(state);
+//        listState.add(new Gson().fromJson("{\"id\":\"0\",\"name\":\"Select state\"}", StateCityModel.class));
+        spinnerState = (Spinner) findViewById(R.id.spinnerState);
+        adapterState = new StateCityAdapter(ConfirmTransitActivity.this, R.layout.state_city_item_layout, R.id.tvTitle, listState);
+        spinnerState.setAdapter(adapterState);
+        spinnerState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                selectedStateId = listState.get(position).getId();
+                etState.setText(listState.get(position).getName());
+                Log.e(TAG, "onItemSelected: selectedStateId >> " + selectedStateId);
+                new GetCityTask().execute();
             }
-            ArrayAdapter<String> adapterState = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listState);
-            atvStates.setAdapter(adapterState);
-            Log.e(TAG, "setAdapter: listState >> " + listState);
-        } catch (JSONException e) {
-            Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+    }
+
+    private void setCityAdapter() {
+//        listCity.add(new Gson().fromJson("{\"id\":\"0\",\"name\":\"Select city\"}", StateCityModel.class));
+        spinnerCity = (Spinner) findViewById(R.id.spinnerCity);
+        adapterCity = new StateCityAdapter(ConfirmTransitActivity.this, R.layout.state_city_item_layout, R.id.tvTitle, listCity);
+        spinnerCity.setAdapter(adapterCity);
+        spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                selectedCityId = listCity.get(position).getId();
+                etCity.setText(listCity.get(position).getName());
+                Log.e(TAG, "onItemSelected: selectedCityId >> " + selectedCityId);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 
     private void hideSoftKeyboard(View view) {
@@ -285,6 +291,12 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             case R.id.imgDoc2:
                 imgCounter = 2;
                 selectImage();
+                break;
+            case R.id.etState:
+                spinnerState.performClick();
+                break;
+            case R.id.etCity:
+                spinnerCity.performClick();
                 break;
         }
     }
@@ -404,9 +416,9 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
     private void startCropImageActivity(Uri imageUri) {
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setMultiTouchEnabled(true)
-                .setAspectRatio(1, 1)
-                .setRequestedSize(300, 300)
+                .setMultiTouchEnabled(false)
+                .setAspectRatio(3, 4)
+                .setRequestedSize(320, 240)
                 .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
                 .start(this);
     }
@@ -467,6 +479,154 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                 return false;
             }
         });
+    }
+
+    private class GetStateTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTSTATES);
+            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(ConfirmTransitActivity.this));
+            Log.e(TAG, "GetStateTask: Request >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.new_project_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "GetStateTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            publishProgress("200", resp);
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            String status = values[0];
+            String msg = values[1];
+            JSONObject jsonObject = null;
+            if (status.equalsIgnoreCase("200")) {
+                try {
+                    jsonObject = new JSONObject(msg);
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                        listState.add(data);
+                    }
+                    adapterState.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else if (status.equalsIgnoreCase("400")) {
+            }
+        }
+    }
+
+    private class GetCityTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTCITIES);
+            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(ConfirmTransitActivity.this));
+            jsonObject.addProperty("state_id", selectedStateId);
+            Log.e(TAG, "GetCityTask: Request >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.new_project_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "GetCityTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        listCity.clear();
+
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            publishProgress("200", resp);
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            String status = values[0];
+            String msg = values[1];
+            JSONObject jsonObject = null;
+            if (status.equalsIgnoreCase("200")) {
+                try {
+                    jsonObject = new JSONObject(msg);
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                        listCity.add(data);
+                    }
+                    adapterCity.notifyDataSetChanged();
+                    Log.e(TAG, "onProgressUpdate: listCity >> " + listCity);
+                    for (int i = 0; i < listCity.size(); i++) {
+                        if (listCity.get(i).getId().equalsIgnoreCase(selectedCityId))
+                            spinnerCity.setSelection(i);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else if (status.equalsIgnoreCase("400")) {
+            }
+        }
     }
 
     class ImageTask extends AsyncTask<Bitmap, String, Void> {
@@ -563,8 +723,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                     etDriverContact.setText(jsonObject.getString("driver_contact_no"));
                     etVehicle.setText(jsonObject.getString("vehicle_name"));
                     etRegNo.setText(jsonObject.getString("vehicle_no"));
-                    atvStates.setText(jsonObject.getString("state"));
-                    atvCities.setText(jsonObject.getString("city"));
+
                     etDriverAddress.setText(jsonObject.getString("address"));
                     etDriverBookFor.setText(jsonObject.getString("project_assign"));
                     etStartDate.setText(jsonObject.getString("start_date"));
@@ -575,6 +734,17 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                         Picasso.with(context).load(jsonObject.getString("doc_img1")).placeholder(R.drawable.no_image_placeholder).into(imgDoc1);
                     if (!jsonObject.getString("doc_img2").equalsIgnoreCase(""))
                         Picasso.with(context).load(jsonObject.getString("doc_img2")).placeholder(R.drawable.no_image_placeholder).into(imgDoc2);
+
+                    selectedStateId = jsonObject.getString("state_id");
+                    selectedCityId = jsonObject.getString("city_id");
+
+                    Log.e(TAG, "onProgressUpdate: selectedStateId >> " + selectedStateId);
+                    Log.e(TAG, "onProgressUpdate: selectedCityId >> " + selectedCityId);
+                    for (int i = 0; i < listState.size(); i++) {
+                        if (listState.get(i).getId().equalsIgnoreCase(selectedStateId))
+                            spinnerState.setSelection(i);
+                    }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -604,9 +774,9 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             jsonObject.addProperty(AppConstants.KEYS.DRIVER_NAME, etDriverName.getText().toString());
             jsonObject.addProperty(AppConstants.KEYS.DRIVER_CONTACT_NO, etDriverContact.getText().toString());
             jsonObject.addProperty(AppConstants.KEYS.VEHICLE_MODEL, etVehicle.getText().toString());
-            jsonObject.addProperty(AppConstants.KEYS.VEHICLE_REGIS_NUMBER, etRegNo.getText().toString());
+            jsonObject.addProperty(AppConstants.KEYS.VEHICLE_REGIS_NUMBER, etRegNo.getText().toString());/*
             jsonObject.addProperty(AppConstants.KEYS.STATE, atvStates.getText().toString());
-            jsonObject.addProperty(AppConstants.KEYS.CITY, atvCities.getText().toString());
+            jsonObject.addProperty(AppConstants.KEYS.CITY, atvCities.getText().toString());*/
             jsonObject.addProperty(AppConstants.KEYS.ADDRESS, etDriverAddress.getText().toString());
             jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
             jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
