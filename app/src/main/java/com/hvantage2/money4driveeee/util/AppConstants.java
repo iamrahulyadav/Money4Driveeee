@@ -102,6 +102,7 @@ public class AppConstants {
         String VEHICLE_VERIFY_OTP = "vehicle_verify_otp";
         String GETPROJECTSTATES = "getProjectStates";
         String GETPROJECTCITIES = "getProjectCities";
+        String GETCHECKREGISRATIONNUMBER = "getCheckRegisrationNumber";
     }
 
     public class KEYS {

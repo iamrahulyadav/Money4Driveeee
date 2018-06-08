@@ -16,8 +16,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -37,6 +41,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -49,12 +54,14 @@ import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.StateCityAdapter;
+import com.hvantage2.money4driveeee.adapter.VehicleSearchResultAdapter;
 import com.hvantage2.money4driveeee.model.StateCityModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
+import com.hvantage2.money4driveeee.util.RecyclerItemClickListener;
 import com.hvantage2.money4driveeee.util.UtilClass;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -85,6 +92,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     ArrayList<StateCityModel> listState = new ArrayList<StateCityModel>();
     ArrayList<StateCityModel> listCity = new ArrayList<StateCityModel>();
     ArrayList<String> listGift = new ArrayList<String>();
+    ArrayList<String> listResult = new ArrayList<String>();
     private String media_option_id = "";
     private ProgressHUD progressHD;
     private Context context;
@@ -104,6 +112,9 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     private StateCityAdapter adapterCity, adapterState;
     private String selectedStateId = "0", selectedCityId = "0";
     private EditText etState, etCity;
+    private VehicleSearchResultAdapter adapterResult;
+    private NestedScrollView nsvResult;
+    private LinearLayout llVNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,20 +265,51 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void showSearchDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Search Vehicle No.");
         dialog.setCancelable(false);
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.input_vehicle_no_layout, null);
         dialog.setView(dialogView);
 
+        final AppCompatAutoCompleteTextView atvSearch = (AppCompatAutoCompleteTextView) dialogView.findViewById(R.id.atvSearch);
+        final RecyclerView recycler_view = (RecyclerView) dialogView.findViewById(R.id.recycler_view);
+        nsvResult = (NestedScrollView) dialogView.findViewById(R.id.nsvResult);
+        llVNo = (LinearLayout) dialogView.findViewById(R.id.llTop);
         final EditText etState = (EditText) dialogView.findViewById(R.id.etState);
         final EditText etDistrictCode = (EditText) dialogView.findViewById(R.id.etDistrictCode);
         final EditText etSeries = (EditText) dialogView.findViewById(R.id.etSeries);
         final EditText etVehNo = (EditText) dialogView.findViewById(R.id.etVehNo);
         final ImageView imgRight = (ImageView) dialogView.findViewById(R.id.imgRight);
 
-        dialog.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+
+        recycler_view.setLayoutManager(new LinearLayoutManager(AddTransitActivity.this));
+        adapterResult = new VehicleSearchResultAdapter(AddTransitActivity.this, listResult);
+        recycler_view.setAdapter(adapterResult);
+        recycler_view.addOnItemTouchListener(new RecyclerItemClickListener(AddTransitActivity.this, recycler_view, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                nsvResult.setVisibility(View.GONE);
+                llVNo.setVisibility(View.VISIBLE);
+                String tempVno = listResult.get(position);
+                atvSearch.setText("");
+                String[] strarray = tempVno.split("-");
+                if (strarray.length == 4) {
+                    etState.setText(strarray[0]);
+                    etDistrictCode.setText(strarray[1]);
+                    etSeries.setText(strarray[2]);
+                    etVehNo.setText(strarray[3]);
+                }
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        }));
+
+
+        dialog.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String vehicle_no = etState.getText().toString() + "-" + etDistrictCode.getText().toString() + "-" + etSeries.getText().toString() + "-" + etVehNo.getText().toString();
@@ -285,7 +327,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        AlertDialog alertDialog = dialog.create();
+        final AlertDialog alertDialog = dialog.create();
         alertDialog.show();
 
         etState.addTextChangedListener(new TextWatcher() {
@@ -299,11 +341,15 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
 
                     if (etVehNo.length() == 4 && etDistrictCode.length() == 2 && etSeries.length() == 2) {
                         imgRight.setVisibility(View.VISIBLE);
-                    } else
+                        alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(true);
+                    } else {
                         imgRight.setVisibility(View.GONE);
+                        alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
+                    }
 
                 } else {
                     imgRight.setVisibility(View.GONE);
+                    alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
                 }
             }
 
@@ -326,8 +372,11 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
 
                     if (etState.length() == 2 && etVehNo.length() == 4 && etSeries.length() == 2) {
                         imgRight.setVisibility(View.VISIBLE);
-                    } else
+                        alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(true);
+                    } else {
                         imgRight.setVisibility(View.GONE);
+                        alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
+                    }
 
                 } else if (etDistrictCode.length() == 0) {
                     etDistrictCode.clearFocus();
@@ -336,6 +385,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                     etState.setSelection(etState.length());
                 } else {
                     imgRight.setVisibility(View.GONE);
+                    alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
                 }
             }
 
@@ -355,8 +405,11 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                     etVehNo.setCursorVisible(true);
                     if (etState.length() == 2 && etDistrictCode.length() == 2 && etVehNo.length() == 4) {
                         imgRight.setVisibility(View.VISIBLE);
-                    } else
+                        alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(true);
+                    } else {
                         imgRight.setVisibility(View.GONE);
+                        alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
+                    }
 
                 } else if (etSeries.length() == 0) {
                     etSeries.clearFocus();
@@ -366,6 +419,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
 
                 } else {
                     imgRight.setVisibility(View.GONE);
+                    alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
                 }
             }
 
@@ -387,16 +441,165 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (etVehNo.length() == 0) {
                     imgRight.setVisibility(View.GONE);
+                    alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
                     etVehNo.clearFocus();
                     etSeries.requestFocus();
                     etSeries.setCursorVisible(true);
                 } else if (etVehNo.length() == 4) {
                     if (etState.length() == 2 && etDistrictCode.length() == 2 && etSeries.length() == 2) {
                         imgRight.setVisibility(View.VISIBLE);
-                    } else
+                        alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(true);
+                    } else {
                         imgRight.setVisibility(View.GONE);
+                        alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
+                    }
                 } else {
                     imgRight.setVisibility(View.GONE);
+                    alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        atvSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int count) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int count) {
+                Log.e(TAG, "onTextChanged: count >> " + count);
+                if (atvSearch.getText().toString().length() > 2) {
+                    new SearchTask().execute(atvSearch.getText().toString());
+                } else {
+                    nsvResult.setVisibility(View.GONE);
+                    llVNo.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    private void showOtpDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Enter OTP Here");
+        dialog.setMessage("Please enter the OTP sent to your number (+91" + etDriverContact.getText().toString() + ")");
+        dialog.setCancelable(false);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.input_otp_layout, null);
+        dialog.setView(dialogView);
+
+        final EditText etNo1 = (EditText) dialogView.findViewById(R.id.etNo1);
+        final EditText etNo2 = (EditText) dialogView.findViewById(R.id.etNo2);
+        final EditText etNo3 = (EditText) dialogView.findViewById(R.id.etNo3);
+        final EditText etNo4 = (EditText) dialogView.findViewById(R.id.etNo4);
+
+        dialog.setPositiveButton("Send OTP", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String otp = etNo1.getText().toString() + etNo2.getText().toString() + etNo3.getText().toString() + etNo4.getText().toString();
+                Log.e(TAG, "showSearchDialog: onClick: Search: otp >> " + otp);
+                tvRequestOtp.setText("");
+                new OTPVerifyTask().execute(otp);
+            }
+        });
+        dialog.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvRequestOtp.setText("Resend OTP");
+            }
+        });
+
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+
+        etNo1.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if (etNo1.length() == 1) {
+                    etNo1.clearFocus();
+                    etNo2.requestFocus();
+                    etNo2.setCursorVisible(true);
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        etNo2.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if (etNo2.length() == 1) {
+                    etNo2.clearFocus();
+                    etNo3.requestFocus();
+                    etNo3.setCursorVisible(true);
+
+                } else if (etNo2.length() == 0) {
+                    etNo2.clearFocus();
+                    etNo1.requestFocus();
+                    etNo1.setCursorVisible(true);
+                    etNo1.setSelection(etNo1.length());
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        etNo3.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if (etNo3.length() == 1) {
+                    etNo3.clearFocus();
+                    etNo4.requestFocus();
+                    etNo4.setCursorVisible(true);
+
+                } else if (etNo3.length() == 0) {
+                    etNo3.clearFocus();
+                    etNo2.requestFocus();
+                    etNo2.setCursorVisible(true);
+                    etNo2.setSelection(etNo2.length());
+
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        etNo4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (etNo4.length() == 0) {
+                    etNo4.clearFocus();
+                    etNo3.requestFocus();
+                    etNo3.setCursorVisible(true);
                 }
             }
 
@@ -560,127 +763,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
 //            }
 //        });
 //    }
-
-    private void showOtpDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Enter OTP Here");
-        dialog.setMessage("Please enter the OTP sent to your number (+91" + etDriverContact.getText().toString() + ")");
-        dialog.setCancelable(false);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.input_otp_layout, null);
-        dialog.setView(dialogView);
-
-        final EditText etNo1 = (EditText) dialogView.findViewById(R.id.etNo1);
-        final EditText etNo2 = (EditText) dialogView.findViewById(R.id.etNo2);
-        final EditText etNo3 = (EditText) dialogView.findViewById(R.id.etNo3);
-        final EditText etNo4 = (EditText) dialogView.findViewById(R.id.etNo4);
-
-        dialog.setPositiveButton("Send OTP", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String otp = etNo1.getText().toString() + etNo2.getText().toString() + etNo3.getText().toString() + etNo4.getText().toString();
-                Log.e(TAG, "showSearchDialog: onClick: Search: otp >> " + otp);
-                tvRequestOtp.setText("");
-                new OTPVerifyTask().execute(otp);
-            }
-        });
-        dialog.setNegativeButton("Later", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                tvRequestOtp.setText("Resend OTP");
-            }
-        });
-
-        AlertDialog alertDialog = dialog.create();
-        alertDialog.show();
-
-        etNo1.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO Auto-generated method stub
-                if (etNo1.length() == 1) {
-                    etNo1.clearFocus();
-                    etNo2.requestFocus();
-                    etNo2.setCursorVisible(true);
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        etNo2.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO Auto-generated method stub
-                if (etNo2.length() == 1) {
-                    etNo2.clearFocus();
-                    etNo3.requestFocus();
-                    etNo3.setCursorVisible(true);
-
-                } else if (etNo2.length() == 0) {
-                    etNo2.clearFocus();
-                    etNo1.requestFocus();
-                    etNo1.setCursorVisible(true);
-                    etNo1.setSelection(etNo1.length());
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        etNo3.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO Auto-generated method stub
-                if (etNo3.length() == 1) {
-                    etNo3.clearFocus();
-                    etNo4.requestFocus();
-                    etNo4.setCursorVisible(true);
-
-                } else if (etNo3.length() == 0) {
-                    etNo3.clearFocus();
-                    etNo2.requestFocus();
-                    etNo2.setCursorVisible(true);
-                    etNo2.setSelection(etNo2.length());
-
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        etNo4.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (etNo4.length() == 0) {
-                    etNo4.clearFocus();
-                    etNo3.requestFocus();
-                    etNo3.setCursorVisible(true);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-    }
 
     private void hideSoftKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1007,6 +1089,75 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 return false;
             }
         });
+    }
+
+    class SearchTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETCHECKREGISRATIONNUMBER);
+            jsonObject.addProperty("reg_number", strings[0]);
+
+            Log.e(TAG, "SearchTask: Request >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.new_project_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "SearchTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        listResult.clear();
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            JSONArray jsonArray = jsonObject.getJSONArray("result");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                listResult.add(jsonObject1.getString("reg_number"));
+                            }
+                            publishProgress("200", "");
+                        } else {
+                            listResult.clear();
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        listResult.clear();
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            adapterResult.notifyDataSetChanged();
+            if (adapterResult.getItemCount() > 0) {
+                llVNo.setVisibility(View.GONE);
+                nsvResult.setVisibility(View.VISIBLE);
+            } else {
+                nsvResult.setVisibility(View.GONE);
+                llVNo.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private class CheckVehicleNoTask extends AsyncTask<String, String, Void> {
