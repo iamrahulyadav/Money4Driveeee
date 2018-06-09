@@ -3,7 +3,6 @@ package com.hvantage2.money4driveeee.activity.shop;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -35,25 +33,26 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
-import com.hvantage2.money4driveeee.model.ShopActivity;
+import com.hvantage2.money4driveeee.adapter.StateCityAdapter;
+import com.hvantage2.money4driveeee.model.StateCityModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
-import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.UtilClass;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -78,23 +77,14 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
 
     private static final String TAG = "AddShopActivity";
     private static final int REQUEST_STORAGE = 0;
-    private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
-    private static final int PIC_CROP = REQUEST_LOAD_IMAGE + 1;
-    ArrayList<String> listState = new ArrayList<String>();
-    ArrayList<String> listCity = new ArrayList<String>();
+    ArrayList<StateCityModel> listState = new ArrayList<StateCityModel>();
+    ArrayList<StateCityModel> listCity = new ArrayList<StateCityModel>();
     private Button btnCancel, btnConfirm;
     private EditText etShopID, etShopName, etContName, etContNo, etAddress, etStartDate, etEndDate;
-    private ArrayList<ShopActivity> bTypeList;
-    private ProgressDialog dialog;
-    private String allBTypeIds = "", allBOptionIds = "";
-    private ArrayList<ShopActivity> bOptionList;
-    private String start_date = "", end_date = "";
     private String media_option_id = "";
     private ProgressHUD progressHD;
-    private AppCompatAutoCompleteTextView atvStates;
-    private AppCompatAutoCompleteTextView atvCities;
     private Context context;
     private ProgressBar progressBar;
     private TextView tvRequestOtp;
@@ -106,6 +96,11 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
     private String userChoosenTask;
     private int total_days = 0;
     private String shop_unique_id = "0";
+    private Spinner spinnerCity;
+    private StateCityAdapter adapterCity;
+    private String selectedCityId = "", selectedStateId = "";
+    private Spinner spinnerState;
+    private StateCityAdapter adapterState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +110,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        bTypeList = new ArrayList<ShopActivity>();
-        bOptionList = new ArrayList<ShopActivity>();
+        new GetStateTask().execute();
         init();
         if (getIntent().hasExtra("media_option_id"))
             media_option_id = getIntent().getStringExtra("media_option_id");
@@ -180,54 +174,47 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         tvRequestOtp = (TextView) findViewById(R.id.tvRequestOtp);
         tvRequestOtp.setOnClickListener(this);
 
-        atvStates = (AppCompatAutoCompleteTextView) findViewById(R.id.atvStates);
-        atvCities = (AppCompatAutoCompleteTextView) findViewById(R.id.atvCities);
-        atvStates.setThreshold(2);
-        atvCities.setThreshold(2);
+
         setStateAdapter();
-        setCityAdapter();
-        atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //setCityAdapter();
+    }
+
+
+    private void setStateAdapter() {
+        spinnerState = (Spinner) findViewById(R.id.spinnerState);
+        adapterState = new StateCityAdapter(AddShopActivity.this, R.layout.state_city_item_layout, R.id.tvTitle, listState);
+        spinnerState.setAdapter(adapterState);
+        spinnerState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int p, long l) {
-                setCityAdapter();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                selectedStateId = listState.get(position).getId();
+                Log.e(TAG, "onItemSelected: selectedStateId >> " + selectedStateId);
+                new GetCityTask().execute();
+                ((TextView) spinnerState.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-
     }
 
     private void setCityAdapter() {
-        try {
-            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_cities.json"));
-            JSONObject cityJObj = jsonObject.getJSONObject(atvStates.getText().toString());
-            JSONArray jsonArray = cityJObj.getJSONArray("name");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String state = jsonArray.getString(i);
-                listCity.add(state);
+        spinnerCity = (Spinner) findViewById(R.id.spinnerCity);
+        adapterCity = new StateCityAdapter(AddShopActivity.this, R.layout.state_city_item_layout, R.id.tvTitle, listCity);
+        spinnerCity.setAdapter(adapterCity);
+        spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                selectedCityId = listCity.get(position).getId();
+                Log.e(TAG, "onItemSelected: selectedCityId >> " + selectedCityId);
+                ((TextView) spinnerCity.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
             }
-            ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listCity);
-            atvCities.setAdapter(adapterCity);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void setStateAdapter() {
-        try {
-            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
-            JSONArray jsonArray = jsonObject.getJSONArray("name");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String state = jsonArray.getString(i);
-                listState.add(state);
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
-            ArrayAdapter<String> adapterState = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listState);
-            atvStates.setAdapter(adapterState);
-            Log.e(TAG, "setAdapter: listState >> " + listState);
-        } catch (JSONException e) {
-            Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
-            e.printStackTrace();
-        }
+        });
     }
 
     private void hideSoftKeyboard(View view) {
@@ -480,10 +467,10 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
             etContName.setError("Enter contact person name");
         else if (TextUtils.isEmpty(etContNo.getText().toString()))
             etContNo.setError("Enter contact person no.");
-        else if (TextUtils.isEmpty(atvStates.getText().toString()))
-            atvStates.setError("Enter state");
-        else if (TextUtils.isEmpty(atvCities.getText().toString()))
-            atvCities.setError("Enter city");
+        else if (selectedStateId.equalsIgnoreCase("0"))
+            Toast.makeText(context, "Select state", Toast.LENGTH_SHORT).show();
+        else if (selectedCityId.equalsIgnoreCase("0"))
+            Toast.makeText(context, "Select city", Toast.LENGTH_SHORT).show();
         else if (TextUtils.isEmpty(etAddress.getText().toString()))
             etAddress.setError("Enter address");
         else
@@ -653,6 +640,176 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    private void showErrorDialog300(String msg) {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(AddShopActivity.this);
+        dialog.setTitle("Message");
+        dialog.setMessage(msg);
+        dialog.setNegativeButton("Go Back", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        dialog.setPositiveButton("View Details", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(AddShopActivity.this, ShopDetailActivity.class);
+                intent.setAction("view");
+                intent.putExtra("media_option_id", media_option_id);
+                intent.putExtra("shop_id", shop_unique_id);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    private class GetStateTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTSTATES);
+            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+            Log.e(TAG, "GetStateTask: Request >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.new_project_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "GetStateTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            publishProgress("200", resp);
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            String status = values[0];
+            String msg = values[1];
+            JSONObject jsonObject = null;
+            if (status.equalsIgnoreCase("200")) {
+                try {
+                    jsonObject = new JSONObject(msg);
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                        listState.add(data);
+                    }
+                    adapterState.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else if (status.equalsIgnoreCase("400")) {
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class GetCityTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTCITIES);
+            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+            jsonObject.addProperty("state_id", selectedStateId);
+            Log.e(TAG, "GetCityTask: Request >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.new_project_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "GetCityTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        listCity.clear();
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            JSONArray jsonArray = jsonObject.getJSONArray("result");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                                listCity.add(data);
+                            }
+                            publishProgress("200", "");
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            hideProgressDialog();
+            setCityAdapter();
+            String status = values[0];
+            String msg = values[1];
+            if (status.equalsIgnoreCase("200")) {
+
+            } else if (status.equalsIgnoreCase("400")) {
+            }
+        }
+    }
+
     private class CheckNoTask extends AsyncTask<String, String, Void> {
 
         @Override
@@ -687,6 +844,7 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                             publishProgress("200", resp);
                         } else if (jsonObject.getString("status").equalsIgnoreCase("300")) {
                             String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            shop_unique_id = jsonObject.getJSONArray("result").getJSONObject(0).getString("shop_unique_id");
                             publishProgress("300", msg);
                         } else {
                             String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
@@ -723,8 +881,8 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                     shop_unique_id = object.getString("shop_unique_id");
                     etShopName.setText(object.getString("shop_name"));
                     etShopID.setText(object.getString("shop_number"));
-                    atvStates.setText(object.getString("state"));
-                    atvCities.setText(object.getString("city"));
+                   /* atvStates.setText(object.getString("state"));
+                    atvCities.setText(object.getString("city"));*/
                     etAddress.setText(object.getString("address"));
                     etContName.setText(object.getString("shop_contact_per_name"));
                     etContNo.setText(object.getString("shop_contact_per_number"));
@@ -736,9 +894,9 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
             if (status.equalsIgnoreCase("300")) {
-                // showErrorDialog300(msg);
+                showErrorDialog300(msg);
             } else if (status.equalsIgnoreCase("400")) {
-                // showErrorDialog400(msg);
+
             }
         }
     }
@@ -763,8 +921,8 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
             jsonObject.addProperty("media_option_id", media_option_id);
             jsonObject.addProperty("shop_name", etShopName.getText().toString());
             jsonObject.addProperty("shop_id", etShopID.getText().toString());
-            jsonObject.addProperty("state", atvStates.getText().toString());
-            jsonObject.addProperty("city", atvCities.getText().toString());
+            jsonObject.addProperty("state", selectedStateId);
+            jsonObject.addProperty("city", selectedCityId);
             jsonObject.addProperty("address", etAddress.getText().toString());
             jsonObject.addProperty("start_date", etStartDate.getText().toString());
             jsonObject.addProperty("end_date", etEndDate.getText().toString());

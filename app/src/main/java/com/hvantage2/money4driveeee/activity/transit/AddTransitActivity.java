@@ -124,6 +124,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        new GetStateTask().execute();
         showSearchDialog();
         if (getIntent().hasExtra("media_option_id"))
             media_option_id = getIntent().getStringExtra("media_option_id");
@@ -139,11 +140,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             calculateDate(total_days);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        new GetStateTask().execute();
-    }
 
     private void calculateDate(int days) {
         Calendar c = Calendar.getInstance();
@@ -200,7 +196,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         });
 
         setStateAdapter();
-//        setCityAdapter();
         setGiftAdapter();
     }
 
@@ -607,6 +602,52 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
+    private void hideSoftKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.btnConfirm:
+                addTransit();
+                break;
+            case R.id.tvRequestOtp:
+                if (TextUtils.isEmpty(etDriverName.getText().toString()))
+                    etDriverName.setError("Enter driver name");
+                else if (TextUtils.isEmpty(etDriverContact.getText().toString()))
+                    etDriverContact.setError("Enter driver contact no.");
+                else if (TextUtils.isEmpty(etVehicle.getText().toString()))
+                    etVehicle.setError("Enter vehicle name");
+                else if (TextUtils.isEmpty(etRegNo.getText().toString()))
+                    etRegNo.setError("Enter vehicle no.");
+                else {
+                    etDriverContact.clearFocus();
+                    hideSoftKeyboard(view);
+                    progressBar.setVisibility(View.VISIBLE);
+                    tvRequestOtp.setText("Sending");
+                    new AddTransitVerifyTask().execute();
+                }
+                break;
+            case R.id.imgDoc1:
+                imgCounter = 1;
+                selectImage();
+                break;
+            case R.id.imgDoc2:
+                imgCounter = 2;
+                selectImage();
+                break;
+            case R.id.etSelectGift:
+                spinnerGift.performClick();
+                break;
+            case R.id.btnCancel:
+                onBackPressed();
+                break;
+        }
+    }
+
     //    private void showSearchDialog() {
 //        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 //        dialog.setTitle("Enter Vehicle No.");
@@ -760,52 +801,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
 //            }
 //        });
 //    }
-
-    private void hideSoftKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.btnConfirm:
-                addTransit();
-                break;
-            case R.id.tvRequestOtp:
-                if (TextUtils.isEmpty(etDriverName.getText().toString()))
-                    etDriverName.setError("Enter driver name");
-                else if (TextUtils.isEmpty(etDriverContact.getText().toString()))
-                    etDriverContact.setError("Enter driver contact no.");
-                else if (TextUtils.isEmpty(etVehicle.getText().toString()))
-                    etVehicle.setError("Enter vehicle name");
-                else if (TextUtils.isEmpty(etRegNo.getText().toString()))
-                    etRegNo.setError("Enter vehicle no.");
-                else {
-                    etDriverContact.clearFocus();
-                    hideSoftKeyboard(view);
-                    progressBar.setVisibility(View.VISIBLE);
-                    tvRequestOtp.setText("Sending");
-                    new AddTransitVerifyTask().execute();
-                }
-                break;
-            case R.id.imgDoc1:
-                imgCounter = 1;
-                selectImage();
-                break;
-            case R.id.imgDoc2:
-                imgCounter = 2;
-                selectImage();
-                break;
-            case R.id.etSelectGift:
-                spinnerGift.performClick();
-                break;
-            case R.id.btnCancel:
-                onBackPressed();
-                break;
-        }
-    }
 
     private void showErrorDialog400(String msg) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(AddTransitActivity.this);
@@ -1020,8 +1015,8 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(false)
-                /* .setAspectRatio(1, 1)
-                 .setRequestedSize(300, 300)*/
+                .setAspectRatio(3, 4)
+                .setRequestedSize(320, 240)
                 .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
                 .start(this);
     }
@@ -1080,6 +1075,150 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 return false;
             }
         });
+    }
+
+    private class GetStateTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTSTATES);
+            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddTransitActivity.this));
+            Log.e(TAG, "GetStateTask: Request >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.new_project_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "GetStateTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            publishProgress("200", resp);
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            String status = values[0];
+            String msg = values[1];
+            JSONObject jsonObject = null;
+            if (status.equalsIgnoreCase("200")) {
+                try {
+                    jsonObject = new JSONObject(msg);
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                        listState.add(data);
+                    }
+                    adapterState.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else if (status.equalsIgnoreCase("400")) {
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class GetCityTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTCITIES);
+            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddTransitActivity.this));
+            jsonObject.addProperty("state_id", selectedStateId);
+            Log.e(TAG, "GetCityTask: Request >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.new_project_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "GetCityTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        listCity.clear();
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            JSONArray jsonArray = jsonObject.getJSONArray("result");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                                listCity.add(data);
+                            }
+                            publishProgress("200", "");
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            hideProgressDialog();
+            setCityAdapter();
+            String status = values[0];
+            String msg = values[1];
+            if (status.equalsIgnoreCase("200")) {
+
+            } else if (status.equalsIgnoreCase("400")) {
+            }
+        }
     }
 
     class SearchTask extends AsyncTask<String, String, Void> {
@@ -1237,149 +1376,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private class GetStateTask extends AsyncTask<String, String, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTSTATES);
-            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddTransitActivity.this));
-            Log.e(TAG, "GetStateTask: Request >> " + jsonObject.toString());
-
-            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
-            Call<JsonObject> call = apiService.new_project_api(jsonObject);
-            call.enqueue(new Callback<JsonObject>() {
-                @SuppressLint("LongLogTag")
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    Log.e(TAG, "GetStateTask: Response >>" + response.body().toString());
-                    String resp = response.body().toString();
-                    try {
-                        JSONObject jsonObject = new JSONObject(resp);
-                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
-                            publishProgress("200", resp);
-                        } else {
-                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
-                            publishProgress("400", msg);
-                        }
-                    } catch (JSONException e) {
-                        publishProgress("400", getResources().getString(R.string.api_error_msg));
-                        e.printStackTrace();
-                    }
-                }
-
-                @SuppressLint("LongLogTag")
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
-                    publishProgress("400", getResources().getString(R.string.api_error_msg));
-                }
-            });
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-            String status = values[0];
-            String msg = values[1];
-            JSONObject jsonObject = null;
-            if (status.equalsIgnoreCase("200")) {
-                try {
-                    jsonObject = new JSONObject(msg);
-                    JSONArray jsonArray = jsonObject.getJSONArray("result");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
-                        listState.add(data);
-                    }
-                    adapterState.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else if (status.equalsIgnoreCase("400")) {
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-    }
-
-    private class GetCityTask extends AsyncTask<String, String, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTCITIES);
-            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(AddTransitActivity.this));
-            jsonObject.addProperty("state_id", selectedStateId);
-            Log.e(TAG, "GetCityTask: Request >> " + jsonObject.toString());
-
-            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
-            Call<JsonObject> call = apiService.new_project_api(jsonObject);
-            call.enqueue(new Callback<JsonObject>() {
-                @SuppressLint("LongLogTag")
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    Log.e(TAG, "GetCityTask: Response >>" + response.body().toString());
-                    String resp = response.body().toString();
-                    try {
-                        listCity.clear();
-                        JSONObject jsonObject = new JSONObject(resp);
-                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
-                            JSONArray jsonArray = jsonObject.getJSONArray("result");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
-                                listCity.add(data);
-                            }
-                            publishProgress("200", "");
-                        } else {
-                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
-                            publishProgress("400", msg);
-                        }
-                    } catch (JSONException e) {
-                        publishProgress("400", getResources().getString(R.string.api_error_msg));
-                        e.printStackTrace();
-                    }
-                }
-
-                @SuppressLint("LongLogTag")
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
-                    publishProgress("400", getResources().getString(R.string.api_error_msg));
-                }
-            });
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-            hideProgressDialog();
-            setCityAdapter();
-            String status = values[0];
-            String msg = values[1];
-            if (status.equalsIgnoreCase("200")) {
-
-            } else if (status.equalsIgnoreCase("400")) {
-            }
-        }
-    }
 
     private class AddTransitTask extends AsyncTask<String, String, Void> {
 

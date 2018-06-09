@@ -151,63 +151,77 @@
                 android:layout_height="1dp"
                 android:background="@color/dividerColor" />
 
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:fontFamily="@font/oxygen"
-                android:padding="@dimen/_4sdp"
-                android:text="State"
-                android:textColor="@color/white" />
+                android:weightSum="2">
 
-            <android.support.v7.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/atvStates"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="Enter State"
-                android:inputType="textCapWords|textNoSuggestions"
-                android:padding="@dimen/_4sdp"
-                android:singleLine="true"
-                android:textColor="@color/hintcolor"
-                android:textColorHint="@color/hintcolor" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor" />
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:fontFamily="@font/oxygen"
+                        android:padding="@dimen/_4sdp"
+                        android:text="State"
+                        android:textColor="@color/white" />
 
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:fontFamily="@font/oxygen"
-                android:padding="@dimen/_4sdp"
-                android:text="City"
-                android:textColor="@color/white" />
 
-            <android.support.v7.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/atvCities"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="Enter City"
-                android:inputType="textCapWords|textNoSuggestions"
-                android:padding="@dimen/_4sdp"
-                android:singleLine="true"
-                android:textColor="@color/hintcolor"
-                android:textColorHint="@color/hintcolor" />
+                    <Spinner
+                        android:id="@+id/spinnerState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/hintcolor"
+                        android:visibility="visible" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor">
 
-            </View>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dividerColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:fontFamily="@font/oxygen"
+                        android:padding="@dimen/_4sdp"
+                        android:text="City"
+                        android:textColor="@color/white" />
+
+
+                    <Spinner
+                        android:id="@+id/spinnerCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/hintcolor"
+                        android:visibility="visible" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dividerColor" />
+
+                </LinearLayout>
+            </LinearLayout>
+
 
             <TextView
                 style="@style/Base.TextAppearance.AppCompat.Subhead"

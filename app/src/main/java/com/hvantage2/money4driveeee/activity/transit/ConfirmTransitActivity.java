@@ -97,7 +97,8 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
     private Spinner spinnerState, spinnerCity;
     private StateCityAdapter adapterState, adapterCity;
     private String selectedStateId = "0", selectedCityId = "0";
-    private String lastselectedCityId;
+    private String lastselectedCityId = "";
+    private String lastselectedStateId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,6 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        new GetStateTask().execute();
         init();
         if (getIntent().hasExtra("media_option_id"))
             media_option_id = getIntent().getStringExtra("media_option_id");
@@ -121,17 +121,19 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             llReport.setVisibility(View.GONE);
         }
 
-        new getTransitDetail().execute();
 
         Log.e(TAG, "onCreate: media_option_id >> " + media_option_id);
         Log.e(TAG, "onCreate: vehicle_id >> " + vehicle_id);
+        new getTransitDetail().execute();
+
+
     }
 
     private void setEnabled(boolean b) {
         etDriverName.setEnabled(b);
         etVehicle.setEnabled(b);
-        spinnerCity.setEnabled(b);
-        spinnerState.setEnabled(b);
+      /*  spinnerCity.setEnabled(b);
+        spinnerState.setEnabled(b);*/
         etDriverAddress.setEnabled(b);
         imgDoc1.setEnabled(b);
         imgDoc2.setEnabled(b);
@@ -187,7 +189,6 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         imgDoc2.setOnClickListener(this);
 
         setStateAdapter();
-        //setCityAdapter();
     }
 
     private void setStateAdapter() {
@@ -221,7 +222,6 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                 selectedCityId = listCity.get(position).getId();
                 Log.e(TAG, "onItemSelected: selectedCityId >> " + selectedCityId);
                 ((TextView) spinnerCity.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
-
             }
 
             @Override
@@ -532,11 +532,22 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                         listState.add(data);
                     }
                     adapterState.notifyDataSetChanged();
+                    if (!lastselectedStateId.equalsIgnoreCase(""))
+                        for (int i = 0; i < listState.size(); i++) {
+                            if (lastselectedStateId.equalsIgnoreCase(listState.get(i).getId())) {
+                                spinnerState.setSelection(i);
+                                lastselectedStateId = "";
+                            }
+                        }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             } else if (status.equalsIgnoreCase("400")) {
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
             }
+
+
         }
     }
 
@@ -603,17 +614,17 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             String status = values[0];
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {
-                for (int i = 0; i < listCity.size(); i++) {
-                    if (lastselectedCityId.equalsIgnoreCase(listCity.get(i).getId())) {
-                        spinnerCity.setSelection(i);
-                        lastselectedCityId = "";
+                if (!lastselectedCityId.equalsIgnoreCase(""))
+                    for (int i = 0; i < listCity.size(); i++) {
+                        if (lastselectedCityId.equalsIgnoreCase(listCity.get(i).getId())) {
+                            spinnerCity.setSelection(i);
+                            lastselectedCityId = "";
+                        }
                     }
-                }
             } else if (status.equalsIgnoreCase("400")) {
             }
         }
     }
-
 
     class ImageTask extends AsyncTask<Bitmap, String, Void> {
         @Override
@@ -721,17 +732,18 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                     if (!jsonObject.getString("doc_img2").equalsIgnoreCase(""))
                         Picasso.with(context).load(jsonObject.getString("doc_img2")).placeholder(R.drawable.no_image_placeholder).into(imgDoc2);
 
-                    selectedStateId = jsonObject.getString("state_id");
-                    lastselectedCityId = jsonObject.getString("city_id");
+                    lastselectedStateId = jsonObject.getString("state");
+                    lastselectedCityId = jsonObject.getString("city");
+                    Log.e(TAG, "onProgressUpdate: selectedStateId >> " + lastselectedStateId);
+                    Log.e(TAG, "onProgressUpdate: lastselectedCityId >> " + lastselectedCityId);
 
-                    Log.e(TAG, "onProgressUpdate: selectedStateId >> " + selectedStateId);
-                    Log.e(TAG, "onProgressUpdate: selectedCityId >> " + selectedCityId);
-                    for (int i = 0; i < listState.size(); i++) {
+
+                   /* for (int i = 0; i < listState.size(); i++) {
                         if (listState.get(i).getId().equalsIgnoreCase(selectedStateId))
                             spinnerState.setSelection(i);
-                    }
+                    }*/
 
-
+                    new GetStateTask().execute();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

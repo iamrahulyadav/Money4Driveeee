@@ -20,19 +20,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.activity.SingleActivityDetail;
 import com.hvantage2.money4driveeee.activity.UploadPhotosActivity;
 import com.hvantage2.money4driveeee.adapter.ActivityAdapter;
 import com.hvantage2.money4driveeee.model.ShopActivity;
-import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.RecyclerItemClickListener;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -164,10 +163,16 @@ public class PerformShopActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         if (view.getId() == R.id.imagViewEdit) {
             Intent intent = new Intent(PerformShopActivity.this, ShopDetailActivity.class);
+            intent.setAction("edit");
             intent.putExtra("media_option_id", media_option_id);
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     class GetActivityTask extends AsyncTask<Void, String, Void> {
@@ -246,10 +251,5 @@ public class PerformShopActivity extends AppCompatActivity implements View.OnCli
         }
 
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 }
