@@ -202,7 +202,6 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                 Log.e(TAG, "onItemSelected: selectedStateId >> " + selectedStateId);
                 new GetCityTask().execute();
                 ((TextView) spinnerState.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
-
             }
 
             @Override
@@ -761,9 +760,9 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             jsonObject.addProperty(AppConstants.KEYS.DRIVER_NAME, etDriverName.getText().toString());
             jsonObject.addProperty(AppConstants.KEYS.DRIVER_CONTACT_NO, etDriverContact.getText().toString());
             jsonObject.addProperty(AppConstants.KEYS.VEHICLE_MODEL, etVehicle.getText().toString());
-            jsonObject.addProperty(AppConstants.KEYS.VEHICLE_REGIS_NUMBER, etRegNo.getText().toString());/*
-            jsonObject.addProperty(AppConstants.KEYS.STATE, atvStates.getText().toString());
-            jsonObject.addProperty(AppConstants.KEYS.CITY, atvCities.getText().toString());*/
+            jsonObject.addProperty(AppConstants.KEYS.VEHICLE_REGIS_NUMBER, etRegNo.getText().toString());
+            jsonObject.addProperty(AppConstants.KEYS.STATE, selectedStateId);
+            jsonObject.addProperty(AppConstants.KEYS.CITY, selectedCityId);
             jsonObject.addProperty(AppConstants.KEYS.ADDRESS, etDriverAddress.getText().toString());
             jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
             jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
