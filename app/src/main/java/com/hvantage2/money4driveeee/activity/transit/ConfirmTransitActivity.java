@@ -97,7 +97,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
     private Spinner spinnerState, spinnerCity;
     private StateCityAdapter adapterState, adapterCity;
     private String selectedStateId = "0", selectedCityId = "0";
-    private EditText etState, etCity;
+    private String lastselectedCityId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,12 +153,6 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         etStartDate = (EditText) findViewById(R.id.etStartDate);
         etEndDate = (EditText) findViewById(R.id.etEndDate);
 
-        etState = (EditText) findViewById(R.id.etState);
-        etCity = (EditText) findViewById(R.id.etCity);
-
-        etState.setOnClickListener(this);
-        etCity.setOnClickListener(this);
-
         imgDoc1 = (ImageView) findViewById(R.id.imgDoc1);
         imgDoc2 = (ImageView) findViewById(R.id.imgDoc2);
         tvImgDoc1Remark = (TextView) findViewById(R.id.tvImgDoc1Remark);
@@ -193,7 +187,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         imgDoc2.setOnClickListener(this);
 
         setStateAdapter();
-        setCityAdapter();
+        //setCityAdapter();
     }
 
     private void setStateAdapter() {
@@ -205,9 +199,10 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 selectedStateId = listState.get(position).getId();
-                etState.setText(listState.get(position).getName());
                 Log.e(TAG, "onItemSelected: selectedStateId >> " + selectedStateId);
                 new GetCityTask().execute();
+                ((TextView) spinnerState.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
+
             }
 
             @Override
@@ -225,8 +220,9 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 selectedCityId = listCity.get(position).getId();
-                etCity.setText(listCity.get(position).getName());
                 Log.e(TAG, "onItemSelected: selectedCityId >> " + selectedCityId);
+                ((TextView) spinnerCity.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
+
             }
 
             @Override
@@ -291,12 +287,6 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             case R.id.imgDoc2:
                 imgCounter = 2;
                 selectImage();
-                break;
-            case R.id.etState:
-                spinnerState.performClick();
-                break;
-            case R.id.etCity:
-                spinnerCity.performClick();
                 break;
         }
     }
@@ -556,6 +546,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
         }
 
         @Override
@@ -576,10 +567,15 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                     String resp = response.body().toString();
                     try {
                         listCity.clear();
-
                         JSONObject jsonObject = new JSONObject(resp);
                         if (jsonObject.getString("status").equalsIgnoreCase("200")) {
-                            publishProgress("200", resp);
+                            JSONArray jsonArray = jsonObject.getJSONArray("result");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                                listCity.add(data);
+                            }
+                            publishProgress("200", "");
                         } else {
                             String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
                             publishProgress("400", msg);
@@ -603,31 +599,22 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
+            hideProgressDialog();
+            setCityAdapter();
             String status = values[0];
             String msg = values[1];
-            JSONObject jsonObject = null;
             if (status.equalsIgnoreCase("200")) {
-                try {
-                    jsonObject = new JSONObject(msg);
-                    JSONArray jsonArray = jsonObject.getJSONArray("result");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
-                        listCity.add(data);
+                for (int i = 0; i < listCity.size(); i++) {
+                    if (lastselectedCityId.equalsIgnoreCase(listCity.get(i).getId())) {
+                        spinnerCity.setSelection(i);
+                        lastselectedCityId = "";
                     }
-                    adapterCity.notifyDataSetChanged();
-                    Log.e(TAG, "onProgressUpdate: listCity >> " + listCity);
-                    for (int i = 0; i < listCity.size(); i++) {
-                        if (listCity.get(i).getId().equalsIgnoreCase(selectedCityId))
-                            spinnerCity.setSelection(i);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             } else if (status.equalsIgnoreCase("400")) {
             }
         }
     }
+
 
     class ImageTask extends AsyncTask<Bitmap, String, Void> {
         @Override
@@ -736,7 +723,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                         Picasso.with(context).load(jsonObject.getString("doc_img2")).placeholder(R.drawable.no_image_placeholder).into(imgDoc2);
 
                     selectedStateId = jsonObject.getString("state_id");
-                    selectedCityId = jsonObject.getString("city_id");
+                    lastselectedCityId = jsonObject.getString("city_id");
 
                     Log.e(TAG, "onProgressUpdate: selectedStateId >> " + selectedStateId);
                     Log.e(TAG, "onProgressUpdate: selectedCityId >> " + selectedCityId);

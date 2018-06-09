@@ -88,7 +88,6 @@
                     android:fontFamily="@font/oxygen"
                     android:hint="NA"
                     android:inputType="textCapWords|textAutoCorrect|textPersonName"
-
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
@@ -153,9 +152,8 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:fontFamily="@font/oxygen"
-
                     android:hint="NA"
-                    android:inputType="textCapWords"
+                    android:inputType="textCapWords|textNoSuggestions"
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
@@ -225,27 +223,13 @@
                             android:text="State"
                             android:textColor="@color/white" />
 
-                        <EditText
-                            android:id="@+id/etState"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/oxygen"
-                            android:hint="Select State"
-
-                            android:padding="@dimen/_4sdp"
-                            android:singleLine="true"
-                            android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor" />
 
                         <Spinner
                             android:id="@+id/spinnerState"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:backgroundTint="@color/hintcolor"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
 
                         <View
@@ -272,26 +256,13 @@
                             android:text="City"
                             android:textColor="@color/white" />
 
-                        <EditText
-                            android:id="@+id/etCity"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/oxygen"
-                            android:hint="Select City"
-                            android:padding="@dimen/_4sdp"
-                            android:singleLine="true"
-                            android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor" />
 
                         <Spinner
                             android:id="@+id/spinnerCity"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:backgroundTint="@color/hintcolor"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                         <View
                             android:layout_width="match_parent"

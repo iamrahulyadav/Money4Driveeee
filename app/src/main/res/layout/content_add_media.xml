@@ -124,7 +124,6 @@
                     android:padding="@dimen/_5sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-
                     android:textColorHint="@color/hintcolor" />
 
                 <View

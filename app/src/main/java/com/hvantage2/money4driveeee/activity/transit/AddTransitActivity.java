@@ -111,7 +111,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     private Spinner spinnerState, spinnerCity;
     private StateCityAdapter adapterCity, adapterState;
     private String selectedStateId = "0", selectedCityId = "0";
-    private EditText etState, etCity;
     private VehicleSearchResultAdapter adapterResult;
     private NestedScrollView nsvResult;
     private LinearLayout llVNo;
@@ -124,7 +123,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        new GetStateTask().execute();
         init();
         showSearchDialog();
         if (getIntent().hasExtra("media_option_id"))
@@ -139,6 +137,12 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         Log.e(TAG, "onCreate: total_days >> " + total_days);
         if (total_days != 0)
             calculateDate(total_days);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new GetStateTask().execute();
     }
 
     private void calculateDate(int days) {
@@ -177,12 +181,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         spinnerGift = (Spinner) findViewById(R.id.spinnerGift);
         etSelectGift = (EditText) findViewById(R.id.etSelectGift);
 
-        etState = (EditText) findViewById(R.id.etState);
-        etCity = (EditText) findViewById(R.id.etCity);
-
-        etState.setOnClickListener(this);
-        etCity.setOnClickListener(this);
-
         btnConfirm.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
 
@@ -202,7 +200,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         });
 
         setStateAdapter();
-        setCityAdapter();
+//        setCityAdapter();
         setGiftAdapter();
     }
 
@@ -235,9 +233,9 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 selectedStateId = listState.get(position).getId();
-                etState.setText(listState.get(position).getName());
                 Log.e(TAG, "onItemSelected: selectedStateId >> " + selectedStateId);
                 new GetCityTask().execute();
+                ((TextView) spinnerState.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
             }
 
             @Override
@@ -254,8 +252,8 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 selectedCityId = listCity.get(position).getId();
-                etCity.setText(listCity.get(position).getName());
                 Log.e(TAG, "onItemSelected: selectedCityId >> " + selectedCityId);
+                ((TextView) spinnerCity.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
             }
 
             @Override
@@ -281,7 +279,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         final EditText etSeries = (EditText) dialogView.findViewById(R.id.etSeries);
         final EditText etVehNo = (EditText) dialogView.findViewById(R.id.etVehNo);
         final ImageView imgRight = (ImageView) dialogView.findViewById(R.id.imgRight);
-
 
         recycler_view.setLayoutManager(new LinearLayoutManager(AddTransitActivity.this));
         adapterResult = new VehicleSearchResultAdapter(AddTransitActivity.this, listResult);
@@ -807,12 +804,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             case R.id.btnCancel:
                 onBackPressed();
                 break;
-            case R.id.etState:
-                spinnerState.performClick();
-                break;
-            case R.id.etCity:
-                spinnerCity.performClick();
-                break;
         }
     }
 
@@ -1314,6 +1305,11 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             } else if (status.equalsIgnoreCase("400")) {
             }
         }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
     }
 
     private class GetCityTask extends AsyncTask<String, String, Void> {
@@ -1321,7 +1317,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            listCity.clear();
+
         }
 
         @Override
@@ -1341,9 +1337,16 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                     Log.e(TAG, "GetCityTask: Response >>" + response.body().toString());
                     String resp = response.body().toString();
                     try {
+                        listCity.clear();
                         JSONObject jsonObject = new JSONObject(resp);
                         if (jsonObject.getString("status").equalsIgnoreCase("200")) {
-                            publishProgress("200", resp);
+                            JSONArray jsonArray = jsonObject.getJSONArray("result");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                                listCity.add(data);
+                            }
+                            publishProgress("200", "");
                         } else {
                             String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
                             publishProgress("400", msg);
@@ -1368,22 +1371,11 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             hideProgressDialog();
+            setCityAdapter();
             String status = values[0];
             String msg = values[1];
-            JSONObject jsonObject = null;
             if (status.equalsIgnoreCase("200")) {
-                try {
-                    jsonObject = new JSONObject(msg);
-                    JSONArray jsonArray = jsonObject.getJSONArray("result");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
-                        listCity.add(data);
-                    }
-                    adapterCity.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
             } else if (status.equalsIgnoreCase("400")) {
             }
         }

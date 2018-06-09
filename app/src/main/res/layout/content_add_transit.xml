@@ -213,27 +213,13 @@
                             android:text="State"
                             android:textColor="@color/white" />
 
-                        <EditText
-                            android:id="@+id/etState"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/oxygen"
-                            android:hint="Select State"
-
-                            android:padding="@dimen/_4sdp"
-                            android:singleLine="true"
-                            android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor" />
 
                         <Spinner
                             android:id="@+id/spinnerState"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:backgroundTint="@color/hintcolor"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
 
                         <View
@@ -260,26 +246,12 @@
                             android:text="City"
                             android:textColor="@color/white" />
 
-                        <EditText
-                            android:id="@+id/etCity"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/oxygen"
-                            android:hint="Select City"
-                            android:padding="@dimen/_4sdp"
-                            android:singleLine="true"
-                            android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor" />
-
                         <Spinner
                             android:id="@+id/spinnerCity"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:backgroundTint="@color/hintcolor"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                         <View
                             android:layout_width="match_parent"
@@ -458,7 +430,6 @@
                         android:editable="false"
                         android:enabled="false"
                         android:focusableInTouchMode="false"
-                        android:hint="Select Start Date"
                         android:imeOptions="actionDone"
                         android:inputType="textMultiLine"
                         android:padding="@dimen/_4sdp"
