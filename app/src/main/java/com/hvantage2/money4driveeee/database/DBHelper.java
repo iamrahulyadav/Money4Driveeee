@@ -166,7 +166,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<ProjectModel> getProjects(String type_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<ProjectModel> list = null;
-        String query = "SELECT * FROM " + TABLE_PROJECTS + " WHERE " + KEY_PROJECT_TYPE + "=" + type_id;
+        String query = "SELECT * FROM " + TABLE_PROJECTS + " WHERE " + KEY_PROJECT_TYPE + "=" + type_id;//+ " ORDER BY " + KEY_PROJECT_ID + " ASC";
 //        String query = "SELECT * FROM " + TABLE_PROJECTS + " WHERE " + KEY_PROJECT_TYPE + "=" + type_id + " ORDER BY ID DESC";
         Cursor cursor = db.rawQuery(query, null);
         if (cursor == null) {

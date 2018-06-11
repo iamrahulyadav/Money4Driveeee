@@ -2,13 +2,16 @@ package com.hvantage2.money4driveeee.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +27,6 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.ProjectDetailsActivity;
 import com.hvantage2.money4driveeee.adapter.ProjectListAdapter;
-
 import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.ProjectModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
@@ -61,7 +63,6 @@ public class HistoryPendingFragment extends Fragment {
     private DBHelper db;
     private SwipeRefreshLayout refreshLayout;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class HistoryPendingFragment extends Fragment {
         db = new DBHelper(context);
         list = new ArrayList<ProjectModel>();
         init(rootview);
+        LocalBroadcastManager.getInstance(context).registerReceiver(new MyReciever(), new IntentFilter("get_update"));
         if (db.getProjects(AppConstants.PROJECT_TYPE_IDS.PENDING_ID) != null) {
             list = db.getProjects(AppConstants.PROJECT_TYPE_IDS.PENDING_ID);
             Log.e(TAG, "onCreateView: list >> " + list);
@@ -123,12 +125,10 @@ public class HistoryPendingFragment extends Fragment {
 
             }
         }));
-
-
     }
 
     private void getProjectsFromServer() {
-        if (Functions.isConnectingToInternet(getActivity())) {
+        if (Functions.isConnectingToInternet(context)) {
             Log.e(TAG, "getProjectsFromServer: deleteProjects() >> " + db.deleteProjects(AppConstants.PROJECT_TYPE_IDS.PENDING_ID));
             tvEmpty.setVisibility(View.GONE);
             new ServerTask().execute();
@@ -165,6 +165,15 @@ public class HistoryPendingFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         intraction = null;
+    }
+
+    class MyReciever extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e(TAG, "onReceive: MyReciever ");
+            getProjectsFromServer();
+        }
     }
 
     public class ServerTask extends AsyncTask<Void, String, Void> {

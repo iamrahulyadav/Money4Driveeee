@@ -68,6 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         mydb.saveProject(projectModel, AppConstants.PROJECT_TYPE_IDS.PENDING_ID);
                     } else
                         Log.e(TAG, "onMessageReceived: project already exists");
+                    LocalBroadcastManager.getInstance(MyFirebaseMessagingService.this).sendBroadcast(new Intent("get_update"));
                 } else if (PROJECT_STATUS_CHANGED != null) {
                     JSONObject jsonObject1 = null;
                     jsonObject1 = new JSONObject(PROJECT_STATUS_CHANGED);
