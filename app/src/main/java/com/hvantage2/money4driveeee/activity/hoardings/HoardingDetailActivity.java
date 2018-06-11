@@ -1,5 +1,6 @@
 package com.hvantage2.money4driveeee.activity.hoardings;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -16,7 +17,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -31,23 +31,25 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
+import com.hvantage2.money4driveeee.adapter.StateCityAdapter;
+import com.hvantage2.money4driveeee.model.StateCityModel;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
-import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.UtilClass;
 import com.squareup.picasso.Picasso;
@@ -72,8 +74,8 @@ public class HoardingDetailActivity extends AppCompatActivity implements View.On
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
     private static final String TAG = "HoardingDetailActivity";
-    ArrayList<String> listState = new ArrayList<String>();
-    ArrayList<String> listCity = new ArrayList<String>();
+    ArrayList<StateCityModel> listState = new ArrayList<StateCityModel>();
+    ArrayList<StateCityModel> listCity = new ArrayList<StateCityModel>();
     private EditText etContName;
     private EditText etContNo;
     private EditText etAddress, etStartDate, etEndDate;
@@ -85,12 +87,17 @@ public class HoardingDetailActivity extends AppCompatActivity implements View.On
     private String hoarding_id;
     private ImageView imgDoc1, imgDoc2;
     private TextView tvImgDoc1Remark, tvImgDoc2Remark;
-    private AppCompatAutoCompleteTextView atvStates;
-    private AppCompatAutoCompleteTextView atvCities;
     private Context context;
     private int imgCounter = 1;
     private String userChoosenTask;
     private String base64image1 = "", base64image2 = "";
+    private Spinner spinnerState;
+    private StateCityAdapter adapterState;
+    private String selectedStateId = "0", selectedCityId = "0";
+    private Spinner spinnerCity;
+    private StateCityAdapter adapterCity;
+    private String lastselectedCityId = "";
+    private String lastselectedStateId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,55 +146,48 @@ public class HoardingDetailActivity extends AppCompatActivity implements View.On
         imgDoc1.setOnClickListener(this);
         imgDoc2.setOnClickListener(this);
 
-        atvStates = (AppCompatAutoCompleteTextView) findViewById(R.id.atvStates);
-        atvCities = (AppCompatAutoCompleteTextView) findViewById(R.id.atvCities);
-
-        atvStates.setThreshold(2);
-        atvCities.setThreshold(2);
 
         setStateAdapter();
         setCityAdapter();
+    }
 
-        atvStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    private void setStateAdapter() {
+//        listState.add(new Gson().fromJson("{\"id\":\"0\",\"name\":\"Select state\"}", StateCityModel.class));
+        spinnerState = (Spinner) findViewById(R.id.spinnerState);
+        adapterState = new StateCityAdapter(HoardingDetailActivity.this, R.layout.state_city_item_layout, R.id.tvTitle, listState);
+        spinnerState.setAdapter(adapterState);
+        spinnerState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int p, long l) {
-                setCityAdapter();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                selectedStateId = listState.get(position).getId();
+                Log.e(TAG, "onItemSelected: selectedStateId >> " + selectedStateId);
+                new GetCityTask().execute();
+                ((TextView) spinnerState.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
     }
 
     private void setCityAdapter() {
-        try {
-            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_cities.json"));
-            JSONObject cityJObj = jsonObject.getJSONObject(atvStates.getText().toString());
-            JSONArray jsonArray = cityJObj.getJSONArray("name");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String state = jsonArray.getString(i);
-                listCity.add(state);
+//        listCity.add(new Gson().fromJson("{\"id\":\"0\",\"name\":\"Select city\"}", StateCityModel.class));
+        spinnerCity = (Spinner) findViewById(R.id.spinnerCity);
+        adapterCity = new StateCityAdapter(HoardingDetailActivity.this, R.layout.state_city_item_layout, R.id.tvTitle, listCity);
+        spinnerCity.setAdapter(adapterCity);
+        spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                selectedCityId = listCity.get(position).getId();
+                Log.e(TAG, "onItemSelected: selectedCityId >> " + selectedCityId);
+                ((TextView) spinnerCity.getSelectedView().findViewById(R.id.tvTitle)).setTextColor(getResources().getColor(R.color.hintcolor));
             }
-            ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listCity);
-            atvCities.setAdapter(adapterCity);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setStateAdapter() {
-        try {
-            JSONObject jsonObject = new JSONObject(Functions.loadJSONFromAsset(context, "json_states.json"));
-            JSONArray jsonArray = jsonObject.getJSONArray("name");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String state = jsonArray.getString(i);
-                listState.add(state);
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
-            ArrayAdapter<String> adapterState = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listState);
-            atvStates.setAdapter(adapterState);
-            Log.e(TAG, "setAdapter: listState >> " + listState);
-        } catch (JSONException e) {
-            Log.e(TAG, "setAdapter: Exc >> " + e.getMessage());
-            e.printStackTrace();
-        }
+        });
     }
 
     private void hideSoftKeyboard(View view) {
@@ -232,10 +232,6 @@ public class HoardingDetailActivity extends AppCompatActivity implements View.On
                 etContName.setError("Enter contact person name");
             else if (TextUtils.isEmpty(etContNo.getText().toString()))
                 etContNo.setError("Enter contact person no");
-            else if (TextUtils.isEmpty(atvStates.getText().toString()))
-                atvStates.setError("Enter state");
-            else if (TextUtils.isEmpty(atvCities.getText().toString()))
-                atvCities.setError("Enter city");
             else if (TextUtils.isEmpty(etAddress.getText().toString()))
                 etAddress.setError("Enter address");
             else {
@@ -514,8 +510,6 @@ public class HoardingDetailActivity extends AppCompatActivity implements View.On
                     etContName.setText(jsonObject.getString("shop_contact_per_name"));
                     etContNo.setText(jsonObject.getString("shop_contact_per_number"));
                     etAddress.setText(jsonObject.getString("address"));
-                    atvCities.setText(jsonObject.getString("city"));
-                    atvStates.setText(jsonObject.getString("state"));
                     etStartDate.setText(jsonObject.getString("start_date"));
                     etEndDate.setText(jsonObject.getString("end_date"));
                     tvImgDoc1Remark.setText(jsonObject.getString("img1_remark"));
@@ -524,11 +518,173 @@ public class HoardingDetailActivity extends AppCompatActivity implements View.On
                         Picasso.with(context).load(jsonObject.getString("doc_img1")).placeholder(R.drawable.no_image_placeholder).into(imgDoc1);
                     if (!jsonObject.getString("doc_img2").equalsIgnoreCase(""))
                         Picasso.with(context).load(jsonObject.getString("doc_img2")).placeholder(R.drawable.no_image_placeholder).into(imgDoc2);
+
+                    lastselectedStateId = jsonObject.getString("state");
+                    lastselectedCityId = jsonObject.getString("city");
+                    Log.e(TAG, "onProgressUpdate: selectedStateId >> " + lastselectedStateId);
+                    Log.e(TAG, "onProgressUpdate: lastselectedCityId >> " + lastselectedCityId);
+
+                    new GetStateTask().execute();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else if (status.equalsIgnoreCase("400")) {
                 Toast.makeText(HoardingDetailActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class GetStateTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTSTATES);
+            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(HoardingDetailActivity.this));
+            Log.e(TAG, "GetStateTask: Request >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.new_project_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "GetStateTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            publishProgress("200", resp);
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            String status = values[0];
+            String msg = values[1];
+            JSONObject jsonObject = null;
+            if (status.equalsIgnoreCase("200")) {
+                try {
+                    jsonObject = new JSONObject(msg);
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                        listState.add(data);
+                    }
+                    setStateAdapter();
+
+                    if (!lastselectedStateId.equalsIgnoreCase(""))
+                        for (int i = 0; i < listState.size(); i++) {
+                            if (lastselectedStateId.equalsIgnoreCase(listState.get(i).getId())) {
+                                spinnerState.setSelection(i);
+                                lastselectedStateId = "";
+                            }
+                        }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (status.equalsIgnoreCase("400")) {
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class GetCityTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.GETPROJECTCITIES);
+            jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(HoardingDetailActivity.this));
+            jsonObject.addProperty("state_id", selectedStateId);
+            Log.e(TAG, "GetCityTask: Request >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.new_project_api(jsonObject);
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "GetCityTask: Response >>" + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        listCity.clear();
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            JSONArray jsonArray = jsonObject.getJSONArray("result");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
+                                listCity.add(data);
+                            }
+                            publishProgress("200", "");
+                        } else {
+                            String msg = jsonObject.getJSONArray("result").getJSONObject(0).getString("msg");
+                            publishProgress("400", msg);
+                        }
+                    } catch (JSONException e) {
+                        publishProgress("400", getResources().getString(R.string.api_error_msg));
+                        e.printStackTrace();
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", getResources().getString(R.string.api_error_msg));
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            hideProgressDialog();
+            setCityAdapter();
+            String status = values[0];
+            String msg = values[1];
+            if (status.equalsIgnoreCase("200")) {
+                if (!lastselectedCityId.equalsIgnoreCase(""))
+                    for (int i = 0; i < listCity.size(); i++) {
+                        if (lastselectedCityId.equalsIgnoreCase(listCity.get(i).getId())) {
+                            spinnerCity.setSelection(i);
+                            lastselectedCityId = "";
+                        }
+                    }
+            } else if (status.equalsIgnoreCase("400")) {
             }
         }
     }
@@ -550,13 +706,15 @@ public class HoardingDetailActivity extends AppCompatActivity implements View.On
             jsonObject.addProperty("hoarding_id", AppPreference.getSelectedHoardingId(HoardingDetailActivity.this));
             jsonObject.addProperty("shop_contact_per_name", etContName.getText().toString());
             jsonObject.addProperty("shop_contact_per_number", etContNo.getText().toString());
-            jsonObject.addProperty("state", atvStates.getText().toString());
+
             jsonObject.addProperty("address", etAddress.getText().toString());
-            jsonObject.addProperty("city", atvCities.getText().toString());
             jsonObject.addProperty("doc_img1", base64image1);
             jsonObject.addProperty("doc_img2", base64image2);
             jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
             jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
+            jsonObject.addProperty("state", selectedStateId);
+            jsonObject.addProperty("city", selectedCityId);
+
             Log.e(TAG, "Request UPDATE DETAIL >> " + jsonObject);
 
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);

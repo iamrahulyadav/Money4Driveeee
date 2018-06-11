@@ -161,18 +161,12 @@
                             android:textColor="@color/white" />
 
 
-                        <android.support.v7.widget.AppCompatAutoCompleteTextView
-                            android:id="@+id/atvStates"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        <Spinner
+                            android:id="@+id/spinnerState"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:hint="Enter State"
-                            android:inputType="textCapWords|textNoSuggestions"
-                            android:padding="@dimen/_4sdp"
-                            android:singleLine="true"
-                            android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor" />
+                            android:backgroundTint="@color/hintcolor"
+                            android:visibility="visible" />
 
 
                         <View
@@ -199,18 +193,12 @@
                             android:text="City"
                             android:textColor="@color/white" />
 
-                        <android.support.v7.widget.AppCompatAutoCompleteTextView
-                            android:id="@+id/atvCities"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        <Spinner
+                            android:id="@+id/spinnerCity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:hint="Enter City"
-                            android:inputType="textCapWords|textNoSuggestions"
-                            android:padding="@dimen/_4sdp"
-                            android:singleLine="true"
-                            android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor" />
+                            android:backgroundTint="@color/hintcolor"
+                            android:visibility="visible" />
 
                         <View
                             android:layout_width="match_parent"
@@ -219,6 +207,7 @@
 
                     </LinearLayout>
                 </LinearLayout>
+
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
@@ -238,7 +227,7 @@
                     android:fontFamily="@font/oxygen"
                     android:hint="Enter Address"
                     android:imeOptions="actionDone"
-                    android:inputType="textCapWords"
+                    android:inputType="textNoSuggestions|textCapSentences"
                     android:maxLines="2"
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"

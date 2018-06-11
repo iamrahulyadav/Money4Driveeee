@@ -196,29 +196,8 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         });
 
         setStateAdapter();
-        setGiftAdapter();
     }
 
-    private void setGiftAdapter() {
-        listGift.add("Select Gift");
-        listGift.add("Pressure Cooker");
-        listGift.add("Tea Mug Set");
-        listGift.add("Pending");
-        ArrayAdapter<String> adapterGift = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listGift);
-        spinnerGift.setAdapter(adapterGift);
-
-        spinnerGift.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                etSelectGift.setText((String) spinnerGift.getSelectedItem());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
 
     private void setStateAdapter() {
         spinnerState = (Spinner) findViewById(R.id.spinnerState);

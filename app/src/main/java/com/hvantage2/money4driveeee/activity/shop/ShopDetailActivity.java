@@ -180,7 +180,6 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
         imgDoc1.setOnClickListener(this);
         imgDoc2.setOnClickListener(this);
 
-        setStateAdapter();
 
     }
 
@@ -495,7 +494,8 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
                         StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
                         listState.add(data);
                     }
-                    adapterState.notifyDataSetChanged();
+                    setStateAdapter();
+
                     if (!lastselectedStateId.equalsIgnoreCase(""))
                         for (int i = 0; i < listState.size(); i++) {
                             if (lastselectedStateId.equalsIgnoreCase(listState.get(i).getId())) {
@@ -510,8 +510,6 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
             } else if (status.equalsIgnoreCase("400")) {
                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
             }
-
-
         }
     }
 

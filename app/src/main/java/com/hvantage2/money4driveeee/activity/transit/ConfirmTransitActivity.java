@@ -121,12 +121,9 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             llReport.setVisibility(View.GONE);
         }
 
-
         Log.e(TAG, "onCreate: media_option_id >> " + media_option_id);
         Log.e(TAG, "onCreate: vehicle_id >> " + vehicle_id);
         new getTransitDetail().execute();
-
-
     }
 
     private void setEnabled(boolean b) {
@@ -188,7 +185,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         imgDoc1.setOnClickListener(this);
         imgDoc2.setOnClickListener(this);
 
-        setStateAdapter();
+        //setStateAdapter();
     }
 
     private void setStateAdapter() {
@@ -531,7 +528,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                         StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
                         listState.add(data);
                     }
-                    adapterState.notifyDataSetChanged();
+                    setStateAdapter();
                     if (!lastselectedStateId.equalsIgnoreCase(""))
                         for (int i = 0; i < listState.size(); i++) {
                             if (lastselectedStateId.equalsIgnoreCase(listState.get(i).getId())) {
@@ -546,8 +543,6 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             } else if (status.equalsIgnoreCase("400")) {
                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
             }
-
-
         }
     }
 
@@ -732,11 +727,10 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                     if (!jsonObject.getString("doc_img2").equalsIgnoreCase(""))
                         Picasso.with(context).load(jsonObject.getString("doc_img2")).placeholder(R.drawable.no_image_placeholder).into(imgDoc2);
 
-                    lastselectedStateId = jsonObject.getString("state");
-                    lastselectedCityId = jsonObject.getString("city");
+                    lastselectedStateId = jsonObject.getString("state_id");
+                    lastselectedCityId = jsonObject.getString("city_id");
                     Log.e(TAG, "onProgressUpdate: selectedStateId >> " + lastselectedStateId);
                     Log.e(TAG, "onProgressUpdate: lastselectedCityId >> " + lastselectedCityId);
-
 
                    /* for (int i = 0; i < listState.size(); i++) {
                         if (listState.get(i).getId().equalsIgnoreCase(selectedStateId))
