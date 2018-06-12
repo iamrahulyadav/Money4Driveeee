@@ -1,20 +1,34 @@
 package com.hvantage2.money4driveeee.activity.print;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,6 +41,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.adapter.StateCityAdapter;
@@ -36,11 +51,18 @@ import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
+import com.hvantage2.money4driveeee.util.UtilClass;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -50,11 +72,14 @@ import retrofit2.Response;
 public class MediaDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MediaDetailActivity";
+    private static final int REQUEST_STORAGE = 0;
+    private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
+    private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
     ArrayList<StateCityModel> listState = new ArrayList<StateCityModel>();
     ArrayList<StateCityModel> listCity = new ArrayList<StateCityModel>();
     private EditText etContName;
     private EditText etContNo;
-    private EditText etAddress;
+    private EditText etAddress, etStartDate, etEndDate;
     private Button btnCancel;
     private Button btnConfirm;
     private ProgressHUD progressHD;
@@ -70,11 +95,15 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
     private String selectedStateId = "0", selectedCityId = "0";
     private Spinner spinnerCity;
     private StateCityAdapter adapterCity;
+    private int imgCounter = 1;
+    private String userChoosenTask = "";
+    private String base64image1 = "", base64image2 = "";
+    private String lastselectedStateId = "", lastselectedCityId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media_detail);
+        setContentView(R.layout.activity_pmedia_detail);
         context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,18 +113,18 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
         if (getIntent().hasExtra("media_option_id"))
             media_option_id = getIntent().getStringExtra("media_option_id");
         Log.e(TAG, "onCreate: media_option_id >> " + media_option_id);
-        Log.e(TAG, "onCreate: project_id >> " + project_id);
         Log.e(TAG, "onCreate: pmedia_id >> " + pmedia_id);
         init();
         new getDetailTask().execute();
     }
 
     private void init() {
-
+        etPMediaName = (EditText) findViewById(R.id.etPMediaName);
         etContName = (EditText) findViewById(R.id.etContName);
         etContNo = (EditText) findViewById(R.id.etContNo);
         etAddress = (EditText) findViewById(R.id.etAddress);
-
+        etStartDate = (EditText) findViewById(R.id.etStartDate);
+        etEndDate = (EditText) findViewById(R.id.etEndDate);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
 
@@ -116,6 +145,9 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
         tvImgDoc1Remark = (TextView) findViewById(R.id.tvImgDoc1Remark);
         tvImgDoc2Remark = (TextView) findViewById(R.id.tvImgDoc2Remark);
 
+        imgDoc1.setOnClickListener(this);
+        imgDoc2.setOnClickListener(this);
+
         setStateAdapter();
         setCityAdapter();
     }
@@ -134,6 +166,7 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setStateAdapter() {
+//        listState.add(new Gson().fromJson("{\"id\":\"0\",\"name\":\"Select state\"}", StateCityModel.class));
         spinnerState = (Spinner) findViewById(R.id.spinnerState);
         adapterState = new StateCityAdapter(MediaDetailActivity.this, R.layout.state_city_item_layout, R.id.tvTitle, listState);
         spinnerState.setAdapter(adapterState);
@@ -153,6 +186,7 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setCityAdapter() {
+//        listCity.add(new Gson().fromJson("{\"id\":\"0\",\"name\":\"Select city\"}", StateCityModel.class));
         spinnerCity = (Spinner) findViewById(R.id.spinnerCity);
         adapterCity = new StateCityAdapter(MediaDetailActivity.this, R.layout.state_city_item_layout, R.id.tvTitle, listCity);
         spinnerCity.setAdapter(adapterCity);
@@ -187,23 +221,34 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btnCancel)
-            onBackPressed();
-        else if (view.getId() == R.id.btnConfirm) {
-            if (TextUtils.isEmpty(etContName.getText().toString()))
-                etContName.setError("Enter contact person name");
-            else if (TextUtils.isEmpty(etContNo.getText().toString()))
-                etContNo.setError("Enter contact person no");
-            else if (selectedStateId.equalsIgnoreCase("0"))
-                Toast.makeText(context, "Select state", Toast.LENGTH_SHORT).show();
-            else if (selectedCityId.equalsIgnoreCase("0"))
-                Toast.makeText(context, "Select city", Toast.LENGTH_SHORT).show();
-            else if (TextUtils.isEmpty(etAddress.getText().toString()))
-                etAddress.setError("Enter address");
-            else {
-                new updateDetailTask().execute();
-            }
+        switch (view.getId()) {
+            case R.id.btnCancel:
+                onBackPressed();
+                break;
+            case R.id.btnConfirm:
+                if (TextUtils.isEmpty(etPMediaName.getText().toString()))
+                    etPMediaName.setError("Enter media name");
+                else if (TextUtils.isEmpty(etContName.getText().toString()))
+                    etContName.setError("Enter contact person name");
+                else if (TextUtils.isEmpty(etContNo.getText().toString()))
+                    etContNo.setError("Enter contact person no");
+                else if (TextUtils.isEmpty(etAddress.getText().toString()))
+                    etAddress.setError("Enter address");
+                else {
+                    new updateDetailTask().execute();
+                }
+                break;
+            case R.id.imgDoc1:
+                imgCounter = 1;
+                selectImage();
+                break;
+            case R.id.imgDoc2:
+                imgCounter = 2;
+                selectImage();
+                break;
+
         }
+
     }
 
     private void showProgressDialog() {
@@ -218,6 +263,199 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
     private void hideProgressDialog() {
         if (progressHD != null && progressHD.isShowing())
             progressHD.dismiss();
+    }
+
+    private void selectImage() {
+        final CharSequence[] items = {"Camera", "Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Upload Document");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result = UtilClass.checkPermission(context);
+                if (items[item].equals("Camera")) {
+                    userChoosenTask = "Camera";
+                    if (result)
+                        cameraIntent();
+                } else if (items[item].equals("Gallery")) {
+                    userChoosenTask = "Gallery";
+                    if (result)
+                        galleryIntent();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Nullable
+    private Intent createPickIntent() {
+        Intent picImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (picImageIntent.resolveActivity(getPackageManager()) != null) {
+            return picImageIntent;
+        } else {
+            return null;
+        }
+    }
+
+    private void cameraIntent() {
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/M4D/";
+        File newdir = new File(dir);
+        newdir.mkdirs();
+        String file = dir + "report_img.jpg";
+        Log.e("imagesss cam11", file);
+        File newfile = new File(file);
+        try {
+            newfile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final Uri outputFileUri;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            outputFileUri = FileProvider.getUriForFile(context,
+                    BuildConfig.APPLICATION_ID + ".provider", newfile);
+        } else {
+            outputFileUri = Uri.fromFile(newfile);
+        }
+        Log.e(TAG, "cameraIntent: outputFileUri >> " + outputFileUri);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    private void galleryIntent() {
+        startActivityForResult(createPickIntent(), REQUEST_LOAD_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_LOAD_IMAGE && data != null) {
+                startCropImageActivity(data.getData());
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                File croppedImageFile1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        + "/M4D/" + "report_img.jpg");
+                final Uri outputFileUri;
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    outputFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", croppedImageFile1);
+                } else {
+                    outputFileUri = Uri.fromFile(croppedImageFile1);
+                }
+                Log.e(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
+                startCropImageActivity(outputFileUri);
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    showPreviewDialog(bitmap);
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(false)
+                .setAspectRatio(3, 4)
+                .setRequestedSize(320, 240)
+                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .start(this);
+    }
+
+    private void showPreviewDialog(final Bitmap bitmap) {
+        final Dialog dialog1 = new Dialog(context, R.style.image_preview_dialog);
+        dialog1.setContentView(R.layout.image_doc_setup_layout);
+        Window window = dialog1.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog1.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog1.setCancelable(true);
+        dialog1.setCanceledOnTouchOutside(false);
+
+        ImageView imageView = (ImageView) dialog1.findViewById(R.id.img_circle);
+        ScrollView container = (ScrollView) dialog1.findViewById(R.id.container);
+
+        ImageView imgBack = (ImageView) dialog1.findViewById(R.id.imgBack);
+        Button btnSave = (Button) dialog1.findViewById(R.id.btnSave);
+        final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
+
+        imageView.setImageBitmap(bitmap);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TextUtils.isEmpty(remarkText.getText().toString())) {
+                    remarkText.setError("Enter a remark");
+                } else {
+                    dialog1.dismiss();
+                    if (imgCounter == 1) {
+                        imgDoc1.setImageBitmap(bitmap);
+                        tvImgDoc1Remark.setText(remarkText.getText().toString());
+                    } else if (imgCounter == 2) {
+                        imgDoc2.setImageBitmap(bitmap);
+                        tvImgDoc2Remark.setText(remarkText.getText().toString());
+                    }
+                    new ImageTask().execute(bitmap);
+                }
+            }
+        });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
+        });
+        dialog1.show();
+
+        container.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                return false;
+            }
+        });
+    }
+
+    class ImageTask extends AsyncTask<Bitmap, String, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Bitmap... bitmaps) {
+            Bitmap bitmapImage = bitmaps[0];
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            if (imgCounter == 1)
+                base64image1 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            else if (imgCounter == 2)
+                base64image2 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            Log.e(TAG, "ImageTask: doInBackground: base64image1 >>" + base64image1);
+            Log.e(TAG, "ImageTask: doInBackground: base64image2 >>" + base64image2);
+            publishProgress("");
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            hideProgressDialog();
+        }
     }
 
     private class GetStateTask extends AsyncTask<String, String, Void> {
@@ -281,17 +519,22 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
                         StateCityModel data = new Gson().fromJson(String.valueOf(object), StateCityModel.class);
                         listState.add(data);
                     }
-                    adapterState.notifyDataSetChanged();
+                    setStateAdapter();
+
+                    if (!lastselectedStateId.equalsIgnoreCase(""))
+                        for (int i = 0; i < listState.size(); i++) {
+                            if (lastselectedStateId.equalsIgnoreCase(listState.get(i).getId())) {
+                                spinnerState.setSelection(i);
+                                lastselectedStateId = "";
+                            }
+                        }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else if (status.equalsIgnoreCase("400")) {
-            }
-        }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+            } else if (status.equalsIgnoreCase("400")) {
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -300,7 +543,6 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
@@ -358,7 +600,13 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
             String status = values[0];
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {
-
+                if (!lastselectedCityId.equalsIgnoreCase(""))
+                    for (int i = 0; i < listCity.size(); i++) {
+                        if (lastselectedCityId.equalsIgnoreCase(listCity.get(i).getId())) {
+                            spinnerCity.setSelection(i);
+                            lastselectedCityId = "";
+                        }
+                    }
             } else if (status.equalsIgnoreCase("400")) {
             }
         }
@@ -393,19 +641,7 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
                         if (jsonObject1.getString("status").equalsIgnoreCase("200")) {
                             JSONArray jsonArray = jsonObject1.getJSONArray("result");
                             JSONObject jsonObject11 = jsonArray.getJSONObject(0);
-                            String print_name = jsonObject11.getString("print_name");
-                            String shop_contact_per_name = jsonObject11.getString("shop_contact_per_name");
-                            String shop_contact_per_number = jsonObject11.getString("shop_contact_per_number");
-                            String address = jsonObject11.getString("address");
-                            String state = jsonObject11.getString("state");
-                            String city = jsonObject11.getString("city");
-
-//                            etPMediaName.setText(print_name);
-                            etContName.setText(shop_contact_per_name);
-                            etContNo.setText(shop_contact_per_number);
-
-                            etAddress.setText(address);
-                            publishProgress("200", "");
+                            publishProgress("200", String.valueOf(jsonObject11));
                         } else {
                             String msg = jsonObject1.getJSONArray("result").getJSONObject(0).getString("msg");
                             publishProgress("400", msg);
@@ -434,6 +670,33 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
             String status = values[0];
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(msg);
+                    etPMediaName.setText(jsonObject.getString("print_name"));
+                    etContName.setText(jsonObject.getString("shop_contact_per_name"));
+                    etContNo.setText(jsonObject.getString("shop_contact_per_number"));
+                    etAddress.setText(jsonObject.getString("address"));
+                    etStartDate.setText(jsonObject.getString("start_date"));
+                    etEndDate.setText(jsonObject.getString("end_date"));
+                    tvImgDoc1Remark.setText(jsonObject.getString("img1_remark"));
+                    tvImgDoc2Remark.setText(jsonObject.getString("img2_remark"));
+
+                    if (!jsonObject.getString("doc_img1").equalsIgnoreCase(""))
+                        Picasso.with(context).load(jsonObject.getString("doc_img1")).placeholder(R.drawable.no_image_placeholder).into(imgDoc1);
+                    if (!jsonObject.getString("doc_img2").equalsIgnoreCase(""))
+                        Picasso.with(context).load(jsonObject.getString("doc_img2")).placeholder(R.drawable.no_image_placeholder).into(imgDoc2);
+
+                    lastselectedStateId = jsonObject.getString("state");
+                    lastselectedCityId = jsonObject.getString("city");
+
+                    Log.e(TAG, "onProgressUpdate: selectedStateId >> " + lastselectedStateId);
+                    Log.e(TAG, "onProgressUpdate: lastselectedCityId >> " + lastselectedCityId);
+
+                    new GetStateTask().execute();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             } else if (status.equalsIgnoreCase("400")) {
                 Toast.makeText(MediaDetailActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
@@ -455,11 +718,16 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
             jsonObject.addProperty("user_id", AppPreference.getUserId(MediaDetailActivity.this)); //8
             jsonObject.addProperty("project_id", project_id);
             jsonObject.addProperty("print_id", AppPreference.getSelectedPMediaId(MediaDetailActivity.this));
+            jsonObject.addProperty("print_name", etPMediaName.getText().toString());
             jsonObject.addProperty("shop_contact_per_name", etContName.getText().toString());
             jsonObject.addProperty("shop_contact_per_number", etContNo.getText().toString());
-            jsonObject.addProperty("state", selectedStateId);
             jsonObject.addProperty("address", etAddress.getText().toString());
+            jsonObject.addProperty("state", selectedStateId);
             jsonObject.addProperty("city", selectedCityId);
+            jsonObject.addProperty("doc_img1", base64image1);
+            jsonObject.addProperty("doc_img2", base64image2);
+            jsonObject.addProperty("img1_remark", tvImgDoc1Remark.getText().toString());
+            jsonObject.addProperty("img2_remark", tvImgDoc2Remark.getText().toString());
             Log.e(TAG, "Request UPDATE DETAIL >> " + jsonObject);
 
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
@@ -510,4 +778,6 @@ public class MediaDetailActivity extends AppCompatActivity implements View.OnCli
             }
         }
     }
+
+
 }

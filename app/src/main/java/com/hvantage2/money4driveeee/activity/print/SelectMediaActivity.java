@@ -43,14 +43,15 @@ import retrofit2.Response;
 public class SelectMediaActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "SelectMediaActivity";
     ArrayList<SourceModel> list;
+    String end_date = "";
     private RecyclerView recycler_view;
     private SourceAdapter adapter;
     private ProgressDialog dialog;
     private String media_option_id = "";
     private TextView tvEmpty;
-    private int total_quantity=0,added_quantity=0;
-    private String start_date="";String end_date="";
-    private String media_option_name="";
+    private int total_quantity = 0, added_quantity = 0;
+    private String start_date = "";
+    private String media_option_name = "";
     private ProgressHUD progressHD;
     private SwipeRefreshLayout refreshLayout;
 
@@ -78,8 +79,8 @@ public class SelectMediaActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
-        if (media_option_id != null && !media_option_id.equalsIgnoreCase(""));
-            new GetShopList().execute();
+        if (media_option_id != null && !media_option_id.equalsIgnoreCase("")) ;
+        new GetShopList().execute();
     }
 
     private void setRecyclerView() {
@@ -151,11 +152,26 @@ public class SelectMediaActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
     }
 
+    private void showProgressDialog() {
+        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // TODO Auto-generated method stub
+            }
+        });
+    }
+
+    private void hideProgressDialog() {
+        if (progressHD != null && progressHD.isShowing())
+            progressHD.dismiss();
+    }
+
     public class GetShopList extends AsyncTask<Void, String, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            refreshLayout.setRefreshing(false);
             showProgressDialog();
             tvEmpty.setVisibility(View.GONE);
             list.clear();
@@ -192,22 +208,22 @@ public class SelectMediaActivity extends AppCompatActivity implements View.OnCli
                             JSONArray jsonArray1 = jsonObject1.getJSONArray("other_info");
                             for (int i = 0; i < jsonArray1.length(); i++) {
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
-                                total_quantity=jsonObject11.getInt("total_quantity");
-                                added_quantity=jsonObject11.getInt("added_quantity");
-                                start_date=jsonObject11.getString("start_date");
-                                end_date=jsonObject11.getString("end_date");
+                                total_quantity = jsonObject11.getInt("total_quantity");
+                                added_quantity = jsonObject11.getInt("added_quantity");
+                                start_date = jsonObject11.getString("start_date");
+                                end_date = jsonObject11.getString("end_date");
                             }
                             adapter.notifyDataSetChanged();
                             publishProgress("200", "");
-                        } else if (jsonObject1.getString("status").equalsIgnoreCase("400")){
+                        } else if (jsonObject1.getString("status").equalsIgnoreCase("400")) {
                             String msg = jsonObject1.getJSONArray("result").getJSONObject(0).getString("msg");
                             JSONArray jsonArray1 = jsonObject1.getJSONArray("other_info");
                             for (int i = 0; i < jsonArray1.length(); i++) {
                                 JSONObject jsonObject11 = jsonArray1.getJSONObject(i);
-                                total_quantity=jsonObject11.getInt("total_quantity");
-                                added_quantity=jsonObject11.getInt("added_quantity");
-                                start_date=jsonObject11.getString("start_date");
-                                end_date=jsonObject11.getString("end_date");
+                                total_quantity = jsonObject11.getInt("total_quantity");
+                                added_quantity = jsonObject11.getInt("added_quantity");
+                                start_date = jsonObject11.getString("start_date");
+                                end_date = jsonObject11.getString("end_date");
                             }
                             publishProgress("400", msg);
                         }
@@ -243,19 +259,5 @@ public class SelectMediaActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(SelectMediaActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void showProgressDialog() {
-        progressHD = ProgressHUD.show(this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-
-    private void hideProgressDialog() {
-        if (progressHD != null && progressHD.isShowing())
-            progressHD.dismiss();
     }
 }
