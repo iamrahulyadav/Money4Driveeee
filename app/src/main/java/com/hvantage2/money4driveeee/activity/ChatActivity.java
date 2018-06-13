@@ -29,7 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.adapter.SingleMessageAdapter;
-
 import com.hvantage2.money4driveeee.model.MessageData;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;

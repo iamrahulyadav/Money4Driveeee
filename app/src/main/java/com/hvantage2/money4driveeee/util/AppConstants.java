@@ -145,5 +145,7 @@ public class AppConstants {
     public class NOTIFICATION_KEY {
         public static final String NEW_PROJECT_ASSIGNED = "new_project_assigned";
         public static final String PROJECT_STATUS_CHANGED = "project_status_changed";
+        public static final String NEW_MSG_ARRIVED = "new_msg_arrived";
+        public static final String MSG_DATA = "msg_data";
     }
 }

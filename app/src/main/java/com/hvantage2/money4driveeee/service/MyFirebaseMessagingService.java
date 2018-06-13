@@ -17,6 +17,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.hvantage2.money4driveeee.R;
+import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.activity.ProjectDetailsActivity;
 import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.model.MessageData;
@@ -49,17 +50,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 sendNotification(not_title, not_body, project_id);
                 //send to dashboard screen
                 LocalBroadcastManager.getInstance(MyFirebaseMessagingService.this).sendBroadcast(new Intent("get_update"));
-            } else if (jsonObject.has("msg_data")) {
-                JSONObject jsonObject1 = jsonObject.getJSONObject("msg_data");
-                MessageData data = new Gson().fromJson(jsonObject1.toString(), MessageData.class);
-                Intent intent = new Intent("get_msg");
-                intent.putExtra("new_msg", data);
-                LocalBroadcastManager.getInstance(MyFirebaseMessagingService.this).sendBroadcast(intent);
             }
 
             if (remoteMessage.getData().size() > 0) {
                 String NEW_PROJECT_ASSIGNED = remoteMessage.getData().get(AppConstants.NOTIFICATION_KEY.NEW_PROJECT_ASSIGNED);
                 String PROJECT_STATUS_CHANGED = remoteMessage.getData().get(AppConstants.NOTIFICATION_KEY.PROJECT_STATUS_CHANGED);
+                String NEW_MSG_ARRIVED = remoteMessage.getData().get(AppConstants.NOTIFICATION_KEY.NEW_MSG_ARRIVED);
+                String MSG_DATA = remoteMessage.getData().get(AppConstants.NOTIFICATION_KEY.MSG_DATA);
                 if (NEW_PROJECT_ASSIGNED != null) {
                     ProjectModel projectModel = new Gson().fromJson(NEW_PROJECT_ASSIGNED, ProjectModel.class);
                     sendNotification("New Project Assigned", projectModel.getProjectTitle(), projectModel.getProjectId());
@@ -80,6 +77,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     else if (status_id.equalsIgnoreCase("2"))
                         sendNotification("Status Changed: Completed", project_title, project_id);
                     mydb.updateProjectStatus(project_id, status_id);
+                } else if (MSG_DATA != null) {
+                    JSONObject jsonObject1 = null;
+                    jsonObject1 = new JSONObject(MSG_DATA);
+                    MessageData data = new Gson().fromJson(jsonObject1.toString(), MessageData.class);
+                    sendMsgNotification(data.getMsgSenderName() + ": " + data.getMsgText());
+                    Intent intent = new Intent("get_msg");
+                    intent.putExtra("new_msg", data);
+                    LocalBroadcastManager.getInstance(MyFirebaseMessagingService.this).sendBroadcast(intent);
                 }
             }
         } catch (JSONException e) {
@@ -116,4 +121,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e("Notification Ex", e.getMessage());
         }
     }
+
+    private void sendMsgNotification(String body) {
+        try {
+
+            Intent intent = new Intent(this, DashBoardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_notification_roboto)
+                    .setContentTitle("New Message")
+                    .setContentText(body)
+                    .setAutoCancel(true)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher))
+                    .setSound(defaultSoundUri)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .setContentIntent(pendingIntent);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(1, notificationBuilder.build());
+        } catch (Exception e) {
+            Log.e("Notification Ex", e.getMessage());
+        }
+    }
+
+
 }
