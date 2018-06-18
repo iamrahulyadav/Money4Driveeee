@@ -6,7 +6,8 @@ package com.hvantage2.money4driveeee.util;
 
 public class AppConstants {
     public interface BASEURL {
-        String URL = "http://www.truckslogistics.com/Projects-Work/M4D/MOBILE_APP/";
+        //        String URL = "http://www.truckslogistics.com/Projects-Work/M4D/MOBILE_APP/";
+        String URL = "http://take007.co.in/Projects-Work/M4D/MOBILE_APP/";
     }
 
     public interface ENDPOINT {

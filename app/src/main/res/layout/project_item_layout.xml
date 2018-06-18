@@ -39,10 +39,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:fontFamily="@font/oxygen"
                 android:text="P"
                 android:textAllCaps="true"
-                android:textColor="@color/hintcolor"
-                android:fontFamily="@font/oxygen" />
+                android:textColor="@color/hintcolor" />
         </android.support.v7.widget.CardView>
 
         <!--<ImageView
@@ -67,11 +67,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/etNameCMA"
+                android:fontFamily="@font/oxygen"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="Project Title Here"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/oxygen" />
+                android:textColor="@color/colorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -102,21 +102,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
+                            android:fontFamily="@font/oxygen"
                             android:text="City"
-                            android:textColor="@color/hintcolor"
-                            android:fontFamily="@font/oxygen"/>
+                            android:textColor="@color/hintcolor" />
 
                         <TextView
                             style="@style/Base.TextAppearance.AppCompat.Small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
+                            android:fontFamily="@font/oxygen"
                             android:maxLines="2"
                             android:text=" - "
-                            android:textColor="@color/hintcolor"
-                            android:fontFamily="@font/oxygen"
-
-                            />
+                            android:textColor="@color/hintcolor" />
 
                         <TextView
                             android:id="@+id/city"
@@ -124,10 +122,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
-                            android:maxLines="2"
+                            android:fontFamily="@font/oxygen"
+                            android:maxLines="1"
+                            android:singleLine="true"
                             android:text="Indore"
-                            android:textColor="@color/hintcolor"
-                            android:fontFamily="@font/oxygen"/>
+                            android:textColor="@color/hintcolor" />
 
                     </LinearLayout>
 
@@ -143,19 +142,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
+                            android:fontFamily="@font/oxygen"
                             android:maxLines="2"
                             android:text="Date"
-                            android:textColor="@color/hintcolor"
-                            android:fontFamily="@font/oxygen" />
+                            android:textColor="@color/hintcolor" />
 
                         <TextView
                             style="@style/TextAppearance.AppCompat.Notification.Time.Media"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
+                            android:fontFamily="@font/oxygen"
                             android:text=" - "
-                            android:textColor="@color/hintcolor"
-                            android:fontFamily="@font/oxygen" />
+                            android:textColor="@color/hintcolor" />
 
                         <TextView
                             android:id="@+id/date"
@@ -163,10 +162,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/etNameCMA"
+                            android:fontFamily="@font/oxygen"
                             android:maxLines="2"
                             android:text="02/08/2018"
-                            android:textColor="@color/hintcolor"
-                            android:fontFamily="@font/oxygen" />
+                            android:textColor="@color/hintcolor" />
 
                     </LinearLayout>
                 </RelativeLayout>
