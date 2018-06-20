@@ -127,7 +127,6 @@
                             android:singleLine="true"
                             android:text="Indore"
                             android:textColor="@color/hintcolor" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -166,7 +165,6 @@
                             android:maxLines="2"
                             android:text="02/08/2018"
                             android:textColor="@color/hintcolor" />
-
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -184,13 +182,7 @@
                         android:src="@drawable/ic_keyboard_arrow_right_green_24dp" />
                 </RelativeLayout>
             </LinearLayout>
-
-
         </LinearLayout>
-
-
     </RelativeLayout>
-
-
 </android.support.v7.widget.CardView>
 

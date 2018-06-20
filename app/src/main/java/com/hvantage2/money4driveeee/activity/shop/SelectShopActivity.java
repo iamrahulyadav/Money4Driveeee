@@ -156,6 +156,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnClic
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(SelectShopActivity.this, ShopDetailActivity.class);
+                    intent.setAction("edit");
                     intent.putExtra("media_option_id", media_option_id);
                     AppPreference.setSelectedShopId(SelectShopActivity.this, list.get(position).getId());
                     AppPreference.setSelectedShopName(SelectShopActivity.this, list.get(position).getName());
