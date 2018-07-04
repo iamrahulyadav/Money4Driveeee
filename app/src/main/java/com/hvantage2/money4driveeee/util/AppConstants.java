@@ -1,13 +1,10 @@
 package com.hvantage2.money4driveeee.util;
 
-/**
- * Created by Hvantage2 on 2018-02-26.
- */
-
 public class AppConstants {
     public interface BASEURL {
-        //        String URL = "http://www.truckslogistics.com/Projects-Work/M4D/MOBILE_APP/";
-        String URL = "http://take007.co.in/Projects-Work/M4D/MOBILE_APP/";
+        //String URL = "http://www.truckslogistics.com/Projects-Work/M4D/MOBILE_APP/";
+        //String URL = "http://take007.co.in/Projects-Work/M4D/MOBILE_APP/";
+        String URL = "http://developerhvantage.co.in/M4D/MOBILE_APP/";
     }
 
     public interface ENDPOINT {
