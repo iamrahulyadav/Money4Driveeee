@@ -25,7 +25,11 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         super.onTokenRefresh();
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.e(TAG, "Refreshed token: " + refreshedToken);
-        updateFCM();
+        if (AppPreference.isLoggedIn(getApplicationContext()) == true) {
+            updateFCM();
+        } else {
+
+        }
     }
 
     void updateFCM() {

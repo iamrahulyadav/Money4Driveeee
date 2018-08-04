@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.electronic.EMediaDetailActivity"
+    tools:showIn="@layout/activity_emedia_detail">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/footerimg" />
+
+        <ScrollView
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/linearmain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Media Name"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/etEMediaName"
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="@font/oxygen"
+                    android:hint="NA"
+                    android:inputType="textCapWords|textPersonName|textNoSuggestions"
+                    android:padding="@dimen/_4sdp"
+                    android:singleLine="true"
+                    android:textColor="@color/hintcolor"
+                    android:textColorHint="@color/hintcolor" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor"></View>
+
+                <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Contact Person Name"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/etContName"
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/oxygen"
+                    android:hint="NA"
+                    android:inputType="textCapWords|textPersonName|textNoSuggestions"
+                    android:padding="@dimen/_4sdp"
+                    android:singleLine="true"
+                    android:textColor="@color/hintcolor"
+                    android:textColorHint="@color/hintcolor" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor"></View>
+
+                <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Contact Person Contact No."
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/etContNo"
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/oxygen"
+                    android:hint="NA"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:padding="@dimen/_4sdp"
+                    android:singleLine="true"
+                    android:textColor="@color/hintcolor"
+                    android:textColorHint="@color/hintcolor" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
+                            android:padding="@dimen/_4sdp"
+                            android:text="State"
+                            android:textColor="@color/white" />
+
+
+                        <Spinner
+                            android:id="@+id/spinnerState"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/hintcolor"
+                            android:visibility="visible" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
+                            android:padding="@dimen/_4sdp"
+                            android:text="City"
+                            android:textColor="@color/white" />
+
+
+                        <Spinner
+                            android:id="@+id/spinnerCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/hintcolor"
+                            android:visibility="visible" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Address"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/etAddress"
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/oxygen"
+                    android:hint="NA"
+                    android:inputType="textCapWords|textNoSuggestions"
+                    android:padding="@dimen/_4sdp"
+                    android:singleLine="true"
+                    android:textColor="@color/hintcolor"
+                    android:textColorHint="@color/hintcolor" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
+                            android:padding="@dimen/_4sdp"
+                            android:text="Start Date"
+                            android:textColor="@color/white" />
+
+                        <EditText
+                            android:id="@+id/etStartDate"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="@font/oxygen"
+                            android:hint="Select Start Date"
+                            android:imeOptions="actionDone"
+                            android:inputType="textMultiLine|textNoSuggestions"
+                            android:padding="@dimen/_4sdp"
+                            android:singleLine="false"
+                            android:textColor="@color/hintcolor"
+
+                            android:textColorHint="@color/hintcolor" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/oxygen"
+                            android:padding="@dimen/_4sdp"
+                            android:text="End Date"
+                            android:textColor="@color/white" />
+
+                        <EditText
+                            android:id="@+id/etEndDate"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="@font/oxygen"
+                            android:hint="Select End Date"
+                            android:imeOptions="actionDone"
+                            android:inputType="textMultiLine|textNoSuggestions"
+                            android:padding="@dimen/_4sdp"
+                            android:singleLine="false"
+                            android:textColor="@color/hintcolor"
+                            android:textColorHint="@color/hintcolor"
+
+                            />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/dividerColor" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/oxygen"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Uploaded Documents"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/_64sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp">
+
+                        <ImageView
+                            android:id="@+id/imgDoc1"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:background="@drawable/doc_thumb_border"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icon_doc_thumb" />
+
+                        <TextView
+                            android:id="@+id/tvImgDoc1Remark"
+                            style="@style/TextAppearance.AppCompat.Notification.Time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imgDoc1"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/oxygen"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/hintcolor" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/_64sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_15sdp">
+
+                        <ImageView
+                            android:id="@+id/imgDoc2"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:background="@drawable/doc_thumb_border"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icon_doc_thumb" />
+
+                        <TextView
+                            android:id="@+id/tvImgDoc2Remark"
+                            style="@style/TextAppearance.AppCompat.Notification.Time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imgDoc2"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/oxygen"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/hintcolor" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor"></View>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/linearmain"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <Button
+                        android:id="@+id/btnCancel"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/green_plan_border"
+                        android:fontFamily="@font/oxygen"
+                        android:gravity="center"
+                        android:padding="@dimen/_1sdp"
+                        android:text="@string/Cancel"
+                        android:textColor="@color/green" />
+
+                    <Button
+                        android:id="@+id/btnConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/green_border_rounded"
+                        android:fontFamily="@font/oxygen"
+                        android:gravity="center"
+                        android:padding="@dimen/_1sdp"
+                        android:text="@string/Confirm"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

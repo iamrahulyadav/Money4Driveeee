@@ -28,6 +28,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
+import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.fragment.HomeFragment;
 import com.hvantage2.money4driveeee.fragment.MessageFragment;
 import com.hvantage2.money4driveeee.fragment.MyProfileFragment;
@@ -280,6 +281,14 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
             String status = values[0];
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {
+                DBHelper db = new DBHelper(DashBoardActivity.this);
+                Log.e(TAG, "Logout: db.deleteDashboard() >> " + db.deleteDashboard());
+                Log.e(TAG, "Logout: db.db.deleteProjects(PENDING) >> " + db.deleteProjects(AppConstants.PROJECT_TYPE_IDS.PENDING_ID));
+                Log.e(TAG, "Logout: db.deleteDashboard(COMPLETED) >> " + db.deleteProjects(AppConstants.PROJECT_TYPE_IDS.COMPLETED_ID));
+                Log.e(TAG, "Logout: db.deleteAllMediaTypes() >> " + db.deleteAllMediaTypes());
+                Log.e(TAG, "Logout: db.deleteAllMediaOptions() >> " + db.deleteAllMediaOptions());
+
+
                 Intent intent = new Intent(DashBoardActivity.this, LoginActivity.class);
                 intent.putExtra("logged_out", "yes");
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

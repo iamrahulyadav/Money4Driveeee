@@ -161,6 +161,7 @@ public class SelectEMediaActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            refreshLayout.setRefreshing(false);
             showProgressDialog();
             tvEmpty.setVisibility(View.GONE);
         }

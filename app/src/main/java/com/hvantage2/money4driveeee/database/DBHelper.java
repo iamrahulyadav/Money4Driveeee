@@ -141,6 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         rowCount = db.delete(TABLE_DASHBOARD, "1", null);
         Log.e(TAG, "deleteDashboard: rowCount" + rowCount);
+        db.close();
         return rowCount;
     }
 
@@ -192,6 +193,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         rowCount = db.delete(TABLE_PROJECTS, KEY_PROJECT_TYPE + "=?", new String[]{type_id});
         Log.e(TAG, "deleteDashboard: deleteProjects" + rowCount);
+        db.close();
         return rowCount;
     }
 
@@ -319,5 +321,23 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.e("updateProjectStatus : ", "Not updated");
         }
         db.close();
+    }
+
+    public int deleteAllMediaTypes() {
+        int rowCount = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        rowCount = db.delete(TABLE_PROJECTS_MEDIA_TYPES, "1", null);
+        Log.e(TAG, "deleteAllMediaTypes: rowCount" + rowCount);
+        db.close();
+        return rowCount;
+    }
+
+    public int deleteAllMediaOptions() {
+        int rowCount = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        rowCount = db.delete(TABLE_PROJECTS_MEDIA_OPTIONS, "1", null);
+        Log.e(TAG, "deleteAllMediaOptions: rowCount" + rowCount);
+        db.close();
+        return rowCount;
     }
 }

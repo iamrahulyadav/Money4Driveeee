@@ -34,8 +34,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Hvantage\Downloads\left-arrow.png" />
-                                      <entry key="outputName" value="ic_action_back" />
+                                      <entry key="imageAsset" value="C:\Users\Hvantage\Downloads\medicineapp\delete.png" />
+                                      <entry key="outputName" value="action_delete" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>

@@ -99,8 +99,8 @@
     <style name="MenuButtonsSmall">
         <item name="fab_size">mini</item>
         <item name="fab_colorNormal">@color/colorAccent</item>
-        <item name="fab_colorPressed">#2E7D32</item>
-        <item name="fab_colorRipple">#2E7D32</item>
+        <item name="fab_colorPressed">@color/colorFabRipple</item>
+        <item name="fab_colorRipple">@color/colorFabRipple</item>
     </style>
 
     <style name="MenuLabelsStyle">
@@ -127,4 +127,5 @@
         <item name="fontFamily">@font/oxygen</item>
     </style>
 
+    <color name="colorFabRipple">#67d472</color>
 </resources>
