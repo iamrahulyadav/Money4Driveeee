@@ -292,7 +292,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         floatingActionMenu.setIconToggleAnimatorSet(set);
 
-    }
+    }   
 
     private void setData(DashboardModel data) {
         totalProjCount.setText("" + data.getTotalProject());

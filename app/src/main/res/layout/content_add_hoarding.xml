@@ -208,7 +208,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
                 <TextView
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
