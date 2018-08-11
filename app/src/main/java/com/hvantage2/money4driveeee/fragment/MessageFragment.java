@@ -40,7 +40,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_all_msg, container, false);
 
-        setHasOptionsMenu(true);
+        //  setHasOptionsMenu(true);
         if (intraction != null) {
             intraction.actionbarsetTitle("Messages");
         }
