@@ -257,7 +257,10 @@
             android:name=".activity.SelectProjectForChatActivity"
             android:label="@string/title_activity_select_project_for_chat"
             android:theme="@style/AppTheme" />
-
+        <activity
+            android:name=".activity.SelectUserForChatActivity"
+            android:label="@string/title_activity_select_user_for_chat"
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/AppTheme.DarkActionBar"></activity>

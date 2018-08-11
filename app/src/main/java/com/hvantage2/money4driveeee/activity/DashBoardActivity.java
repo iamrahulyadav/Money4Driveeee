@@ -30,7 +30,7 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.database.DBHelper;
 import com.hvantage2.money4driveeee.fragment.HomeFragment;
-import com.hvantage2.money4driveeee.fragment.MessageFragment;
+import com.hvantage2.money4driveeee.fragment.MessageProjectFragment;
 import com.hvantage2.money4driveeee.fragment.MyProfileFragment;
 import com.hvantage2.money4driveeee.fragment.ProjectHistoryFragment;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
@@ -176,7 +176,7 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
             ft.addToBackStack(null);
             ft.commitAllowingStateLoss();
         } else if (id == R.id.message) {
-            fragment = new MessageFragment();
+            fragment = new MessageProjectFragment();
             ft.addToBackStack(null);
             ft.replace(R.id.main_frame, fragment);
             ft.commitAllowingStateLoss();

@@ -50,6 +50,7 @@ import com.hvantage2.money4driveeee.util.AppPreference;
 import com.hvantage2.money4driveeee.util.FragmentIntraction;
 import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
+import com.hvantage2.money4driveeee.util.RecyclerItemClickListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,6 +135,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recyclerView.setLayoutManager(manager);
         messageAdapter = new MessageAdapter(context, msgList);
         recyclerView.setAdapter(messageAdapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                FragmentManager fm6 = getFragmentManager();
+                FragmentTransaction ft6 = fm6.beginTransaction();
+                MessageFragment llf6 = new MessageFragment();
+                ft6.replace(R.id.main_frame, llf6);
+                ft6.addToBackStack(null);
+                ft6.commit();
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     private void setFloatingButton() {
@@ -292,7 +310,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         floatingActionMenu.setIconToggleAnimatorSet(set);
 
-    }   
+    }
 
     private void setData(DashboardModel data) {
         totalProjCount.setText("" + data.getTotalProject());
