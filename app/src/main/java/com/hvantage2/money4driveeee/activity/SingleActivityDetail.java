@@ -106,24 +106,28 @@ public class SingleActivityDetail extends AppCompatActivity {
                 media_option_id = getIntent().getStringExtra("media_option_id");
                 media_option_name = getIntent().getStringExtra("media_option_name");
             }
+            btnAddDoc.setVisibility(View.VISIBLE);
         } else if (getIntent().getAction().equalsIgnoreCase("transit")) {
             action = "transit";
             if (getIntent().hasExtra("media_option_id") && getIntent().hasExtra("media_option_name")) {
                 media_option_id = getIntent().getStringExtra("media_option_id");
                 media_option_name = getIntent().getStringExtra("media_option_name");
             }
+            btnAddDoc.setVisibility(View.GONE);
         } else if (getIntent().getAction().equalsIgnoreCase("print")) {
             action = "print";
             if (getIntent().hasExtra("media_option_id") && getIntent().hasExtra("media_option_name")) {
                 media_option_id = getIntent().getStringExtra("media_option_id");
                 media_option_name = getIntent().getStringExtra("media_option_name");
             }
+            btnAddDoc.setVisibility(View.VISIBLE);
         } else if (getIntent().getAction().equalsIgnoreCase("hoarding")) {
             action = "hoarding";
             if (getIntent().hasExtra("media_option_id") && getIntent().hasExtra("media_option_name")) {
                 media_option_id = getIntent().getStringExtra("media_option_id");
                 media_option_name = getIntent().getStringExtra("media_option_name");
             }
+            btnAddDoc.setVisibility(View.VISIBLE);
         } else if (getIntent().getAction().equalsIgnoreCase("wall")) {
             action = "wall";
             if (getIntent().hasExtra("media_option_id") && getIntent().hasExtra("media_option_name")) {
@@ -137,6 +141,7 @@ public class SingleActivityDetail extends AppCompatActivity {
                 media_option_id = getIntent().getStringExtra("media_option_id");
                 media_option_name = getIntent().getStringExtra("media_option_name");
             }
+            btnAddDoc.setVisibility(View.VISIBLE);
         }
 
         if (!media_option_name.equalsIgnoreCase(""))
@@ -297,19 +302,20 @@ public class SingleActivityDetail extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (height.getText().toString().equalsIgnoreCase(""))
+               /* if (height.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(SingleActivityDetail.this, "Enter height", Toast.LENGTH_SHORT).show();
                 else if (width.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(SingleActivityDetail.this, "Enter width", Toast.LENGTH_SHORT).show();
-                /*else if (remarkText.getText().toString().equalsIgnoreCase(""))
+                else if (remarkText.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(SingleActivityDetail.this, "Enter remark", Toast.LENGTH_SHORT).show();*/
-                else {
+                if (height.getText().toString().length() > 0 && width.getText().toString().length() > 0)
                     tempDimen = height.getText().toString() + "x" + width.getText().toString();
-                    Log.e(TAG, "tempDimen: " + tempDimen);
-                    tempRemark = remarkText.getText().toString();
-                    dialog1.dismiss();
-                    new ImageTask().execute(bitmap);
-                }
+                else
+                    tempDimen = "";
+                Log.e(TAG, "tempDimen: " + tempDimen);
+                tempRemark = remarkText.getText().toString();
+                dialog1.dismiss();
+                new ImageTask().execute(bitmap);
             }
         });
 

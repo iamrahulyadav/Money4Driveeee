@@ -1,5 +1,6 @@
 package com.hvantage2.money4driveeee.activity.transit;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -8,13 +9,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
@@ -37,7 +43,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,6 +53,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
@@ -60,6 +69,7 @@ import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
+import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.RecyclerItemClickListener;
 import com.hvantage2.money4driveeee.util.UtilClass;
@@ -83,11 +93,13 @@ import retrofit2.Response;
 
 public class AddTransitActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final int REQUEST_STORAGE = 0;
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
     private static final String TAG = "AddTransitActivity";
-    EditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etStartDate, etEndDate;
+    EditText etDriverName, etDriverContact, /*etVehicle,*/
+            etRegNo, etDriverAddress, etStartDate, etEndDate;
     Button btnConfirm, btnCancel;
     ArrayList<StateCityModel> listState = new ArrayList<StateCityModel>();
     ArrayList<StateCityModel> listCity = new ArrayList<StateCityModel>();
@@ -103,17 +115,19 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     private TextView tvImgDoc1Remark, tvImgDoc2Remark;
     private TextView tvRequestOtp;
     private ProgressBar progressBar;
-    private Spinner spinnerGift;
+    private Spinner spinnerGift, spinnerVehicle;
     private EditText etSelectGift;
     private int total_days = 0;
     private String vehicle_id = "0";
     private String verify_status = "0";
     private Spinner spinnerState, spinnerCity;
     private StateCityAdapter adapterCity, adapterState;
-    private String selectedStateId = "0", selectedCityId = "0";
+    private String selectedStateId = "0", selectedCityId = "0", selectedVehicle = "";
     private VehicleSearchResultAdapter adapterResult;
     private NestedScrollView nsvResult;
     private LinearLayout llVNo;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private ImageView imgDetectLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +138,12 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+
         new GetStateTask().execute();
         showSearchDialog();
+        if (checkLocationPermission()) {
+            setUpFused();
+        }
         if (getIntent().hasExtra("media_option_id"))
             media_option_id = getIntent().getStringExtra("media_option_id");
         if (media_option_id == null || media_option_id.equalsIgnoreCase("")) {
@@ -138,6 +156,110 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         Log.e(TAG, "onCreate: total_days >> " + total_days);
         if (total_days != 0)
             calculateDate(total_days);
+    }
+
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(AddTransitActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (userChoosenTask.equals("Camera"))
+                        cameraIntent();
+                    else if (userChoosenTask.equals("Gallery"))
+                        galleryIntent();
+                }
+                break;
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        //Request location updates:
+                        setUpFused();
+                    }
+
+                } else {
+                    checkLocationPermission();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    /*Toast.makeText(context, "Please grant location permission", Toast.LENGTH_SHORT).show();
+                    finish();*/
+                }
+                return;
+            }
+        }
+    }
+
+    private void setUpFused() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        getCurrentLocation();
+
+    }
+
+    private void getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            return;
+        }
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+
+                        if (location != null) {
+                            Log.e(TAG, "setUpFused: onSuccess: location >> " + location);
+                            try {
+                                etDriverAddress.setText(Functions.getLocationAddress(context, location));
+                                etDriverAddress.setSelection(etDriverAddress.length());
+                            } catch (IOException e) {
+                                showLocationErrorDialog();
+                                e.printStackTrace();
+                                Log.e(TAG, "setUpFused: onSuccess: Exc >> " + e.getMessage());
+                            }
+                        }
+                    }
+                }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                hideProgressDialog();
+                showLocationErrorDialog();
+                Log.e(TAG, "setUpFused: onFailure: Exc >> " + e.getMessage());
+            }
+        });
+    }
+
+
+    private void showLocationErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Location Not Found");
+        builder.setMessage("We are unable to get your current location please try again.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setUpFused();
+
+            }
+        })
+                .show();
     }
 
 
@@ -156,8 +278,9 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
 
     private void init() {
         etDriverName = (EditText) findViewById(R.id.etDriverName);
+        imgDetectLocation = (ImageView) findViewById(R.id.imgDetectLocation);
         etDriverContact = (EditText) findViewById(R.id.etDriverContact);
-        etVehicle = (EditText) findViewById(R.id.etVehicle);
+//        etVehicle = (EditText) findViewById(R.id.etVehicle);
         etRegNo = (EditText) findViewById(R.id.etRegNo);
         etDriverAddress = (EditText) findViewById(R.id.etDriverAddress);
         etStartDate = (EditText) findViewById(R.id.etStartDate);
@@ -174,11 +297,13 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         tvRequestOtp = (TextView) findViewById(R.id.tvRequestOtp);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        spinnerVehicle = (Spinner) findViewById(R.id.spinnerVehicle);
         spinnerGift = (Spinner) findViewById(R.id.spinnerGift);
         etSelectGift = (EditText) findViewById(R.id.etSelectGift);
 
         btnConfirm.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
+        imgDetectLocation.setOnClickListener(this);
 
 
         imgDoc1.setOnClickListener(this);
@@ -196,6 +321,18 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         });
 
         setStateAdapter();
+
+        spinnerVehicle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.e(TAG, "onItemSelected: selectedVehicle >> " + selectedVehicle);
+                ((TextView) spinnerVehicle.getSelectedView()).setTextColor(getResources().getColor(R.color.hintcolor));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 
 
@@ -370,10 +507,12 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         etSeries.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // TODO Auto-generated method stub
-                if (etSeries.length() == 2) {
-                    etSeries.clearFocus();
-                    etVehNo.requestFocus();
-                    etVehNo.setCursorVisible(true);
+                if (etSeries.length() > 0) {
+                    if (etSeries.length() == 3) {
+                        etSeries.clearFocus();
+                        etVehNo.requestFocus();
+                        etVehNo.setCursorVisible(true);
+                    }
                     if (etState.length() == 2 && etDistrictCode.length() == 2 && etVehNo.length() == 4) {
                         imgRight.setVisibility(View.VISIBLE);
                         alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(true);
@@ -383,6 +522,8 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                     }
 
                 } else if (etSeries.length() == 0) {
+                    imgRight.setVisibility(View.GONE);
+                    alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(false);
                     etSeries.clearFocus();
                     etDistrictCode.requestFocus();
                     etDistrictCode.setCursorVisible(true);
@@ -417,7 +558,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                     etSeries.requestFocus();
                     etSeries.setCursorVisible(true);
                 } else if (etVehNo.length() == 4) {
-                    if (etState.length() == 2 && etDistrictCode.length() == 2 && etSeries.length() == 2) {
+                    if (etState.length() == 2 && etDistrictCode.length() == 2 && etSeries.length() > 0) {
                         imgRight.setVisibility(View.VISIBLE);
                         alertDialog.getButton(AlertDialog.BUTTON1).setEnabled(true);
                     } else {
@@ -598,8 +739,9 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                     etDriverName.setError("Enter driver name");
                 else if (TextUtils.isEmpty(etDriverContact.getText().toString()))
                     etDriverContact.setError("Enter driver contact no.");
-                else if (TextUtils.isEmpty(etVehicle.getText().toString()))
+                /*else if (TextUtils.isEmpty(etVehicle.getText().toString()))
                     etVehicle.setError("Enter vehicle name");
+                */
                 else if (TextUtils.isEmpty(etRegNo.getText().toString()))
                     etRegNo.setError("Enter vehicle no.");
                 else {
@@ -617,6 +759,10 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             case R.id.imgDoc2:
                 imgCounter = 2;
                 selectImage();
+                break;
+            case R.id.imgDetectLocation:
+                if (checkLocationPermission())
+                    getCurrentLocation();
                 break;
             case R.id.etSelectGift:
                 spinnerGift.performClick();
@@ -799,12 +945,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         final AlertDialog.Builder dialog = new AlertDialog.Builder(AddTransitActivity.this);
         dialog.setTitle("Message");
         dialog.setMessage(msg);
-        dialog.setNeutralButton("Repaste", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
         dialog.setNegativeButton("Go Back", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -814,9 +954,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         dialog.setPositiveButton("View Details", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
-                Intent intent = new Intent(AddTransitActivity.this, ConfirmTransitActivity.class);
-                intent.setAction("view");
+                Intent intent = new Intent(AddTransitActivity.this, TransitDetailActivity.class);
                 intent.putExtra("media_option_id", media_option_id);
                 intent.putExtra("vehicle_id", vehicle_id);
                 startActivity(intent);
@@ -862,8 +1000,8 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             etDriverName.setError("Enter driver name");
         else if (TextUtils.isEmpty(etDriverContact.getText().toString()))
             etDriverContact.setError("Enter driver contact no.");
-        else if (TextUtils.isEmpty(etVehicle.getText().toString()))
-            etVehicle.setError("Enter vehicle name");
+        /*else if (TextUtils.isEmpty(etVehicle.getText().toString()))
+            etVehicle.setError("Enter vehicle name");*/
         else if (TextUtils.isEmpty(etRegNo.getText().toString()))
             etRegNo.setError("Enter vehicle no.");
         else if (selectedStateId.equalsIgnoreCase("0"))
@@ -879,19 +1017,6 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Camera"))
-                        cameraIntent();
-                    else if (userChoosenTask.equals("Gallery"))
-                        galleryIntent();
-                }
-                break;
-        }
-    }
 
     private void selectImage() {
         final CharSequence[] items = {"Camera", "Gallery"};
@@ -996,7 +1121,8 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 .setMultiTouchEnabled(false)
                 .setAspectRatio(3, 4)
                 .setRequestedSize(320, 240)
-                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .setAutoZoomEnabled(false)
+                .setScaleType(CropImageView.ScaleType.FIT_CENTER)
                 .start(this);
     }
 
@@ -1054,6 +1180,23 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkGps();
+    }
+
+    private void checkGps() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            Functions.showSettingsAlert(this);
+        else {
+            if (checkLocationPermission()) {
+                setUpFused();
+            }
+        }
     }
 
     private class GetStateTask extends AsyncTask<String, String, Void> {
@@ -1338,11 +1481,17 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                     JSONObject object = jsonArray.getJSONObject(0);
                     etDriverName.setText(object.getString("driver_name"));
                     etDriverContact.setText(object.getString("driver_contact_no"));
-                    etVehicle.setText(object.getString("vehicle_model"));
                     etRegNo.setText(object.getString("vehicle_regis_number"));
-//                    spinnerCity.setText(object.getString("city"));
                     etDriverAddress.setText(object.getString("address"));
-//                    spinnerState.setText(object.getString("state"));
+//                    etVehicle.setText(object.getString("vehicle_model"));
+                    String[] auto_list = getResources().getStringArray(R.array.auto_list);
+                    for (int i = 0; i < auto_list.length; i++) {
+                        if (object.getString("vehicle_model").equalsIgnoreCase(auto_list[i])) {
+                            spinnerVehicle.setSelection(i);
+                            break;
+                        }
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1374,7 +1523,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             jsonObject.addProperty("driver_contact_no", etDriverContact.getText().toString());
             jsonObject.addProperty("branding_id", AppPreference.getSelectedAlloMediaId(AddTransitActivity.this));
             jsonObject.addProperty("media_option_id", media_option_id);
-            jsonObject.addProperty("vehicle_model", etVehicle.getText().toString());
+            jsonObject.addProperty("vehicle_model", (String) spinnerVehicle.getSelectedItem());
             jsonObject.addProperty("vehicle_regis_number", etRegNo.getText().toString());
             jsonObject.addProperty("state", selectedStateId);
             jsonObject.addProperty("city", selectedCityId);
@@ -1430,7 +1579,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             String status = values[0];
             String msg = values[1];
             if (status.equalsIgnoreCase("200")) {
-                AppPreference.setSelectedVehicleName(AddTransitActivity.this, etVehicle.getText().toString());
+                AppPreference.setSelectedVehicleName(AddTransitActivity.this, (String) spinnerVehicle.getSelectedItem() + "(" + etRegNo.getText().toString() + ")");
                 Intent intent = new Intent(AddTransitActivity.this, PerformTransitActivity.class);
                 intent.putExtra("media_option_id", media_option_id);
                 startActivity(intent);
@@ -1453,9 +1602,10 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.ADD_VEHICLE_WITH_VERIFY);
             jsonObject.addProperty("user_id", AppPreference.getUserId(AddTransitActivity.this));
-            jsonObject.addProperty("driver_name", etDriverName.getText().toString());
+//            jsonObject.addProperty("driver_name", etDriverName.getText().toString());
+            jsonObject.addProperty("driver_name", (String) spinnerVehicle.getSelectedItem());
             jsonObject.addProperty("driver_contact_no", etDriverContact.getText().toString());
-            jsonObject.addProperty("vehicle_model", etVehicle.getText().toString());
+            jsonObject.addProperty("vehicle_model", (String) spinnerVehicle.getSelectedItem());
             jsonObject.addProperty("vehicle_regis_number", etRegNo.getText().toString());
             Log.e(TAG, "AddTransitVerifyTask: Request >> " + jsonObject.toString());
             MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);

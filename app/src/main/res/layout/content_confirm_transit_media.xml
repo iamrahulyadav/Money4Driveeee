@@ -7,7 +7,7 @@
     android:background="@color/background"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.hvantage2.money4driveeee.activity.transit.ConfirmTransitActivity"
-    tools:showIn="@layout/activity_transit_media_detail">
+    tools:showIn="@layout/activity_confirm_transit_media">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -60,15 +60,15 @@
                       android:singleLine="true"
                       android:textColor="@color/hintcolor"
                       android:textColorHint="@color/hintcolor"
-  
+
                        />
-  
+
                   <View
                       android:layout_marginTop="@dimen/_15sdp"
                       android:layout_width="match_parent"
                       android:layout_height="1dp"
                       android:background="@color/dividerColor">
-  
+
                   </View>-->
 
                 <TextView
@@ -147,7 +147,14 @@
                     android:text="Vehicle"
                     android:textColor="@color/white" />
 
-                <EditText
+                <Spinner
+                    android:id="@+id/spinnerVehicle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/hintcolor"
+                    android:entries="@array/auto_list"
+                    android:visibility="visible" />
+                <!--<EditText
                     android:id="@+id/etVehicle"
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
@@ -159,7 +166,8 @@
                     android:padding="@dimen/_4sdp"
                     android:singleLine="true"
                     android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor" />
+                    android:textColorHint="@color/hintcolor"
+                    />-->
 
                 <View
                     android:layout_width="match_parent"
@@ -223,19 +231,14 @@
                             android:text="State"
                             android:textColor="@color/white" />
 
-                        <EditText
-                            android:id="@+id/etState"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+
+                        <Spinner
+                            android:id="@+id/spinnerState"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:fontFamily="@font/oxygen"
-                            android:hint="NA"
-                            android:inputType="textCapWords|textNoSuggestions"
-                            android:padding="@dimen/_4sdp"
-                            android:singleLine="true"
-                            android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor" />
+                            android:backgroundTint="@color/hintcolor"
+                            android:visibility="visible" />
+
 
                         <View
                             android:layout_width="match_parent"
@@ -261,19 +264,13 @@
                             android:text="City"
                             android:textColor="@color/white" />
 
-                        <EditText
-                            android:id="@+id/etCity"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+
+                        <Spinner
+                            android:id="@+id/spinnerCity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:fontFamily="@font/oxygen"
-                            android:hint="NA"
-                            android:inputType="textCapWords|textNoSuggestions"
-                            android:padding="@dimen/_4sdp"
-                            android:singleLine="true"
-                            android:textColor="@color/hintcolor"
-                            android:textColorHint="@color/hintcolor" />
+                            android:backgroundTint="@color/hintcolor"
+                            android:visibility="visible" />
 
                         <View
                             android:layout_width="match_parent"
@@ -293,6 +290,9 @@
                     android:text="Address"
                     android:textColor="@color/white" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/etDriverAddress"
@@ -308,7 +308,13 @@
                         android:textColor="@color/hintcolor"
                         android:textColorHint="@color/hintcolor" />
 
-
+                    <ImageView
+                        android:id="@+id/imgDetectLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_my_location_green_24dp" />
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -608,7 +614,7 @@
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:orientation="horizontal"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:weightSum="1">
 
                     <Button
@@ -648,7 +654,7 @@
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:orientation="horizontal"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:weightSum="1">
 
                     <Button

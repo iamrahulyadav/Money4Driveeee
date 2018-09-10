@@ -122,6 +122,10 @@
             android:label="@string/title_confirm_details"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".activity.transit.TransitDetailActivity"
+            android:label="@string/title_confirm_details"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".activity.EditPhotoActivity"
             android:label=""
             android:theme="@style/AppTheme" />

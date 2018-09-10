@@ -37,6 +37,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -327,6 +328,29 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
                         e.printStackTrace();
                     }
                     showPreviewDialog(bitmap);
+                    /*switch (action) {
+                        case "shop":
+                            showPreviewDialog(bitmap);
+                            break;
+                        case "transit":
+                            showPreviewDialogTransit(bitmap);
+                            break;
+                        case "hoarding":
+                            showPreviewDialog(bitmap);
+                            break;
+                        case "wall":
+                            showPreviewDialog(bitmap);
+                            break;
+                        case "print":
+                            showPreviewDialog(bitmap);
+                            break;
+                        case "emedia":
+                            showPreviewDialog(bitmap);
+                            break;
+                        default:
+                            showPreviewDialog(bitmap);
+
+                    }*/
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
@@ -341,8 +365,58 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
                 .setMultiTouchEnabled(false)
                 .setAspectRatio(3, 4)
                 .setRequestedSize(320, 240)
-                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .setScaleType(CropImageView.ScaleType.FIT_CENTER)
+                .setAutoZoomEnabled(false)
                 .start(this);
+    }
+
+    private void showPreviewDialogTransit(final Bitmap bitmap) {
+        dialog = new Dialog(UploadPhotosActivity.this, R.style.image_preview_dialog);
+        dialog.setContentView(R.layout.image_setup_layout_transit);
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
+
+        ImageView imageView = (ImageView) dialog.findViewById(R.id.img_circle);
+        ScrollView container = (ScrollView) dialog.findViewById(R.id.container);
+
+        ImageView imgBack = (ImageView) dialog.findViewById(R.id.imgBack);
+        Button btnSave = (Button) dialog.findViewById(R.id.btnSave);
+        final EditText remarkText = (EditText) dialog.findViewById(R.id.remarkText);
+
+        imageView.setImageBitmap(bitmap);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tempDimen = "";
+                tempRemark = remarkText.getText().toString();
+                ImageUploadModel model = new ImageUploadModel(bitmap, tempDimen, tempRemark);
+                imageList.add(model);
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+                new ImageTask().execute(bitmap);
+            }
+        });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+        container.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                return false;
+            }
+        });
     }
 
     private void showPreviewDialog(final Bitmap bitmap) {
@@ -355,6 +429,8 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(false);
 
+
+        LinearLayout llDimen = (LinearLayout) dialog.findViewById(R.id.llDimen);
         ImageView imageView = (ImageView) dialog.findViewById(R.id.img_circle);
         ScrollView container = (ScrollView) dialog.findViewById(R.id.container);
 
@@ -365,6 +441,11 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         final EditText width = (EditText) dialog.findViewById(R.id.dimensionTextwidth);
         final EditText remarkText = (EditText) dialog.findViewById(R.id.remarkText);
 
+        if (action.equalsIgnoreCase("transit"))
+            llDimen.setVisibility(View.GONE);
+        else
+            llDimen.setVisibility(View.VISIBLE);
+
         if (action.equalsIgnoreCase("wall") || action.equalsIgnoreCase("shop"))
             tvDimenUnit.setText("Dimension (inches)");
         imageView.setImageBitmap(bitmap);
@@ -372,22 +453,23 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (height.getText().toString().equalsIgnoreCase(""))
+                /*if (height.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(UploadPhotosActivity.this, "Enter height", Toast.LENGTH_SHORT).show();
                 else if (width.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(UploadPhotosActivity.this, "Enter width", Toast.LENGTH_SHORT).show();
-                /*else if (remarkText.getText().toString().equalsIgnoreCase(""))
+               else if (remarkText.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(UploadPhotosActivity.this, "Enter remark", Toast.LENGTH_SHORT).show();*/
-                else {
+                if (height.getText().toString().length() > 0 && width.getText().toString().length() > 0)
                     tempDimen = height.getText().toString() + "x" + width.getText().toString();
-                    Log.e(TAG, "tempDimen: " + tempDimen);
-                    tempRemark = remarkText.getText().toString();
-                    ImageUploadModel model = new ImageUploadModel(bitmap, tempDimen, tempRemark);
-                    imageList.add(model);
-                    adapter.notifyDataSetChanged();
-                    dialog.dismiss();
-                    new ImageTask().execute(bitmap);
-                }
+                else
+                    tempDimen = "";
+                Log.e(TAG, "tempDimen: " + tempDimen);
+                tempRemark = remarkText.getText().toString();
+                ImageUploadModel model = new ImageUploadModel(bitmap, tempDimen, tempRemark);
+                imageList.add(model);
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+                new ImageTask().execute(bitmap);
             }
         });
 

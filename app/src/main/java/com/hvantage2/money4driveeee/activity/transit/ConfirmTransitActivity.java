@@ -1,5 +1,6 @@
 package com.hvantage2.money4driveeee.activity.transit;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -8,13 +9,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +47,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
@@ -52,6 +62,7 @@ import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
 import com.hvantage2.money4driveeee.util.AppConstants;
 import com.hvantage2.money4driveeee.util.AppPreference;
+import com.hvantage2.money4driveeee.util.Functions;
 import com.hvantage2.money4driveeee.util.ProgressHUD;
 import com.hvantage2.money4driveeee.util.UtilClass;
 import com.squareup.picasso.Picasso;
@@ -73,14 +84,16 @@ import retrofit2.Response;
 
 public class ConfirmTransitActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "TransitDetailActivity";
+    private static final String TAG = "ConfirmTransitActivity";
+    private static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final int REQUEST_STORAGE = 0;
     private static final int REQUEST_IMAGE_CAPTURE = REQUEST_STORAGE + 1;
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
     ArrayList<StateCityModel> listState = new ArrayList<StateCityModel>();
     ArrayList<StateCityModel> listCity = new ArrayList<StateCityModel>();
     private Button btnConfirm;
-    private EditText etDriverName, etDriverContact, etVehicle, etRegNo, etDriverAddress, etDriverBookFor, etStartDate, etEndDate;
+    private EditText etDriverName, etDriverContact, /*etVehicle, */
+            etRegNo, etDriverAddress, etDriverBookFor, etStartDate, etEndDate;
     private Button btnCancel;
     private String media_option_id = "0";
     private ProgressHUD progressHD;
@@ -94,16 +107,18 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
     private String base64image1 = "", base64image2 = "";
     private String imgRemark1 = "", imgRemark2 = "";
     private LinearLayout llUpdate, llReport;
-    private Spinner spinnerState, spinnerCity;
+    private Spinner spinnerState, spinnerCity, spinnerVehicle;
     private StateCityAdapter adapterState, adapterCity;
     private String selectedStateId = "0", selectedCityId = "0";
     private String lastselectedCityId = "";
     private String lastselectedStateId = "";
+    private FusedLocationProviderClient mFusedLocationClient;
+    private ImageView imgDetectLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transit_media_detail);
+        setContentView(R.layout.activity_confirm_transit_media);
         context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -124,11 +139,117 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         Log.e(TAG, "onCreate: media_option_id >> " + media_option_id);
         Log.e(TAG, "onCreate: vehicle_id >> " + vehicle_id);
         new getTransitDetail().execute();
+        if (checkLocationPermission()) {
+            setUpFused();
+        }
     }
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(ConfirmTransitActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (userChoosenTask.equals("Camera"))
+                        cameraIntent();
+                    else if (userChoosenTask.equals("Gallery"))
+                        galleryIntent();
+                }
+                break;
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        //Request location updates:
+                        setUpFused();
+                    }
+
+                } else {
+                    checkLocationPermission();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    /*Toast.makeText(context, "Please grant location permission", Toast.LENGTH_SHORT).show();
+                    finish();*/
+                }
+                return;
+            }
+        }
+    }
+
+    private void setUpFused() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        getCurrentLocation();
+
+    }
+
+    private void getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            return;
+        }
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+
+                        if (location != null) {
+                            Log.e(TAG, "setUpFused: onSuccess: location >> " + location);
+                            try {
+                                etDriverAddress.setText(Functions.getLocationAddress(context, location));
+                                etDriverAddress.setSelection(etDriverAddress.length());
+                            } catch (IOException e) {
+                                showLocationErrorDialog();
+                                e.printStackTrace();
+                                Log.e(TAG, "setUpFused: onSuccess: Exc >> " + e.getMessage());
+                            }
+                        }
+                    }
+                }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                hideProgressDialog();
+                showLocationErrorDialog();
+                Log.e(TAG, "setUpFused: onFailure: Exc >> " + e.getMessage());
+            }
+        });
+    }
+
+    private void showLocationErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Location Not Found");
+        builder.setMessage("We are unable to get your current location please try again.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setUpFused();
+
+            }
+        })
+                .show();
+    }
+
 
     private void setEnabled(boolean b) {
         etDriverName.setEnabled(b);
-        etVehicle.setEnabled(b);
+        spinnerVehicle.setEnabled(b);
       /*  spinnerCity.setEnabled(b);
         spinnerState.setEnabled(b);*/
         etDriverAddress.setEnabled(b);
@@ -140,17 +261,36 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
         llReport.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkGps();
+    }
+
+    private void checkGps() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            Functions.showSettingsAlert(this);
+        else {
+            if (checkLocationPermission()) {
+                setUpFused();
+            }
+        }
+    }
+
     private void init() {
+        imgDetectLocation = (ImageView) findViewById(R.id.imgDetectLocation);
         llUpdate = (LinearLayout) findViewById(R.id.llUpdate);
         llReport = (LinearLayout) findViewById(R.id.llReport);
         etDriverName = (EditText) findViewById(R.id.etDriverName);
         etDriverContact = (EditText) findViewById(R.id.etDriverContact);
-        etVehicle = (EditText) findViewById(R.id.etVehicle);
+//        etVehicle = (EditText) findViewById(R.id.etVehicle);
         etRegNo = (EditText) findViewById(R.id.etRegNo);
         etDriverAddress = (EditText) findViewById(R.id.etDriverAddress);
         etDriverBookFor = (EditText) findViewById(R.id.etDriverBookFor);
         etStartDate = (EditText) findViewById(R.id.etStartDate);
         etEndDate = (EditText) findViewById(R.id.etEndDate);
+        spinnerVehicle = (Spinner) findViewById(R.id.spinnerVehicle);
 
         imgDoc1 = (ImageView) findViewById(R.id.imgDoc1);
         imgDoc2 = (ImageView) findViewById(R.id.imgDoc2);
@@ -184,8 +324,19 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
 
         imgDoc1.setOnClickListener(this);
         imgDoc2.setOnClickListener(this);
+        imgDetectLocation.setOnClickListener(this);
 
         //setStateAdapter();
+        spinnerVehicle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                ((TextView) spinnerVehicle.getSelectedView()).setTextColor(getResources().getColor(R.color.hintcolor));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 
     private void setStateAdapter() {
@@ -284,20 +435,9 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                 imgCounter = 2;
                 selectImage();
                 break;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case UtilClass.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Camera"))
-                        cameraIntent();
-                    else if (userChoosenTask.equals("Gallery"))
-                        galleryIntent();
-                } else {
-                }
+            case R.id.imgDetectLocation:
+                if (checkLocationPermission())
+                    getCurrentLocation();
                 break;
         }
     }
@@ -713,7 +853,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                     JSONObject jsonObject = new JSONObject(msg);
                     etDriverName.setText(jsonObject.getString("driver_name"));
                     etDriverContact.setText(jsonObject.getString("driver_contact_no"));
-                    etVehicle.setText(jsonObject.getString("vehicle_name"));
+//                    etVehicle.setText(jsonObject.getString("vehicle_name"));
                     etRegNo.setText(jsonObject.getString("vehicle_no"));
 
                     etDriverAddress.setText(jsonObject.getString("address"));
@@ -732,11 +872,19 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                     Log.e(TAG, "onProgressUpdate: selectedStateId >> " + lastselectedStateId);
                     Log.e(TAG, "onProgressUpdate: lastselectedCityId >> " + lastselectedCityId);
 
-                   /* for (int i = 0; i < listState.size(); i++) {
+
+                    String[] auto_list = getResources().getStringArray(R.array.auto_list);
+                    for (int i = 0; i < auto_list.length; i++) {
+                        if (jsonObject.getString("vehicle_name").equalsIgnoreCase(auto_list[i])) {
+                            spinnerVehicle.setSelection(i);
+                            break;
+                        }
+                    }
+
+                    /* for (int i = 0; i < listState.size(); i++) {
                         if (listState.get(i).getId().equalsIgnoreCase(selectedStateId))
                             spinnerState.setSelection(i);
                     }*/
-
                     new GetStateTask().execute();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -765,7 +913,7 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
             jsonObject.addProperty(AppConstants.KEYS.VEHICLE_ID, vehicle_id);
             jsonObject.addProperty(AppConstants.KEYS.DRIVER_NAME, etDriverName.getText().toString());
             jsonObject.addProperty(AppConstants.KEYS.DRIVER_CONTACT_NO, etDriverContact.getText().toString());
-            jsonObject.addProperty(AppConstants.KEYS.VEHICLE_MODEL, etVehicle.getText().toString());
+            jsonObject.addProperty(AppConstants.KEYS.VEHICLE_MODEL, (String) spinnerVehicle.getSelectedItem());
             jsonObject.addProperty(AppConstants.KEYS.VEHICLE_REGIS_NUMBER, etRegNo.getText().toString());
             jsonObject.addProperty(AppConstants.KEYS.STATE, selectedStateId);
             jsonObject.addProperty(AppConstants.KEYS.CITY, selectedCityId);

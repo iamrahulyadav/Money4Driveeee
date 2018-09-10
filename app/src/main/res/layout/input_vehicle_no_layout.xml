@@ -109,9 +109,9 @@
             android:background="@drawable/rectangle_shape_bg_input"
             android:fontFamily="@font/oxygen"
             android:gravity="center"
-            android:hint="AA"
+            android:hint="ABC"
             android:inputType="textCapCharacters|textNoSuggestions"
-            android:maxLength="2"
+            android:maxLength="3"
             android:padding="8dp"
             android:textAllCaps="true" />
 

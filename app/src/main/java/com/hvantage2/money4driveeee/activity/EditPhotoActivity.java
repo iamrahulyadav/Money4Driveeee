@@ -28,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -84,6 +85,7 @@ public class EditPhotoActivity extends AppCompatActivity {
     private String action;
     private ProgressHUD progressHD;
     private EditPhotoActivity context;
+    private LinearLayout llDimen;
 
 
     @Override
@@ -104,15 +106,20 @@ public class EditPhotoActivity extends AppCompatActivity {
             old_dimen = getIntent().getStringExtra("dimen");
             if (old_dimen.contains("x")) {
                 String parts[] = old_dimen.split("x");
-                old_height = parts[0];
-                old_width = parts[1];
-                etheight.setText(old_height);
-                etwidth.setText(old_width);
+                if (parts.length > 0) {
+                    old_height = parts[0];
+                    old_width = parts[1];
+                    etheight.setText(old_height);
+                    etwidth.setText(old_width);
+                }
             }
         }
 
         if (getIntent().hasExtra("action"))
             action = getIntent().getStringExtra("action");
+        if (action.equalsIgnoreCase("transit")) {
+            llDimen.setVisibility(View.GONE);
+        } else llDimen.setVisibility(View.VISIBLE);
 
         if (getIntent().hasExtra("remark")) {
             old_remark = getIntent().getStringExtra("remark");
@@ -146,6 +153,7 @@ public class EditPhotoActivity extends AppCompatActivity {
         etheight = (EditText) findViewById(R.id.dimensionTextheight);
         etwidth = (EditText) findViewById(R.id.dimensionTextwidth);
         etremarkText = (EditText) findViewById(R.id.remarkText);
+        llDimen = (LinearLayout) findViewById(R.id.llDimen);
 
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,19 +165,17 @@ public class EditPhotoActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (etheight.getText().toString().equalsIgnoreCase(""))
+                /*if (etheight.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(EditPhotoActivity.this, "Enter height", Toast.LENGTH_SHORT).show();
                 else if (etwidth.getText().toString().equalsIgnoreCase(""))
-                    Toast.makeText(EditPhotoActivity.this, "Enter width", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPhotoActivity.this, "Enter width", Toast.LENGTH_SHORT).show();*/
                 /*else if (etremarkText.getText().toString().equalsIgnoreCase(""))
                     Toast.makeText(EditPhotoActivity.this, "Enter remark", Toast.LENGTH_SHORT).show();*/
-                else {
-                    new_dimen = etheight.getText().toString() + "x" + etwidth.getText().toString();
-                    new_remark = etremarkText.getText().toString();
-                    Log.e(TAG, "new_dimen : " + new_dimen);
-                    Log.e(TAG, "new_remark : " + new_remark);
-                    new ImageTask().execute(bitmapImage1);
-                }
+                new_dimen = etheight.getText().toString() + "x" + etwidth.getText().toString();
+                new_remark = etremarkText.getText().toString();
+                Log.e(TAG, "new_dimen : " + new_dimen);
+                Log.e(TAG, "new_remark : " + new_remark);
+                new ImageTask().execute(bitmapImage1);
             }
         });
 
@@ -363,7 +369,7 @@ public class EditPhotoActivity extends AppCompatActivity {
                 jsonObject.addProperty("vehicle_id", AppPreference.getSelectedVehicleId(EditPhotoActivity.this));
                 jsonObject.addProperty("update_id", update_id);
                 jsonObject.addProperty("remark", new_remark);
-                jsonObject.addProperty("dimension", new_dimen);
+                jsonObject.addProperty("dimension", "");
                 jsonObject.addProperty("image", base64image);
             } else if (action.equalsIgnoreCase("print")) {
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.EDITPRINTDETAIL);

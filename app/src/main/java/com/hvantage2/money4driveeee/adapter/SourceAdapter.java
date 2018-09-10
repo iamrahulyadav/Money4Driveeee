@@ -6,12 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.hvantage2.money4driveeee.model.SourceModel;
 import com.hvantage2.money4driveeee.R;
-
+import com.hvantage2.money4driveeee.model.SourceModel;
 
 import java.util.ArrayList;
 
@@ -37,7 +35,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
     public void onBindViewHolder(final SourceAdapter.ViewHolder holder, int position) {
         SourceModel modal = modalList.get(position);
         Log.e(TAG, "onBindViewHolder: modal >> " + modal.toString());
-        holder.tvTitle.setText(modal.getName());
+        holder.tvTitle.setText((position + 1) + ". " + modal.getName());
     }
 
     @Override

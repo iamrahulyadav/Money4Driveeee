@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -22,59 +22,58 @@
             app:titleTextAppearance="@style/ToolbarTitleTextAppearance">
 
             <ImageView
-            android:id="@+id/imgBack"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:src="@drawable/ic_arrow_back_black_24dp"
-            />
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
 
-                <TextView
-                    android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Edit Photo"
-                    android:textColor="@android:color/white"
-                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    android:fontFamily="@font/oxygen"/>
+            <TextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:fontFamily="@font/oxygen"
+                android:text="Edit Photo"
+                android:textColor="@android:color/white" />
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:background="@color/background"
-        android:scrollbars="none"
         android:id="@+id/container"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:scrollbars="none">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
             <!--<RelativeLayout-->
-                <!--android:id="@+id/toolbar"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="?attr/actionBarSize"-->
-                <!--android:background="#9a41465b"-->
-                <!--android:elevation="@dimen/_5sdp">-->
-                <!--<ImageView-->
-                    <!--android:id="@+id/imgBack"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/_15sdp"-->
-                    <!--android:src="@drawable/ic_arrow_back_black_24dp"-->
-                    <!--/>-->
+            <!--android:id="@+id/toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--android:background="#9a41465b"-->
+            <!--android:elevation="@dimen/_5sdp">-->
+            <!--<ImageView-->
+            <!--android:id="@+id/imgBack"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="@dimen/_15sdp"-->
+            <!--android:src="@drawable/ic_arrow_back_black_24dp"-->
+            <!--/>-->
 
             <!--</RelativeLayout>-->
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:id="@+id/main_layout"
-                >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <!--<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_alignParentBottom="true"
@@ -87,7 +86,6 @@
                     android:layout_height="240dp">
 
 
-
                     <ImageView
                         android:id="@+id/img_circle"
                         android:layout_width="match_parent"
@@ -97,104 +95,116 @@
                         android:src="@drawable/no_image_placeholder" />
 
                     <ImageView
-                        android:padding="@dimen/_5sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
                         android:id="@+id/editImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_photo_black_24dp"/>
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_photo_black_24dp" />
                 </RelativeLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_below="@+id/signup_image"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:orientation="vertical">
+
                     <Button
+                        android:id="@+id/btnAddMore"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_30sdp"
-                        android:id="@+id/btnAddMore"
-                        android:visibility="gone"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@drawable/green_plan_border"
+                        android:fontFamily="@font/oxygen"
                         android:paddingLeft="@dimen/_10sdp"
                         android:paddingRight="@dimen/_10sdp"
                         android:text="@string/addmore"
                         android:textColor="@color/green"
-                        android:fontFamily="@font/oxygen"
-                         />
+                        android:visibility="gone" />
+
                     <LinearLayout
+                        android:id="@+id/detaillinear"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/detaillinear"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_below="@+id/btnAddMore"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/_5sdp"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:textColor="@color/white"
-
-                            android:text="@string/dimentation"
-                            android:fontFamily="@font/oxygen"/>
 
                         <LinearLayout
-                            android:layout_marginTop="@dimen/_5sdp"
+                            android:id="@+id/llDimen"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <EditText
-                                android:layout_marginLeft="@dimen/_5sdp"
-                                android:layout_width="@dimen/_80sdp"
-                                android:layout_height="wrap_content"
-                                android:padding="@dimen/_5sdp"
-                                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                                android:textColorHint="@color/hintcolor"
-                                android:background="@drawable/square_border"
-                                android:inputType="number"
-                                android:imeOptions="actionNext"
-                                android:id="@+id/dimensionTextheight"
-                                android:textAlignment="center"
-                                android:maxLength="4"
-
-                                android:textColor="@color/hintcolor"
-                                android:hint="Height"
-                                android:fontFamily="@font/oxygen"/>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="@dimen/_8sdp"
-                                android:paddingRight="@dimen/_8sdp"
                                 style="@style/Base.TextAppearance.AppCompat.Subhead"
-                                android:textColorHint="@color/hintcolor"
-                                android:inputType="number"
-                                android:imeOptions="actionNext"
-                                android:textAlignment="center"
-
-                                android:textColor="@color/hintcolor"
-                                android:hint="x"
-                                android:fontFamily="@font/oxygen"/>
-
-                            <EditText
-                                android:layout_width="@dimen/_80sdp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/oxygen"
                                 android:padding="@dimen/_5sdp"
-                                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                                android:textColorHint="@color/hintcolor"
-                                android:background="@drawable/square_border"
-                                android:inputType="number"
-                                android:imeOptions="actionNext"
-                                android:id="@+id/dimensionTextwidth"
-                                android:textAlignment="center"
-                                android:maxLength="4"
 
-                                android:textColor="@color/hintcolor"
-                                android:hint="Width"
-                                android:fontFamily="@font/oxygen"/>
+                                android:text="@string/dimentation"
+                                android:textColor="@color/white" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp">
+
+                                <EditText
+                                    android:id="@+id/dimensionTextheight"
+                                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                                    android:layout_width="@dimen/_80sdp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:background="@drawable/square_border"
+                                    android:fontFamily="@font/oxygen"
+                                    android:hint="Height"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:padding="@dimen/_5sdp"
+
+                                    android:textAlignment="center"
+                                    android:textColor="@color/hintcolor"
+                                    android:textColorHint="@color/hintcolor" />
+
+                                <TextView
+                                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/oxygen"
+                                    android:hint="x"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="number"
+                                    android:paddingLeft="@dimen/_8sdp"
+                                    android:paddingRight="@dimen/_8sdp"
+
+                                    android:textAlignment="center"
+                                    android:textColor="@color/hintcolor"
+                                    android:textColorHint="@color/hintcolor" />
+
+                                <EditText
+                                    android:id="@+id/dimensionTextwidth"
+                                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                                    android:layout_width="@dimen/_80sdp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/square_border"
+                                    android:fontFamily="@font/oxygen"
+                                    android:hint="Width"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:padding="@dimen/_5sdp"
+
+                                    android:textAlignment="center"
+                                    android:textColor="@color/hintcolor"
+                                    android:textColorHint="@color/hintcolor" />
+                            </LinearLayout>
                         </LinearLayout>
 
                         <!-- <View
@@ -204,68 +214,64 @@
                              android:layout_height="1dp"
                              android:background="@color/dividerColor" />-->
                         <TextView
-                            android:layout_marginTop="@dimen/_10sdp"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
+                            android:layout_marginTop="@dimen/_10sdp"
 
+                            android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_5sdp"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
 
                             android:text="@string/remark"
-                            android:fontFamily="@font/oxygen"/>
+                            android:textColor="@color/white" />
+
                         <EditText
+                            android:id="@+id/remarkText"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/_5sdp"
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:textColorHint="@color/hintcolor"
                             android:background="@null"
-                            android:textColor="@color/hintcolor"
-                            android:id="@+id/remarkText"
-                            android:imeOptions="actionDone"
-
+                            android:fontFamily="@font/oxygen"
                             android:hint="Enter Remark"
-                            android:fontFamily="@font/oxygen"/>
+                            android:imeOptions="actionDone"
+                            android:padding="@dimen/_5sdp"
+
+                            android:textColor="@color/hintcolor"
+                            android:textColorHint="@color/hintcolor" />
+
                         <View
-                            android:layout_marginTop="@dimen/_5sdp"
                             android:id="@+id/view1"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:background="@color/dividerColor" />
                     </LinearLayout>
 
                     <Button
-                        android:elevation="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:id="@+id/btnSave"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_35sdp"
-                        android:paddingRight="@dimen/_30sdp"
-                        android:paddingLeft="@dimen/_30sdp"
                         android:layout_below="@+id/detaillinear"
-                        android:layout_gravity="center"
-                        android:id="@+id/btnSave"
-                        android:layout_margin="@dimen/_15sdp"
                         android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/green_border_rounded"
-                        android:text="@string/save"
-                        android:textColor="@color/white"
+                        android:elevation="@dimen/_5sdp"
                         android:fontFamily="@font/oxygen"
-                        />
+                        android:paddingLeft="@dimen/_30sdp"
+                        android:paddingRight="@dimen/_30sdp"
+                        android:text="@string/save"
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
-
-
-
 
 
             </RelativeLayout>
 
 
-
         </RelativeLayout>
     </ScrollView>
-
 
 
 </LinearLayout>
