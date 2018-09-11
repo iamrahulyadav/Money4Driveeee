@@ -125,7 +125,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     private NestedScrollView nsvResult;
     private LinearLayout llVNo;
     private FusedLocationProviderClient mFusedLocationClient;
-    private ImageView imgDetectLocation;
+    private ImageView imgDetectLocation, imgAdrHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,6 +276,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
     private void init() {
         etDriverName = (EditText) findViewById(R.id.etDriverName);
         imgDetectLocation = (ImageView) findViewById(R.id.imgDetectLocation);
+        imgAdrHelp = (ImageView) findViewById(R.id.imgAdrHelp);
         etDriverContact = (EditText) findViewById(R.id.etDriverContact);
 //        etVehicle = (EditText) findViewById(R.id.etVehicle);
         etRegNo = (EditText) findViewById(R.id.etRegNo);
@@ -296,6 +297,7 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
         btnConfirm.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
         imgDetectLocation.setOnClickListener(this);
+        imgAdrHelp.setOnClickListener(this);
         imgDoc1.setOnClickListener(this);
         imgDoc2.setOnClickListener(this);
         tvRequestOtp.setOnClickListener(this);
@@ -753,6 +755,9 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 if (checkLocationPermission())
                     getCurrentLocation();
                 break;
+            case R.id.imgAdrHelp:
+                showLocationHelpDialog();
+                break;
             case R.id.etSelectGift:
                 spinnerGift.performClick();
                 break;
@@ -761,6 +766,17 @@ public class AddTransitActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
     }
+
+    private void showLocationHelpDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setCancelable(true);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.help_dialog, null);
+        dialog.setView(dialogView);
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+    }
+
 
     private void showErrorDialog400(String msg) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(AddTransitActivity.this);

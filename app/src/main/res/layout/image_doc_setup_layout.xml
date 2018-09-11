@@ -111,7 +111,7 @@
                         android:fontFamily="@font/oxygen"
                         android:paddingLeft="@dimen/_30sdp"
                         android:paddingRight="@dimen/_30sdp"
-                        android:text="Add"
+                        android:text="Submit"
                         android:textColor="@color/white" />
 
                 </LinearLayout>

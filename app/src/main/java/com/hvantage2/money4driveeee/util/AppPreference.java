@@ -8,10 +8,10 @@ import android.content.SharedPreferences;
  */
 
 public class AppPreference {
-    private static final String INSTALLED_STATUS ="installed_status" ;
-    private static final String LOGGED_IN ="logged_in" ;
+    private static final String INSTALLED_STATUS = "installed_status";
+    private static final String LOGGED_IN = "logged_in";
     private static final String USER_TYPE = "user_type";
-    private static final String USER_TYPE_ID ="user_type_id" ;
+    private static final String USER_TYPE_ID = "user_type_id";
     private static final String VEHICLE_NAME = "VEHICLE_NAME";
     private static final String MANAGER_CONTACT_NO = "manager_contact_no";
     public static Context appContext;
@@ -22,17 +22,17 @@ public class AppPreference {
     public static final String PROJECT_ID = "selected_project_id";
     public static final String SHOP_ID = "selected_shop_id";
     public static final String SHOP_NAME = "selected_shop_name";
-    private static final String ALLOCATION_MEDIA_ID ="selected_allocation_media_id" ;
-    private static final String VEHICLE_ID ="selected_vehicle_id" ;
-    private static final String PMEDIA_ID ="selected_pmedia_id" ;
-    private static final String PMEDIA_NAME ="selected_pmedia_name" ;
-    private static final String EMEDIA_ID ="selected_emedia_id" ;
-    private static final String EMEDIA_NAME ="selected_emedia_name" ;
-    private static final String HOARDING_ID ="selected_hoarding_id" ;
-    private static final String HOARDING_NAME ="selected_hoarding_name" ;
-    private static final String WALL_ID ="selected_wall_id" ;
-    private static final String WALL_NAME ="selected_wall_name" ;
-    private static final String PROJECT_TYPE ="selected_project_type" ;
+    private static final String ALLOCATION_MEDIA_ID = "selected_allocation_media_id";
+    private static final String VEHICLE_ID = "selected_vehicle_id";
+    private static final String PMEDIA_ID = "selected_pmedia_id";
+    private static final String PMEDIA_NAME = "selected_pmedia_name";
+    private static final String EMEDIA_ID = "selected_emedia_id";
+    private static final String EMEDIA_NAME = "selected_emedia_name";
+    private static final String HOARDING_ID = "selected_hoarding_id";
+    private static final String HOARDING_NAME = "selected_hoarding_name";
+    private static final String WALL_ID = "selected_wall_id";
+    private static final String WALL_NAME = "selected_wall_name";
+    private static final String PROJECT_TYPE = "selected_project_type";
 
 
     public static void setStringPreference(Context context, String name, String value) {

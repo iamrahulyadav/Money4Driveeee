@@ -544,8 +544,8 @@ public class ConfirmTransitActivity extends AppCompatActivity implements View.On
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(false)
                 .setAspectRatio(3, 4)
-                .setRequestedSize(320, 240)
-                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .setRequestedSize(320, 240).setScaleType(CropImageView.ScaleType.FIT_CENTER)
+                .setAutoZoomEnabled(false)
                 .start(this);
     }
 

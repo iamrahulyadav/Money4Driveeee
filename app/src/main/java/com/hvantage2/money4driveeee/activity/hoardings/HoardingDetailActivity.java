@@ -343,7 +343,8 @@ public class HoardingDetailActivity extends AppCompatActivity implements View.On
                 .setMultiTouchEnabled(false)
                 .setAspectRatio(3, 4)
                 .setRequestedSize(320, 240)
-                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .setScaleType(CropImageView.ScaleType.FIT_CENTER)
+                .setAutoZoomEnabled(false)
                 .start(this);
     }
 

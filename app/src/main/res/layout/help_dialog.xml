@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_15sdp">
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:lineSpacingExtra="@dimen/_5sdp"
+        android:text="Enter complete address manually or you can detect your current location by click on "
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/colorPrimary" />
+
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="@dimen/_28sdp"
+        android:layout_height="@dimen/_28sdp"
+        android:layout_below="@id/tv1"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/_20sdp"
+        android:src="@drawable/ic_my_location_green_24dp" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img1"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:lineSpacingExtra="@dimen/_5sdp"
+        android:text="(Note: We will access your device location to get currect address)"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/hintcolor" />
+
+
+</RelativeLayout>

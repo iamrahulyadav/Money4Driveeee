@@ -580,7 +580,8 @@ public class AddShopActivity extends AppCompatActivity implements View.OnClickLi
                 .setMultiTouchEnabled(false)
                 .setAspectRatio(3, 4)
                 .setRequestedSize(320, 240)
-                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .setScaleType(CropImageView.ScaleType.FIT_CENTER)
+                .setAutoZoomEnabled(false)
                 .start(this);
     }
 

@@ -101,6 +101,7 @@ public class AppConstants {
         String GETPROJECTSTATES = "getProjectStates";
         String GETPROJECTCITIES = "getProjectCities";
         String GETCHECKREGISRATIONNUMBER = "getCheckRegisrationNumber";
+        String TRANSIT_REPASTE = "transit_repaste";
     }
 
     public class KEYS {

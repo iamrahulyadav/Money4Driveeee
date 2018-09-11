@@ -88,20 +88,20 @@
                     android:entries="@array/auto_list"
                     android:visibility="visible" />
 
-               <!-- <EditText
-                    android:id="@+id/etVehicle"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:fontFamily="@font/oxygen"
-                    android:hint="Enter Vehicle Name"
-                    android:inputType="textCapWords|textNoSuggestions"
-                    android:padding="@dimen/_4sdp"
-                    android:singleLine="true"
-                    android:textColor="@color/hintcolor"
-                    android:textColorHint="@color/hintcolor"
-                    android:visibility="gone" />-->
+                <!-- <EditText
+                     android:id="@+id/etVehicle"
+                     style="@style/Base.TextAppearance.AppCompat.Subhead"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:background="@null"
+                     android:fontFamily="@font/oxygen"
+                     android:hint="Enter Vehicle Name"
+                     android:inputType="textCapWords|textNoSuggestions"
+                     android:padding="@dimen/_4sdp"
+                     android:singleLine="true"
+                     android:textColor="@color/hintcolor"
+                     android:textColorHint="@color/hintcolor"
+                     android:visibility="gone" />-->
 
                 <View
                     android:layout_width="match_parent"
@@ -272,16 +272,34 @@
                 </LinearLayout>
 
 
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:fontFamily="@font/oxygen"
-                    android:padding="@dimen/_4sdp"
-                    android:text="Address/Stand/Stop"
-                    android:textColor="@color/white" />
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_4sdp">
 
+                    <TextView
+                        android:id="@+id/tvaddress"
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/oxygen"
+                        android:text="Address/Stand/Stop"
+                        android:textColor="@color/white" />
+
+
+                    <ImageView
+                        android:id="@+id/imgAdrHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_toRightOf="@id/tvaddress"
+                        android:src="@drawable/ic_help_outline_green_24dp" />
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -308,6 +326,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:src="@drawable/ic_my_location_green_24dp" />
                 </RelativeLayout>
 

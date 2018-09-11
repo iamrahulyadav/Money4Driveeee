@@ -1,6 +1,6 @@
 package com.hvantage2.money4driveeee.activity.transit;
 
-import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,13 +15,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -41,7 +38,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.BuildConfig;
 import com.hvantage2.money4driveeee.R;
@@ -77,7 +73,6 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
     private static final int REQUEST_LOAD_IMAGE = REQUEST_IMAGE_CAPTURE + 1;
     private EditText etDriverName, etDriverContact, etVehicle,
             etRegNo, etDriverAddress, etDriverBookFor, etStartDate, etEndDate;
-    private Button btnCancel;
     private String media_option_id = "0";
     private ProgressHUD progressHD;
     private ImageView imgDoc1, imgDoc2;
@@ -89,9 +84,11 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
     private Bitmap bitmapImage1;
     private String base64image1 = "", base64image2 = "";
     private String imgRemark1 = "", imgRemark2 = "";
-    private LinearLayout llUpdate, llReport;
-    private FusedLocationProviderClient mFusedLocationClient;
+    private LinearLayout llReport;
     private EditText etState, etCity;
+    private Button btnRepaste;
+    private String remark = "Repaste";
+    private String booked_project_id = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,20 +110,6 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
         new getTransitDetail().execute();
     }
 
-    public boolean checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(TransitDetailActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
-            }
-            return false;
-        } else {
-
-            return true;
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -141,7 +124,6 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-
     private void setEnabled(boolean b) {
         etDriverName.setEnabled(b);
         etVehicle.setEnabled(b);
@@ -152,7 +134,6 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
         imgDoc2.setEnabled(b);
         etDriverAddress.setEnabled(b);
         etDriverAddress.setEnabled(b);
-        llUpdate.setVisibility(View.GONE);
         llReport.setVisibility(View.VISIBLE);
     }
 
@@ -163,7 +144,6 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
 
 
     private void init() {
-        llUpdate = (LinearLayout) findViewById(R.id.llUpdate);
         llReport = (LinearLayout) findViewById(R.id.llReport);
         etDriverName = (EditText) findViewById(R.id.etDriverName);
         etDriverContact = (EditText) findViewById(R.id.etDriverContact);
@@ -181,15 +161,7 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
         tvImgDoc1Remark = (TextView) findViewById(R.id.tvImgDoc1Remark);
         tvImgDoc2Remark = (TextView) findViewById(R.id.tvImgDoc2Remark);
 
-        btnCancel = (Button) findViewById(R.id.btnCancel);
-
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        btnRepaste = (Button) findViewById(R.id.btnRepaste);
 
         ((ScrollView) findViewById(R.id.container)).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -199,8 +171,7 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        imgDoc1.setOnClickListener(this);
-        imgDoc2.setOnClickListener(this);
+        btnRepaste.setOnClickListener(this);
     }
 
     private void hideSoftKeyboard(View view) {
@@ -252,12 +223,7 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imgDoc1:
-                imgCounter = 1;
-                selectImage();
-                break;
-            case R.id.imgDoc2:
-                imgCounter = 2;
+            case R.id.btnRepaste:
                 selectImage();
                 break;
         }
@@ -266,7 +232,7 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
     private void selectImage() {
         final CharSequence[] items = {"Camera", "Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Upload Document");
+        builder.setTitle("Upload Image");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -366,7 +332,8 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
                 .setMultiTouchEnabled(false)
                 .setAspectRatio(3, 4)
                 .setRequestedSize(320, 240)
-                .setScaleType(CropImageView.ScaleType.CENTER_INSIDE)
+                .setScaleType(CropImageView.ScaleType.FIT_CENTER)
+                .setAutoZoomEnabled(false)
                 .start(this);
     }
 
@@ -392,21 +359,12 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(remarkText.getText().toString())) {
-                    remarkText.setError("Enter a remark");
-                } else {
-                    dialog1.dismiss();
-                    if (imgCounter == 1) {
-                        imgDoc1.setImageBitmap(bitmap);
-                        tvImgDoc1Remark.setText(remarkText.getText().toString());
-                        imgRemark1 = remarkText.getText().toString();
-                    } else if (imgCounter == 2) {
-                        imgDoc2.setImageBitmap(bitmap);
-                        tvImgDoc2Remark.setText(remarkText.getText().toString());
-                        imgRemark2 = remarkText.getText().toString();
-                    }
-                    new ImageTask().execute(bitmap);
-                }
+//                dialog1.dismiss();
+                if (remarkText.getText().toString().equalsIgnoreCase("")) {
+                    remark = "REPASTED";
+                } else
+                    remark = "REPASTED : " + remarkText.getText().toString();
+                new ImageTask().execute(bitmap);
             }
         });
 
@@ -441,13 +399,52 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
-            if (imgCounter == 1)
-                base64image1 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            else if (imgCounter == 2)
-                base64image2 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            Log.e(TAG, "ImageTask: doInBackground: base64image1 >>" + base64image1);
-            Log.e(TAG, "ImageTask: doInBackground: base64image2 >>" + base64image2);
-            publishProgress("");
+            String base64image = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            Log.d(TAG, "base64image >> " + base64image);
+            //api call
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.TRANSIT_REPASTE);
+            jsonObject.addProperty("user_id", AppPreference.getUserId(TransitDetailActivity.this));
+            jsonObject.addProperty("project_id", booked_project_id);
+            jsonObject.addProperty("vehicle_id", vehicle_id);
+            jsonObject.addProperty("transit_id", media_option_id);
+            jsonObject.addProperty("remark", remark);
+            jsonObject.addProperty("dimension", "");
+            jsonObject.addProperty("image", base64image);
+
+            Log.e(TAG, "Request ADD IMAGE >> " + jsonObject.toString());
+
+            MyApiEndpointInterface apiService = ApiClient.getClient().create(MyApiEndpointInterface.class);
+            Call<JsonObject> call = apiService.project_activity_api(jsonObject);
+
+            call.enqueue(new Callback<JsonObject>() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.e(TAG, "Response ADD IMAGE >> " + response.body().toString());
+                    String resp = response.body().toString();
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        if (jsonObject.getString("status").equalsIgnoreCase("200")) {
+                            publishProgress("200", "Repasted, Check in project activities");
+                        } else if (jsonObject.getString("status").equalsIgnoreCase("400")) {
+                            JSONArray resultArray = jsonObject.getJSONArray("result");
+                            JSONObject jsonObject1 = resultArray.getJSONObject(0);
+                            publishProgress("400", jsonObject1.getString("msg"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        publishProgress("400", "Server not responding!");
+                    }
+                }
+
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(TAG, "error :- " + Log.getStackTraceString(t));
+                    publishProgress("400", "Server not responding!");
+                }
+            });
             return null;
         }
 
@@ -455,7 +452,13 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             hideProgressDialog();
+            String status = values[0];
+            String msg = values[1];
+            Toast.makeText(TransitDetailActivity.this, msg, Toast.LENGTH_SHORT).show();
+            if (status.equalsIgnoreCase("200"))
+                onBackPressed();
         }
+
     }
 
     public class getTransitDetail extends AsyncTask<Void, String, Void> {
@@ -535,7 +538,7 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
                         Picasso.with(context).load(jsonObject.getString("doc_img1")).placeholder(R.drawable.no_image_placeholder).into(imgDoc1);
                     if (!jsonObject.getString("doc_img2").equalsIgnoreCase(""))
                         Picasso.with(context).load(jsonObject.getString("doc_img2")).placeholder(R.drawable.no_image_placeholder).into(imgDoc2);
-
+                    booked_project_id = jsonObject.getString("project_assign_id");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -544,4 +547,6 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
             }
         }
     }
+
+
 }
