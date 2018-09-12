@@ -458,7 +458,6 @@ public class TransitDetailActivity extends AppCompatActivity implements View.OnC
             if (status.equalsIgnoreCase("200"))
                 onBackPressed();
         }
-
     }
 
     public class getTransitDetail extends AsyncTask<Void, String, Void> {
