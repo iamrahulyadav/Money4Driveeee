@@ -23,24 +23,17 @@
                 android:id="@+id/main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <!--<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/footerimg"
-                    android:layout_height="wrap_content"></LinearLayout>-->
 
                 <RelativeLayout
                     android:id="@+id/signup_image"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_300sdp"
-                    android:layout_centerHorizontal="true">
-
+                    android:layout_height="300dp">
 
                     <ImageView
                         android:id="@+id/img_circle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
+                        android:background="#e9e9e9"
                         android:scaleType="centerCrop"
                         android:src="@drawable/no_image_placeholder" />
 
@@ -59,19 +52,6 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/btnAddMore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@drawable/green_plan_border"
-                        android:fontFamily="@font/oxygen"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:paddingRight="@dimen/_10sdp"
-                        android:text="@string/addmore"
-                        android:textColor="@color/green"
-                        android:visibility="gone" />
-
                     <LinearLayout
                         android:id="@+id/detaillinear"
                         android:layout_width="match_parent"
@@ -85,7 +65,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <TextView
                                 android:id="@+id/tvDimenUnit"
@@ -94,7 +74,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/oxygen"
                                 android:padding="@dimen/_5sdp"
-                                android:text="Dimension(feets)"
+                                android:text="Dimension(inches)"
                                 android:textColor="@color/white" />
 
                             <LinearLayout
@@ -115,7 +95,6 @@
                                     android:inputType="number"
                                     android:maxLength="4"
                                     android:padding="@dimen/_5sdp"
-
                                     android:textAlignment="center"
                                     android:textColor="@color/hintcolor"
                                     android:textColorHint="@color/hintcolor" />
@@ -130,7 +109,6 @@
                                     android:inputType="number"
                                     android:paddingLeft="@dimen/_8sdp"
                                     android:paddingRight="@dimen/_8sdp"
-
                                     android:textAlignment="center"
                                     android:textColor="@color/hintcolor"
                                     android:textColorHint="@color/hintcolor" />
@@ -147,11 +125,34 @@
                                     android:inputType="number"
                                     android:maxLength="4"
                                     android:padding="@dimen/_5sdp"
-
                                     android:textAlignment="center"
                                     android:textColor="@color/hintcolor"
                                     android:textColorHint="@color/hintcolor" />
                             </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tvSquareFeet"
+                                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/oxygen"
+                                android:padding="@dimen/_3sdp"
+                                android:text="Square feet: 0"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:id="@+id/tvSquareMeter"
+                                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:fontFamily="@font/oxygen"
+                                android:padding="@dimen/_3sdp"
+                                android:text="Square meter: 0"
+                                android:textColor="@color/white" />
+
                         </LinearLayout>
                         <!-- <View
                              android:layout_marginTop="@dimen/_5sdp"
@@ -164,10 +165,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
-
                             android:fontFamily="@font/oxygen"
                             android:padding="@dimen/_5sdp"
-
                             android:text="@string/remark"
                             android:textColor="@color/white" />
 
@@ -277,7 +276,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_30sdp"
                     android:id="@+id/btnAddMore"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/green_plan_border"
                     android:paddingLeft="@dimen/_10sdp"
@@ -317,9 +316,7 @@
                             android:imeOptions="actionNext"
                             android:id="@+id/dimensionTextheight"
                             android:textAlignment="center"
-                            android:maxLines="4"
-
-                            android:textColor="@color/hintcolor"
+                            android:maxLines="4"android:textColor="@color/hintcolor"
                             android:hint="Height"/>
 
                         <TextView
@@ -331,9 +328,7 @@
                             android:textColorHint="@color/hintcolor"
                             android:inputType="number"
                             android:imeOptions="actionNext"
-                            android:textAlignment="center"
-
-                            android:textColor="@color/hintcolor"
+                            android:textAlignment="center"android:textColor="@color/hintcolor"
                             android:hint="x"/>
 
                         <EditText
@@ -347,9 +342,7 @@
                             android:imeOptions="actionNext"
                             android:id="@+id/dimensionTextwidth"
                             android:textAlignment="center"
-                            android:maxLines="4"
-
-                            android:textColor="@color/hintcolor"
+                            android:maxLines="4"android:textColor="@color/hintcolor"
                             android:hint="Width"/>
                     </LinearLayout>
 

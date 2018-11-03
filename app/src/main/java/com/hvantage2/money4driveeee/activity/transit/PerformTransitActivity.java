@@ -23,7 +23,6 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.activity.SingleActivityDetail;
-import com.hvantage2.money4driveeee.activity.UploadPhotosActivity;
 import com.hvantage2.money4driveeee.adapter.ActivityAdapter;
 import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
@@ -104,7 +103,12 @@ public class PerformTransitActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemClick(View view, int position) {
                 ShopActivity model = activityList.get(position);
-                if (activityList.get(position).getActivity_status() == 1) {
+                Intent intent = new Intent(PerformTransitActivity.this, SingleActivityDetail.class);
+                intent.setAction("transit");
+                intent.putExtra("media_option_id", model.getActivity_id());
+                intent.putExtra("media_option_name", model.getActivity_name());
+                startActivity(intent);
+                /*if (activityList.get(position).getActivity_status() == 1) {
                     Intent intent = new Intent(PerformTransitActivity.this, SingleActivityDetail.class);
                     intent.setAction("transit");
                     intent.putExtra("media_option_id", model.getActivity_id());
@@ -116,7 +120,7 @@ public class PerformTransitActivity extends AppCompatActivity implements View.On
                     intent.putExtra("media_option_id", model.getActivity_id());
                     intent.putExtra("media_option_name", model.getActivity_name());
                     startActivity(intent);
-                }
+                }*/
             }
 
             @Override

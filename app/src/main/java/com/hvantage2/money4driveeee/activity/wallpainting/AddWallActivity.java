@@ -444,9 +444,10 @@ public class AddWallActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void addWall() {
-        if (TextUtils.isEmpty(etWallName.getText().toString()))
+       /* if (TextUtils.isEmpty(etWallName.getText().toString()))
             etWallName.setError("Enter wall name");
-        else if (TextUtils.isEmpty(etContName.getText().toString()))
+        else */
+        if (TextUtils.isEmpty(etContName.getText().toString()))
             etContName.setError("Enter contact person name");
         else if (TextUtils.isEmpty(etContNo.getText().toString()))
             etContNo.setError("Enter contact person no.");

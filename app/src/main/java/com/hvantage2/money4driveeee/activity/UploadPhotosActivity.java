@@ -23,6 +23,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -158,7 +161,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(UploadPhotosActivity.this);
         recycler_view.setLayoutManager(manager);
-        adapter = new UploadedImageAdapter(UploadPhotosActivity.this, imageList, action);
+       // adapter = new UploadedImageAdapter(UploadPhotosActivity.this, imageList, action);
         recycler_view.setAdapter(adapter);
     }
 
@@ -306,7 +309,13 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_LOAD_IMAGE && data != null) {
-                startCropImageActivity(data.getData());
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+                    selectPreviewDialog(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //startCropImageActivity(data.getData());
             } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 File croppedImageFile1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                         + "/M4D/" + "report_img.jpg");
@@ -317,7 +326,13 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
                     outputFileUri = Uri.fromFile(croppedImageFile1);
                 }
                 Log.e(TAG, " Inside REQUEST_IMAGE_CAPTURE uri :- " + outputFileUri);
-                startCropImageActivity(outputFileUri);
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), outputFileUri);
+                    selectPreviewDialog(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //startCropImageActivity(outputFileUri);
             } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
@@ -328,34 +343,36 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
                         e.printStackTrace();
                     }
                     showPreviewDialog(bitmap);
-                    /*switch (action) {
-                        case "shop":
-                            showPreviewDialog(bitmap);
-                            break;
-                        case "transit":
-                            showPreviewDialogTransit(bitmap);
-                            break;
-                        case "hoarding":
-                            showPreviewDialog(bitmap);
-                            break;
-                        case "wall":
-                            showPreviewDialog(bitmap);
-                            break;
-                        case "print":
-                            showPreviewDialog(bitmap);
-                            break;
-                        case "emedia":
-                            showPreviewDialog(bitmap);
-                            break;
-                        default:
-                            showPreviewDialog(bitmap);
-
-                    }*/
-
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
                 }
             }
+        }
+    }
+
+    private void selectPreviewDialog(Bitmap bitmap) {
+        switch (action) {
+            case "shop":
+                showPreviewDialog(bitmap);
+                break;
+            case "transit":
+//                showPreviewDialogTransit(bitmap);
+                showPreviewDialog(bitmap);
+                break;
+            case "hoarding":
+                showPreviewDialog(bitmap);
+                break;
+            case "wall":
+                showPreviewDialogWall(bitmap);
+                break;
+            case "print":
+                showPreviewDialog(bitmap);
+                break;
+            case "emedia":
+                showPreviewDialog(bitmap);
+                break;
+            default:
+                showPreviewDialog(bitmap);
         }
     }
 
@@ -491,6 +508,95 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    private void showPreviewDialogWall(final Bitmap bitmap) {
+        dialog = new Dialog(UploadPhotosActivity.this, R.style.image_preview_dialog);
+        dialog.setContentView(R.layout.image_setup_layout_wall);
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
+
+
+        LinearLayout llDimen = (LinearLayout) dialog.findViewById(R.id.llDimen);
+        ImageView imageView = (ImageView) dialog.findViewById(R.id.img_circle);
+        ScrollView container = (ScrollView) dialog.findViewById(R.id.container);
+
+        ImageView imgBack = (ImageView) dialog.findViewById(R.id.imgBack);
+        Button btnSave = (Button) dialog.findViewById(R.id.btnSave);
+        final TextView tvDimenUnit = (TextView) dialog.findViewById(R.id.tvDimenUnit);
+        final TextView tvSquareFeet = (TextView) dialog.findViewById(R.id.tvSquareFeet);
+        final TextView tvSquareMeter = (TextView) dialog.findViewById(R.id.tvSquareMeter);
+        final EditText height = (EditText) dialog.findViewById(R.id.dimensionTextheight);
+        final EditText width = (EditText) dialog.findViewById(R.id.dimensionTextwidth);
+        final EditText remarkText = (EditText) dialog.findViewById(R.id.remarkText);
+        Bitmap imgThumb = Bitmap.createScaledBitmap(bitmap, 80, 100, false);
+        imageView.setImageBitmap(imgThumb);
+
+        width.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 0) {
+                    if (!TextUtils.isEmpty(height.getText().toString()) && !TextUtils.isEmpty(height.getText().toString())) {
+                        double square_feet = (Double.parseDouble(height.getText().toString()) / 12) * (Double.parseDouble(width.getText().toString()) / 12);
+                        tvSquareFeet.setText("Square Feet : " + square_feet);
+                        tvSquareMeter.setText("Square Meter : " + square_feet);
+                    } else {
+                        Toast.makeText(context, "Height or width is empty", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (height.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(UploadPhotosActivity.this, "Enter height", Toast.LENGTH_SHORT).show();
+                else if (width.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(UploadPhotosActivity.this, "Enter width", Toast.LENGTH_SHORT).show();
+                else {
+                    tempDimen = height.getText().toString() + "x" + width.getText().toString();
+                    Log.e(TAG, "tempDimen: " + tempDimen);
+                    tempRemark = remarkText.getText().toString();
+                    ImageUploadModel model = new ImageUploadModel(bitmap, tempDimen, tempRemark);
+                    imageList.add(model);
+                    adapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                    new ImageTask().execute(bitmap);
+                }
+            }
+        });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+        container.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                return false;
+            }
+        });
+    }
+
     class ImageTask extends AsyncTask<Bitmap, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -502,7 +608,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         protected Void doInBackground(Bitmap... bitmaps) {
             Bitmap bitmapImage = bitmaps[0];
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 70, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             String Encoded_userimage = Base64.encodeToString(byteArray, Base64.DEFAULT);
             Log.d(TAG, "Picture Image :-" + Encoded_userimage);

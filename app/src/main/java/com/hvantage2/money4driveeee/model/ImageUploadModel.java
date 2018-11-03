@@ -7,13 +7,22 @@ import android.graphics.Bitmap;
  */
 
 public class ImageUploadModel {
-    Bitmap image=null;
-    String image_url="";
-    String dimension="";
-    String remark="";
-    String datetime="";
-    String status="new";
-    String update_id="";
+    Bitmap image = null;
+    String image_url = "";
+    String dimension = "";
+    String remark = "";
+    String datetime = "";
+    String status = "new";
+    String update_id = "";
+    boolean isUploaded = false;
+
+    public boolean isUploaded() {
+        return isUploaded;
+    }
+
+    public void setUploaded(boolean uploaded) {
+        isUploaded = uploaded;
+    }
 
     public String getUpdate_id() {
         return update_id;
@@ -49,9 +58,8 @@ public class ImageUploadModel {
         this.image = image;
         this.dimension = dimension;
         this.remark = remark;
-        status="new";
+        status = "new";
     }
-
 
 
     public ImageUploadModel(String image_url, String dimention, String remark, String datetime, String update_id) {
@@ -60,7 +68,7 @@ public class ImageUploadModel {
         this.remark = remark;
         this.datetime = datetime;
         this.update_id = update_id;
-        status="edit";
+        status = "edit";
     }
 
     public Bitmap getImage() {

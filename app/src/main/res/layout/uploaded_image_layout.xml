@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/_10sdp"
-    android:layout_marginRight="@dimen/_10sdp"
     android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
     android:background="@color/white"
     android:clickable="true"
     android:elevation="0dp"
@@ -41,8 +41,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_20sdp"
                 android:layout_toRightOf="@+id/image"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvDateTime"
@@ -50,9 +49,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/oxygen"
                     android:padding="@dimen/_1sdp"
-                    android:text="2 dec 2018 | 17:00 PM"
-                    android:fontFamily="@font/oxygen" />
+                    android:text="2 dec 2018 | 17:00 PM" />
 
                 <TextView
                     android:id="@+id/tvRemark"
@@ -60,11 +59,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/oxygen"
                     android:maxLines="1"
                     android:padding="@dimen/_1sdp"
                     android:singleLine="true"
-                    android:text="In-Shop Branding"
-                    android:fontFamily="@font/oxygen" />
+                    android:text="In-Shop Branding" />
 
                 <LinearLayout
                     android:id="@+id/llDimen"
@@ -78,19 +77,19 @@
                         style="@style/TextAppearance.AppCompat.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/oxygen"
                         android:padding="@dimen/_1sdp"
                         android:text="Dimension-"
-                        android:textColor="@color/colorAccent"
-                        android:fontFamily="@font/oxygen" />
+                        android:textColor="@color/colorAccent" />
 
                     <TextView
                         android:id="@+id/tvDimen"
                         style="@style/TextAppearance.AppCompat.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/oxygen"
                         android:padding="@dimen/_1sdp"
-                        android:text="NA (Feet)"
-                        android:fontFamily="@font/oxygen" />
+                        android:text="NA (Feet)" />
                 </LinearLayout>
             </LinearLayout>
 
