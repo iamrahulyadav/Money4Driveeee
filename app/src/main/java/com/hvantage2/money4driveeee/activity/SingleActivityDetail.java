@@ -911,7 +911,6 @@ public class SingleActivityDetail extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-
             JsonObject jsonObject = null;
             if (action.equalsIgnoreCase("shop")) {
                 jsonObject = new JsonObject();
