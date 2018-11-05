@@ -23,9 +23,7 @@ import com.google.gson.JsonObject;
 import com.hvantage2.money4driveeee.R;
 import com.hvantage2.money4driveeee.activity.DashBoardActivity;
 import com.hvantage2.money4driveeee.activity.SingleActivityDetail;
-import com.hvantage2.money4driveeee.activity.UploadPhotosActivity;
 import com.hvantage2.money4driveeee.adapter.ActivityAdapter;
-
 import com.hvantage2.money4driveeee.model.ShopActivity;
 import com.hvantage2.money4driveeee.retrofit.ApiClient;
 import com.hvantage2.money4driveeee.retrofit.MyApiEndpointInterface;
@@ -103,6 +101,11 @@ public class PerformPMediaActivity extends AppCompatActivity implements View.OnC
             public void onItemClick(View view, int position) {
 
                 ShopActivity model = activityList.get(position);
+                Intent intent = new Intent(PerformPMediaActivity.this, SingleActivityDetail.class);
+                intent.setAction("print");
+                intent.putExtra("media_option_id", model.getActivity_id());
+                intent.putExtra("media_option_name", model.getActivity_name());
+                startActivity(intent);/*
                 if (activityList.get(position).getActivity_status() == 1) {
                     Intent intent = new Intent(PerformPMediaActivity.this, SingleActivityDetail.class);
                     intent.setAction("print");
@@ -115,7 +118,7 @@ public class PerformPMediaActivity extends AppCompatActivity implements View.OnC
                     intent.putExtra("media_option_id", model.getActivity_id());
                     intent.putExtra("media_option_name", model.getActivity_name());
                     startActivity(intent);
-                }
+                }*/
             }
 
             @Override

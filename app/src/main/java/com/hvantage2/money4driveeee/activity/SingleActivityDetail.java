@@ -24,7 +24,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,7 +62,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,9 +89,9 @@ public class SingleActivityDetail extends AppCompatActivity {
     private String media_option_name;
     private Button btnAddDoc;
     private int imgType = 1;
-    private SingleActivityDetail context;
     private double square_meter = 0.0;
     private double square_feet = 0.0;
+    private SingleActivityDetail context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,14 +138,13 @@ public class SingleActivityDetail extends AppCompatActivity {
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         addmore = (Button) findViewById(R.id.takepicture);
         btnAddDoc = (Button) findViewById(R.id.btnAddDoc);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(SingleActivityDetail.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recycler_view.setLayoutManager(layoutManager);
 
         adapter = new UploadedImageAdapter(context, list, action, new UploadedImageAdapter.MyAdapterListener() {
             @Override
             public void onStartUploading(Bitmap bitmap, int position) {
                 Log.e(TAG, "onStartUploading ");
-                new ImageTask(position).execute(bitmap);
             }
 
             @Override
@@ -202,7 +199,7 @@ public class SingleActivityDetail extends AppCompatActivity {
             }
         });
 
-        if (AppPreference.getSelectedProjectType(SingleActivityDetail.this).equalsIgnoreCase(AppConstants.PROJECT_TYPE.COMPLETED)) {
+        if (AppPreference.getSelectedProjectType(context).equalsIgnoreCase(AppConstants.PROJECT_TYPE.COMPLETED)) {
             ((LinearLayout) findViewById(R.id.llBottom)).setVisibility(View.GONE);
         }
     }
@@ -360,9 +357,11 @@ public class SingleActivityDetail extends AppCompatActivity {
                     tempDimen = "";
                     tempRemark = remarkText.getText().toString();
                     dialog1.dismiss();
-                    ImageUploadModel data = new ImageUploadModel(bitmap, tempDimen, tempRemark);
+                    /*ImageUploadModel data = new ImageUploadModel(bitmap, tempDimen, tempRemark);
                     list.add(data);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();*/
+                    new ImageTask(0).execute(bitmap);
+
                 }
             }
         });
@@ -385,8 +384,8 @@ public class SingleActivityDetail extends AppCompatActivity {
         });
     }
 
-    private void addImageDialog(final Bitmap bitmap) {
-        dialog1 = new Dialog(SingleActivityDetail.this, R.style.image_preview_dialog);
+    private void addImageDialogCommon(final Bitmap bitmap) {
+        dialog1 = new Dialog(context, R.style.image_preview_dialog);
         dialog1.setContentView(R.layout.image_setup_layout);
         Window window = dialog1.getWindow();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -405,12 +404,8 @@ public class SingleActivityDetail extends AppCompatActivity {
         final EditText width = (EditText) dialog1.findViewById(R.id.dimensionTextwidth);
         final EditText remarkText = (EditText) dialog1.findViewById(R.id.remarkText);
 
-        if (action.equalsIgnoreCase("wall") || action.equalsIgnoreCase("shop"))
-            tvDimenUnit.setText("Dimension (inches)");
-
-        Bitmap imgThumb = Bitmap.createScaledBitmap(bitmap, 640, 480, false);
-        imageView.setImageBitmap(imgThumb);
-
+//        Bitmap imgThumb = Bitmap.createScaledBitmap(bitmap, 480, 640, false);
+        imageView.setImageBitmap(bitmap);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -422,9 +417,11 @@ public class SingleActivityDetail extends AppCompatActivity {
                 Log.e(TAG, "tempDimen: " + tempDimen);
                 tempRemark = remarkText.getText().toString();
                 dialog1.dismiss();
-                ImageUploadModel data = new ImageUploadModel(bitmap, tempDimen, tempRemark);
+                /*ImageUploadModel data = new ImageUploadModel(bitmap, tempDimen, tempRemark);
                 list.add(data);
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
+                new ImageTask(0).execute(bitmap);
+
             }
         });
 
@@ -447,7 +444,7 @@ public class SingleActivityDetail extends AppCompatActivity {
     }
 
     private void addImageDialogTransit(final Bitmap bitmap) {
-        dialog1 = new Dialog(SingleActivityDetail.this, R.style.image_preview_dialog);
+        dialog1 = new Dialog(context, R.style.image_preview_dialog);
         dialog1.setContentView(R.layout.image_setup_layout_transit);
         Window window = dialog1.getWindow();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -472,9 +469,11 @@ public class SingleActivityDetail extends AppCompatActivity {
                 tempDimen = "";
                 tempRemark = remarkText.getText().toString();
                 dialog1.dismiss();
-                ImageUploadModel data = new ImageUploadModel(bitmap, tempDimen, tempRemark);
+                /*ImageUploadModel data = new ImageUploadModel(bitmap, tempDimen, tempRemark);
                 list.add(data);
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
+                new ImageTask(0).execute(bitmap);
+
             }
         });
 
@@ -563,9 +562,11 @@ public class SingleActivityDetail extends AppCompatActivity {
                     Log.e(TAG, "tempDimen: " + tempDimen);
                     tempRemark = remarkText.getText().toString();
                     dialog.dismiss();
-                    ImageUploadModel data = new ImageUploadModel(bitmap, tempDimen, tempRemark);
+                    /*ImageUploadModel data = new ImageUploadModel(bitmap, tempDimen, tempRemark);
                     list.add(data);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();*/
+                    new ImageTask(0).execute(bitmap);
+
                 }
             }
         });
@@ -669,25 +670,25 @@ public class SingleActivityDetail extends AppCompatActivity {
     private void selectPreviewDialog(Bitmap bitmap) {
         switch (action) {
             case "shop":
-                addImageDialog(bitmap);
+                addImageDialogCommon(bitmap);
                 break;
             case "transit":
                 addImageDialogTransit(bitmap);
                 break;
             case "hoarding":
-                addImageDialog(bitmap);
+                addImageDialogCommon(bitmap);
                 break;
             case "wall":
                 addImageDialogWall(bitmap);
                 break;
             case "print":
-                addImageDialog(bitmap);
+                addImageDialogCommon(bitmap);
                 break;
             case "emedia":
-                addImageDialog(bitmap);
+                addImageDialogCommon(bitmap);
                 break;
             default:
-                addImageDialog(bitmap);
+                addImageDialogCommon(bitmap);
         }
     }
 
@@ -721,7 +722,7 @@ public class SingleActivityDetail extends AppCompatActivity {
                 finish();
                 break;
             case R.id.action_home:
-                Intent intent = new Intent(SingleActivityDetail.this, DashBoardActivity.class);
+                Intent intent = new Intent(context, DashBoardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
@@ -731,7 +732,7 @@ public class SingleActivityDetail extends AppCompatActivity {
     }
 
     private void showProgressDialog() {
-        progressHD = ProgressHUD.show(SingleActivityDetail.this, "Processing...", true, false, new DialogInterface.OnCancelListener() {
+        progressHD = ProgressHUD.show(context, "Processing...", true, false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 // TODO Auto-generated method stub
@@ -745,6 +746,7 @@ public class SingleActivityDetail extends AppCompatActivity {
 
     class ImageTask extends AsyncTask<Bitmap, String, Void> {
         int position = 0;
+        Bitmap bitmapImage;
 
         public ImageTask(int position) {
             this.position = position;
@@ -758,46 +760,47 @@ public class SingleActivityDetail extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Bitmap... bitmaps) {
-            Bitmap bitmapImage = bitmaps[0];
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmapImage = bitmaps[0];
+            /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmapImage.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
-            base64image = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            base64image = Base64.encodeToString(byteArray, Base64.DEFAULT);*/
+            base64image = Functions.getBase64Image(bitmapImage, AppConstants.IMAGE_COMPRESS_QUALITY);
             Log.d(TAG, "base64image >> " + base64image);
             //api call
             JsonObject jsonObject = new JsonObject();
             if (action.equalsIgnoreCase("shop")) {
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.PROJECTACTIVITYIMAGEUPLOAD);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("shop_id", AppPreference.getSelectedShopid(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("shop_id", AppPreference.getSelectedShopid(context));
                 jsonObject.addProperty("activity_id", media_option_id);
                 jsonObject.addProperty("remark", tempRemark);
                 jsonObject.addProperty("dimension", tempDimen);
                 jsonObject.addProperty("image", base64image);
             } else if (action.equalsIgnoreCase("transit")) {
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.TRANSITPROJECTACTIIMGUPLOAD);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("vehicle_id", AppPreference.getSelectedVehicleId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("vehicle_id", AppPreference.getSelectedVehicleId(context));
                 jsonObject.addProperty("transit_id", media_option_id);
                 jsonObject.addProperty("remark", tempRemark);
                 jsonObject.addProperty("dimension", tempDimen);
                 jsonObject.addProperty("image", base64image);
             } else if (action.equalsIgnoreCase("print")) {
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.PROJECTPRINTIMAGEUPLOAD);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("print_id", AppPreference.getSelectedPMediaId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("print_id", AppPreference.getSelectedPMediaId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
                 jsonObject.addProperty("remark", tempRemark);
                 jsonObject.addProperty("dimension", tempDimen);
                 jsonObject.addProperty("image", base64image);
             } else if (action.equalsIgnoreCase("hoarding")) {
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.PROJECTHOARDINGIMAGEUPLOAD);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("hoarding_id", AppPreference.getSelectedHoardingId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("hoarding_id", AppPreference.getSelectedHoardingId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
                 jsonObject.addProperty("remark", tempRemark);
                 jsonObject.addProperty("dimension", tempDimen);
@@ -805,9 +808,9 @@ public class SingleActivityDetail extends AppCompatActivity {
 
             } else if (action.equalsIgnoreCase("wall")) {
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.PROJECTWALLMAGEUPLOAD);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("wall_id", AppPreference.getSelectedWallId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("wall_id", AppPreference.getSelectedWallId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
                 jsonObject.addProperty("dimension", tempDimen);
                 jsonObject.addProperty("remark", tempRemark);
@@ -816,9 +819,9 @@ public class SingleActivityDetail extends AppCompatActivity {
                 jsonObject.addProperty("image", base64image);
             } else if (action.equalsIgnoreCase("emedia")) {
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.PROJECTEMEDIAIMAGEUPLOAD);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("emedia_id", AppPreference.getSelectedEMediaId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("emedia_id", AppPreference.getSelectedEMediaId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
                 jsonObject.addProperty("remark", tempRemark);
                 jsonObject.addProperty("dimension", tempDimen);
@@ -848,8 +851,7 @@ public class SingleActivityDetail extends AppCompatActivity {
                             String datetime = jsonObject1.getString("datetime");
                             String update_id = jsonObject1.getString("update_id");
                             ImageUploadModel data = new ImageUploadModel(image_url, dimention, remark, datetime, update_id);
-                            list.set(position, data);
-                            adapter.notifyDataSetChanged();
+                            list.add(data);
                             publishProgress("200", "Added");
                         } else if (jsonObject.getString("status").equalsIgnoreCase("400")) {
                             JSONArray resultArray = jsonObject.getJSONArray("result");
@@ -876,11 +878,27 @@ public class SingleActivityDetail extends AppCompatActivity {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             hideProgressDialog();
+            adapter.notifyDataSetChanged();
             String status = values[0];
             String msg = values[1];
-            Toast.makeText(SingleActivityDetail.this, msg, Toast.LENGTH_SHORT).show();
-        }
+            if (status.equalsIgnoreCase("400")) {
+                new AlertDialog.Builder(context)
+                        .setMessage(msg)
+                        .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                new ImageTask(0).execute(bitmapImage);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
+                            }
+                        })
+                        .show();
+            }
+        }
     }
 
     class GetDataTask extends AsyncTask<Void, String, Void> {
@@ -898,44 +916,44 @@ public class SingleActivityDetail extends AppCompatActivity {
             if (action.equalsIgnoreCase("shop")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.SHOPACTIVITYDETAIL);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this)); //8
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("shop_id", AppPreference.getSelectedShopid(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context)); //8
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("shop_id", AppPreference.getSelectedShopid(context));
                 jsonObject.addProperty("activity_id", media_option_id);
             } else if (action.equalsIgnoreCase("transit")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.TRANSITACTIVITYDETAIL);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this)); //8
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("vehicle_id", AppPreference.getSelectedVehicleId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context)); //8
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("vehicle_id", AppPreference.getSelectedVehicleId(context));
                 jsonObject.addProperty("transit_id", media_option_id);
             } else if (action.equalsIgnoreCase("print")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.PRINTACTIVITYDETAIL);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this)); //8
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("print_id", AppPreference.getSelectedPMediaId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context)); //8
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("print_id", AppPreference.getSelectedPMediaId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
             } else if (action.equalsIgnoreCase("hoarding")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.HOARDINGACTIVITYDETAIL);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this)); //8
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("hoarding_id", AppPreference.getSelectedHoardingId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context)); //8
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("hoarding_id", AppPreference.getSelectedHoardingId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
             } else if (action.equalsIgnoreCase("wall")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.WALLACTIVITYDETAIL);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this)); //8
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("wall_id", AppPreference.getSelectedWallId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context)); //8
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("wall_id", AppPreference.getSelectedWallId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
             } else if (action.equalsIgnoreCase("emedia")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.EMEDIAACTIVITYDETAIL);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(SingleActivityDetail.this)); //8
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(SingleActivityDetail.this));
-                jsonObject.addProperty("emedia_id", AppPreference.getSelectedEMediaId(SingleActivityDetail.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context)); //8
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("emedia_id", AppPreference.getSelectedEMediaId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
             }
             Log.e(TAG, "Request ACTIVITY DETAIL >> " + jsonObject);
@@ -992,7 +1010,7 @@ public class SingleActivityDetail extends AppCompatActivity {
             String msg = values[1];
             if (status.equalsIgnoreCase("400")) {
                 if (!msg.equalsIgnoreCase("data not found"))
-                    Toast.makeText(SingleActivityDetail.this, msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
             }
         }
 

@@ -92,7 +92,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
     private ProgressHUD progressHD;
     private String media_option_id;
     private String media_option_name;
-    private Context context;
+    private UploadPhotosActivity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,10 +147,10 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
             getSupportActionBar().setTitle(media_option_name);
 
         Log.e(TAG, "onCreate: action >> " + action);
-        if (ContextCompat.checkSelfPermission(UploadPhotosActivity.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(UploadPhotosActivity.this, android.Manifest.permission.CAMERA)) {
+        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(context, android.Manifest.permission.CAMERA)) {
             } else {
-                ActivityCompat.requestPermissions(UploadPhotosActivity.this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10);
+                ActivityCompat.requestPermissions(context, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10);
             }
         }
 
@@ -159,9 +159,9 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
 
     private void setImageAdapter() {
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(UploadPhotosActivity.this);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(context);
         recycler_view.setLayoutManager(manager);
-       // adapter = new UploadedImageAdapter(UploadPhotosActivity.this, imageList, action);
+        // adapter = new UploadedImageAdapter(context, imageList, action);
         recycler_view.setAdapter(adapter);
     }
 
@@ -169,7 +169,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
         ((Button) findViewById(R.id.btnSubmit)).setOnClickListener(this);
         takepicture = ((Button) findViewById(R.id.takepicture));
         takepicture.setOnClickListener(this);
-        if (AppPreference.getSelectedProjectType(UploadPhotosActivity.this).equalsIgnoreCase(AppConstants.PROJECT_TYPE.COMPLETED)) {
+        if (AppPreference.getSelectedProjectType(context).equalsIgnoreCase(AppConstants.PROJECT_TYPE.COMPLETED)) {
             ((Button) findViewById(R.id.btnSubmit)).setVisibility(View.GONE);
             takepicture.setVisibility(View.GONE);
         }
@@ -189,7 +189,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.action_home:
-                Intent intent = new Intent(UploadPhotosActivity.this, DashBoardActivity.class);
+                Intent intent = new Intent(context, DashBoardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
@@ -388,7 +388,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void showPreviewDialogTransit(final Bitmap bitmap) {
-        dialog = new Dialog(UploadPhotosActivity.this, R.style.image_preview_dialog);
+        dialog = new Dialog(context, R.style.image_preview_dialog);
         dialog.setContentView(R.layout.image_setup_layout_transit);
         Window window = dialog.getWindow();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -437,7 +437,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void showPreviewDialog(final Bitmap bitmap) {
-        dialog = new Dialog(UploadPhotosActivity.this, R.style.image_preview_dialog);
+        dialog = new Dialog(context, R.style.image_preview_dialog);
         dialog.setContentView(R.layout.image_setup_layout);
         Window window = dialog.getWindow();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -471,11 +471,11 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onClick(View view) {
                 /*if (height.getText().toString().equalsIgnoreCase(""))
-                    Toast.makeText(UploadPhotosActivity.this, "Enter height", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Enter height", Toast.LENGTH_SHORT).show();
                 else if (width.getText().toString().equalsIgnoreCase(""))
-                    Toast.makeText(UploadPhotosActivity.this, "Enter width", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Enter width", Toast.LENGTH_SHORT).show();
                else if (remarkText.getText().toString().equalsIgnoreCase(""))
-                    Toast.makeText(UploadPhotosActivity.this, "Enter remark", Toast.LENGTH_SHORT).show();*/
+                    Toast.makeText(context, "Enter remark", Toast.LENGTH_SHORT).show();*/
                 if (height.getText().toString().length() > 0 && width.getText().toString().length() > 0)
                     tempDimen = height.getText().toString() + "x" + width.getText().toString();
                 else
@@ -509,7 +509,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void showPreviewDialogWall(final Bitmap bitmap) {
-        dialog = new Dialog(UploadPhotosActivity.this, R.style.image_preview_dialog);
+        dialog = new Dialog(context, R.style.image_preview_dialog);
         dialog.setContentView(R.layout.image_setup_layout_wall);
         Window window = dialog.getWindow();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -563,9 +563,9 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onClick(View view) {
                 if (height.getText().toString().equalsIgnoreCase(""))
-                    Toast.makeText(UploadPhotosActivity.this, "Enter height", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Enter height", Toast.LENGTH_SHORT).show();
                 else if (width.getText().toString().equalsIgnoreCase(""))
-                    Toast.makeText(UploadPhotosActivity.this, "Enter width", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Enter width", Toast.LENGTH_SHORT).show();
                 else {
                     tempDimen = height.getText().toString() + "x" + width.getText().toString();
                     Log.e(TAG, "tempDimen: " + tempDimen);
@@ -650,54 +650,54 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
             if (action.equalsIgnoreCase("shop")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.SINGLE_TASK_COMP);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(UploadPhotosActivity.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(UploadPhotosActivity.this));
-                jsonObject.addProperty("shop_id", AppPreference.getSelectedShopid(UploadPhotosActivity.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("shop_id", AppPreference.getSelectedShopid(context));
                 jsonObject.addProperty("activity_id", media_option_id);
                 jsonObject.addProperty("date_time", Functions.getCurrentDate() + " " + Functions.getCurrentTime());
                 jsonObject.add("ActivityDetails", jsonArrayImages);
             } else if (action.equalsIgnoreCase("transit")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.TRANSIT_SINGLE_ACTIVITY_TASKCOMPLETE);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(UploadPhotosActivity.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(UploadPhotosActivity.this));
-                jsonObject.addProperty("vehicle_id", AppPreference.getSelectedVehicleId(UploadPhotosActivity.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("vehicle_id", AppPreference.getSelectedVehicleId(context));
                 jsonObject.addProperty("transit_id", media_option_id);
                 jsonObject.addProperty("date_time", Functions.getCurrentDate() + " " + Functions.getCurrentTime());
                 jsonObject.add("ActivityDetails", jsonArrayImages);
             } else if (action.equalsIgnoreCase("print")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.PRINT_SINGLE_ACTIVITY_TASKCOMPLETE);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(UploadPhotosActivity.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(UploadPhotosActivity.this));
-                jsonObject.addProperty("print_id", AppPreference.getSelectedPMediaId(UploadPhotosActivity.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("print_id", AppPreference.getSelectedPMediaId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
                 jsonObject.addProperty("date_time", Functions.getCurrentDate() + " " + Functions.getCurrentTime());
                 jsonObject.add("ActivityDetails", jsonArrayImages);
             } else if (action.equalsIgnoreCase("hoarding")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.SINGLEHOARDINGTASKCOMPLETE);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(UploadPhotosActivity.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(UploadPhotosActivity.this));
-                jsonObject.addProperty("hoarding_id", AppPreference.getSelectedHoardingId(UploadPhotosActivity.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("hoarding_id", AppPreference.getSelectedHoardingId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
                 jsonObject.addProperty("date_time", Functions.getCurrentDate() + " " + Functions.getCurrentTime());
                 jsonObject.add("ActivityDetails", jsonArrayImages);
             } else if (action.equalsIgnoreCase("wall")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.SINGLEWALLTASKCOMPLETE);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(UploadPhotosActivity.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(UploadPhotosActivity.this));
-                jsonObject.addProperty("wall_id", AppPreference.getSelectedWallId(UploadPhotosActivity.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("wall_id", AppPreference.getSelectedWallId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
                 jsonObject.addProperty("date_time", Functions.getCurrentDate() + " " + Functions.getCurrentTime());
                 jsonObject.add("ActivityDetails", jsonArrayImages);
             } else if (action.equalsIgnoreCase("emedia")) {
                 jsonObject = new JsonObject();
                 jsonObject.addProperty("method", AppConstants.FEILDEXECUTATIVE.SINGLEEMEDIATASKCOMPLETE);
-                jsonObject.addProperty("user_id", AppPreference.getUserId(UploadPhotosActivity.this));
-                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(UploadPhotosActivity.this));
-                jsonObject.addProperty("emedia_id", AppPreference.getSelectedEMediaId(UploadPhotosActivity.this));
+                jsonObject.addProperty("user_id", AppPreference.getUserId(context));
+                jsonObject.addProperty("project_id", AppPreference.getSelectedProjectId(context));
+                jsonObject.addProperty("emedia_id", AppPreference.getSelectedEMediaId(context));
                 jsonObject.addProperty("media_option_id", media_option_id);
                 jsonObject.addProperty("date_time", Functions.getCurrentDate() + " " + Functions.getCurrentTime());
                 jsonObject.add("ActivityDetails", jsonArrayImages);
@@ -745,8 +745,8 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
             String msg = values[1];
             hideProgressDialog();
             if (status.equalsIgnoreCase("200")) {
-                Intent intent = new Intent(UploadPhotosActivity.this, ThankYouActivity.class);
-                Intent intent1 = new Intent(UploadPhotosActivity.this, SingleActivityDetail.class);
+                Intent intent = new Intent(context, ThankYouActivity.class);
+                Intent intent1 = new Intent(context, SingleActivityDetail.class);
                 if (action.equalsIgnoreCase("shop")) {
                     intent1.setAction("shop");
                 } else if (action.equalsIgnoreCase("transit")) {
@@ -768,7 +768,7 @@ public class UploadPhotosActivity extends AppCompatActivity implements View.OnCl
                 startActivities(intents);
                 finish();
             } else
-                Toast.makeText(UploadPhotosActivity.this, msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
     }
 }
